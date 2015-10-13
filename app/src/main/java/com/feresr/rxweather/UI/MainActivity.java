@@ -1,4 +1,4 @@
-package com.feresr.rxweather;
+package com.feresr.rxweather.UI;
 
 import android.content.Intent;
 import android.database.ContentObserver;
@@ -14,6 +14,10 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
+
+import com.feresr.rxweather.NetworkService;
+import com.feresr.rxweather.R;
+import com.feresr.rxweather.WeatherProvider;
 
 public class MainActivity extends AppCompatActivity {
 

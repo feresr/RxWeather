@@ -12,8 +12,8 @@ import rx.Observable;
  */
 public interface WeatherEndpoints {
     @GET("weather?")
-    Observable<Current> getCurrent(@Query("q") String city);
+    Observable<Current> getCurrent(@Query("q") String city, @Query("appid") String APIKEY);
 
     @GET("forecast?")
-    Observable<FiveDays> getForecast(@Query("q") String city);
+    Observable<FiveDays> getForecast(@Query("q") String city, @Query("appid") String APIKEY);
 }

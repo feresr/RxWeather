@@ -1,10 +1,12 @@
-package com.feresr.rxweather;
+package com.feresr.rxweather.UI;
 
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.feresr.rxweather.R;
 
 /**
  * A placeholder fragment containing a simple view.

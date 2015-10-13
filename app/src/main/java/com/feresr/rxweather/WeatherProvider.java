@@ -23,17 +23,17 @@ public class WeatherProvider extends ContentProvider {
 
     static final String PROVIDER_NAME = "com.feresr.rxweather.WeatherProvider";
 
-    static final String URL = "content://" + PROVIDER_NAME + "/weather";
-    static final Uri CONTENT_URL = Uri.parse(URL);
+    public static final String URL = "content://" + PROVIDER_NAME + "/weather";
+    public static final Uri CONTENT_URL = Uri.parse(URL);
 
-    static final String temp = "temp";
-    static final String temp_max = "temp_max";
-    static final String temp_min = "temp_min";
-    static final String pressure = "pressure";
-    static final String humidity = "humidity";
-    static final String weather_main = "weather_main";
-    static final String weather_desc = "weather_desc";
-    static final String weather_id = "weather_id";
+    public static final String temp = "temp";
+    public static final String temp_max = "temp_max";
+    public static final String temp_min = "temp_min";
+    public static final String pressure = "pressure";
+    public static final String humidity = "humidity";
+    public static final String weather_main = "weather_main";
+    public static final String weather_desc = "weather_desc";
+    public static final String weather_id = "weather_id";
 
     static final int uriCode = 1;
     static final UriMatcher uriMatcher;

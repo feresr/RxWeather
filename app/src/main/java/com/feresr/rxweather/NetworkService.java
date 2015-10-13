@@ -3,22 +3,23 @@ package com.feresr.rxweather;
 import android.app.Service;
 import android.content.ContentValues;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.IBinder;
 import android.util.Log;
 
-import com.feresr.rxweather.Models.Current;
+import com.feresr.rxweather.DI.DaggerWeatherApiComponent;
 import com.feresr.rxweather.Models.List;
-import com.feresr.rxweather.Models.Weather;
+
+import javax.inject.Inject;
 
 import rx.Subscriber;
 
 public class NetworkService extends Service {
 
-    private final WeatherApi weatherApi;
+    @Inject
+    WeatherApi weatherApi;
 
     public NetworkService() {
-        weatherApi = new WeatherApi();
+        DaggerWeatherApiComponent.builder().build().inject(this);
     }
 
     @Override
@@ -81,7 +82,6 @@ public class NetworkService extends Service {
                 values.put(WeatherProvider.weather_main, list.getWeather().get(0).getMain());
                 values.put(WeatherProvider.weather_desc, list.getWeather().get(0).getDescription());
                 values.put(WeatherProvider.weather_id, list.getWeather().get(0).getId());
-
 
 
                 getContentResolver().insert(WeatherProvider.CONTENT_URL, values);
