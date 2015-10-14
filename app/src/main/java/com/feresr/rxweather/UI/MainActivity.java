@@ -18,33 +18,48 @@ import android.widget.TextView;
 import com.feresr.rxweather.NetworkService;
 import com.feresr.rxweather.R;
 import com.feresr.rxweather.WeatherProvider;
+import com.feresr.rxweather.injector.DaggerWeatherApiComponent;
+import com.feresr.rxweather.injector.modules.ActivityModule;
+import com.feresr.rxweather.injector.modules.EndpointsModule;
+import com.feresr.rxweather.presenters.ForecastPresenter;
+import com.feresr.rxweather.presenters.views.ForecastView;
 
-public class MainActivity extends AppCompatActivity {
+import org.w3c.dom.Text;
+
+import javax.inject.Inject;
+
+public class MainActivity extends AppCompatActivity implements ForecastView {
+
+
+    @Inject
+    ForecastPresenter forecastPresenter;
+
+    private TextView text;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        text = (TextView) findViewById(R.id.weather);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        if (savedInstanceState == null) {
-            startService(new Intent(this, NetworkService.class));
-        }
-        updateView();
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
-        regiterToCP();
+        initializeDependencies();
+        initializePresenter();
     }
 
+    private void initializeDependencies() {
+        DaggerWeatherApiComponent.builder()
+                .endpointsModule(new EndpointsModule())
+                .activityModule(new ActivityModule(this))
+                .build().inject(this);
+    }
+
+    private void initializePresenter() {
+        forecastPresenter.attachView(this);
+        forecastPresenter.onCreate();
+
+
+    }
     private void regiterToCP() {
         // Projection contains the columns we want
 
@@ -113,5 +128,10 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void addForecast(String s) {
+        text.setText(text.getText() + "\n" + s);
     }
 }

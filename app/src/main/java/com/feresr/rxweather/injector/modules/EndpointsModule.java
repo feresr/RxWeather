@@ -1,7 +1,13 @@
-package com.feresr.rxweather.DI;
+package com.feresr.rxweather.injector.modules;
 
+import com.feresr.rxweather.Models.City;
+import com.feresr.rxweather.RestRepository;
 import com.feresr.rxweather.WeatherEndpoints;
+import com.feresr.rxweather.presenters.ForecastPresenter;
+import com.feresr.rxweather.rest.Repository;
 import com.squareup.okhttp.OkHttpClient;
+
+import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
@@ -25,4 +31,12 @@ public class EndpointsModule {
                 .build();
         return retrofit.create(WeatherEndpoints.class);
     }
+
+    @Provides @Singleton
+    City providesCity() {
+        return new City();
+    }
+
+    @Provides
+    Repository providesRepository(RestRepository repository) {return repository;}
 }

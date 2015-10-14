@@ -2,6 +2,7 @@ package com.feresr.rxweather;
 
 import com.feresr.rxweather.Models.Current;
 import com.feresr.rxweather.Models.FiveDays;
+import com.feresr.rxweather.rest.Repository;
 
 import javax.inject.Inject;
 
@@ -11,12 +12,12 @@ import rx.functions.Func1;
 /**
  * Created by Fernando on 5/10/2015.
  */
-public class WeatherApi {
+public class RestRepository implements Repository {
     private WeatherEndpoints endpoints;
     static final String API_KEY = "84e96c23c2ca79ff736b21e3c66b88e8";
 
     @Inject
-    public WeatherApi(WeatherEndpoints endpoints) {
+    public RestRepository(WeatherEndpoints endpoints) {
         this.endpoints = endpoints;
     }
 

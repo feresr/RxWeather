@@ -20,8 +20,7 @@
         android:layout_height="match_parent"
         android:scrollbars="vertical"
         android:gravity="center"
-        android:textSize="8sp"
-        android:text="WEATHER"/>
+        android:textSize="8sp"/>
     <include layout="@layout/content_main" />
 
     <android.support.design.widget.FloatingActionButton android:id="@+id/fab"

@@ -6,12 +6,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.feresr.rxweather.Models.City;
 import com.feresr.rxweather.R;
+
+import javax.inject.Inject;
 
 /**
  * A placeholder fragment containing a simple view.
  */
 public class MainActivityFragment extends Fragment {
+
+    @Inject
+    City city;
 
     public MainActivityFragment() {
     }
