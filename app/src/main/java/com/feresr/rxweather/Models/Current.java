@@ -1,5 +1,5 @@
 
-package com.feresr.rxweather.Models;
+package com.feresr.rxweather.models;
 
 import java.util.ArrayList;
 import java.util.HashMap;

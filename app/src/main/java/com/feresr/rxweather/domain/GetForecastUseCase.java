@@ -1,6 +1,6 @@
 package com.feresr.rxweather.domain;
 
-import com.feresr.rxweather.Models.List;
+import com.feresr.rxweather.models.List;
 import com.feresr.rxweather.rest.Repository;
 
 import javax.inject.Inject;

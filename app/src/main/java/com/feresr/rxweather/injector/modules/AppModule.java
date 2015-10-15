@@ -1,8 +1,6 @@
 package com.feresr.rxweather.injector.modules;
 
-import com.feresr.rxweather.RestRepository;
 import com.feresr.rxweather.RxWeatherApplication;
-import com.feresr.rxweather.rest.Repository;
 
 import javax.inject.Singleton;
 
@@ -14,7 +12,6 @@ import dagger.Provides;
  */
 @Module
 public class AppModule {
-
     private final RxWeatherApplication rxWeatherApplication;
 
     public AppModule(RxWeatherApplication rxWeatherApplication) {
@@ -26,11 +23,5 @@ public class AppModule {
     @Singleton
     RxWeatherApplication provideApplicationContext() {
         return rxWeatherApplication;
-    }
-
-    @Provides
-    @Singleton
-    Repository provideDataRepository(RestRepository restRepository) {
-        return restRepository;
     }
 }

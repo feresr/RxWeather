@@ -1,5 +1,5 @@
 
-package com.feresr.rxweather.Models;
+package com.feresr.rxweather.models;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

@@ -1,9 +1,9 @@
 package com.feresr.rxweather.injector.modules;
 
-import com.feresr.rxweather.Models.City;
 import com.feresr.rxweather.RestRepository;
 import com.feresr.rxweather.WeatherEndpoints;
 import com.feresr.rxweather.presenters.ForecastPresenter;
+import com.feresr.rxweather.presenters.Presenter;
 import com.feresr.rxweather.rest.Repository;
 import com.squareup.okhttp.OkHttpClient;
 
@@ -18,10 +18,10 @@ import retrofit.RxJavaCallAdapterFactory;
 /**
  * Created by Fernando on 13/10/2015.
  */
-@Module
+@Module @Singleton
 public class EndpointsModule {
 
-    @Provides
+    @Provides @Singleton
     WeatherEndpoints provideEndpoints() {
         Retrofit retrofit = new Retrofit.Builder()
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
@@ -33,10 +33,14 @@ public class EndpointsModule {
     }
 
     @Provides @Singleton
-    City providesCity() {
-        return new City();
+    Presenter providesPresenter(ForecastPresenter presenter) {
+        return presenter;
     }
 
+
     @Provides
-    Repository providesRepository(RestRepository repository) {return repository;}
+    @Singleton
+    Repository provideDataRepository(RestRepository restRepository) {
+        return restRepository;
+    }
 }

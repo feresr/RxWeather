@@ -11,7 +11,7 @@ import com.feresr.rxweather.injector.modules.AppModule;
  */
 public class RxWeatherApplication extends Application {
 
-    private AppComponent mAppcomponent;
+    private AppComponent mAppComponent;
 
     @Override
     public void onCreate() {
@@ -20,10 +20,10 @@ public class RxWeatherApplication extends Application {
     }
 
     private void initializeInjector() {
-        mAppcomponent = DaggerAppComponent.builder().appModule(new AppModule(this)).build();
+        mAppComponent = DaggerAppComponent.builder().appModule(new AppModule(this)).build();
     }
 
-    public AppComponent getmAppcomponent() {
-        return mAppcomponent;
+    public AppComponent getAppComponent() {
+        return mAppComponent;
     }
 }

@@ -2,6 +2,8 @@ package com.feresr.rxweather.injector.modules;
 
 import android.content.Context;
 
+import javax.inject.Singleton;
+
 import dagger.Module;
 import dagger.Provides;
 

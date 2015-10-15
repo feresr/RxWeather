@@ -6,7 +6,9 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.util.Log;
 
-import com.feresr.rxweather.Models.List;
+import com.feresr.rxweather.domain.GetForecastUseCase;
+import com.feresr.rxweather.injector.DaggerWeatherApiComponent;
+import com.feresr.rxweather.models.List;
 
 import javax.inject.Inject;
 
@@ -15,10 +17,10 @@ import rx.Subscriber;
 public class NetworkService extends Service {
 
     @Inject
-    RestRepository restRepository;
+    GetForecastUseCase getForecastUseCase;
 
     public NetworkService() {
-        //DaggerWeatherApiComponent.builder().build().inject(this);
+        DaggerWeatherApiComponent.builder().build().inject(this);
     }
 
     @Override
@@ -59,10 +61,11 @@ public class NetworkService extends Service {
         });*/
         getContentResolver().delete(WeatherProvider.CONTENT_URL, null, null);
 
-        restRepository.getForecast("Sydney").subscribe(new Subscriber<List>() {
+        getForecastUseCase.execute().cache().subscribe(new Subscriber<List>() {
             @Override
             public void onCompleted() {
                 Log.e("LIST", "completed");
+                stopSelf();
             }
 
             @Override

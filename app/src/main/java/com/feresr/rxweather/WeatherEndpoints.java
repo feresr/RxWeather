@@ -1,7 +1,7 @@
 package com.feresr.rxweather;
 
-import com.feresr.rxweather.Models.Current;
-import com.feresr.rxweather.Models.FiveDays;
+import com.feresr.rxweather.models.Current;
+import com.feresr.rxweather.models.FiveDays;
 
 import retrofit.http.GET;
 import retrofit.http.Query;

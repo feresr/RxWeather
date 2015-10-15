@@ -1,6 +1,6 @@
 package com.feresr.rxweather.rest;
 
-import com.feresr.rxweather.Models.List;
+import com.feresr.rxweather.models.List;
 
 import rx.Observable;
 

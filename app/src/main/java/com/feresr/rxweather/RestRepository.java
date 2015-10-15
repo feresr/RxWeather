@@ -1,7 +1,7 @@
 package com.feresr.rxweather;
 
-import com.feresr.rxweather.Models.Current;
-import com.feresr.rxweather.Models.FiveDays;
+import com.feresr.rxweather.models.Current;
+import com.feresr.rxweather.models.FiveDays;
 import com.feresr.rxweather.rest.Repository;
 
 import javax.inject.Inject;
@@ -25,10 +25,10 @@ public class RestRepository implements Repository {
         return endpoints.getCurrent(cityName, API_KEY);
     }
 
-    public Observable<com.feresr.rxweather.Models.List> getForecast(String cityName) {
-        return endpoints.getForecast(cityName, API_KEY).flatMap(new Func1<FiveDays, Observable<com.feresr.rxweather.Models.List>>() {
+    public Observable<com.feresr.rxweather.models.List> getForecast(String cityName) {
+        return endpoints.getForecast(cityName, API_KEY).flatMap(new Func1<FiveDays, Observable<com.feresr.rxweather.models.List>>() {
             @Override
-            public Observable<com.feresr.rxweather.Models.List> call(FiveDays fiveDays) {
+            public Observable<com.feresr.rxweather.models.List> call(FiveDays fiveDays) {
                 return Observable.from(fiveDays.getList());
             }
         });

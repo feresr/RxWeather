@@ -6,7 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.feresr.rxweather.Models.City;
+import com.feresr.rxweather.models.City;
 import com.feresr.rxweather.R;
 
 import javax.inject.Inject;

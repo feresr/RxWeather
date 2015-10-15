@@ -2,6 +2,7 @@ package com.feresr.rxweather.injector;
 
 import com.feresr.rxweather.RxWeatherApplication;
 import com.feresr.rxweather.injector.modules.AppModule;
+import com.feresr.rxweather.rest.Repository;
 
 import javax.inject.Singleton;
 
