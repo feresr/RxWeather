@@ -9,6 +9,7 @@ import com.feresr.rxweather.models.FiveDays;
 import com.feresr.rxweather.models.Lista;
 import com.feresr.rxweather.models.Weather;
 import com.feresr.rxweather.models.wrappers.FiveDaysWrapper;
+import com.feresr.rxweather.models.wrappers.RealmMapper;
 import com.feresr.rxweather.models.wrappers.TimeStampWrapper;
 
 import java.util.ArrayList;
@@ -28,10 +29,12 @@ public class RealmCache implements DataCache {
     private static final long EXPIRATION_TIME =  30 * 1000;
 
     private Context context;
+    private RealmMapper mapper;
 
     @Inject
-    public RealmCache(Context context) {
+    public RealmCache(Context context, RealmMapper mapper) {
         this.context = context;
+        this.mapper = mapper;
     }
 
     @Override
@@ -57,30 +60,10 @@ public class RealmCache implements DataCache {
     @Override
     public rx.Observable<FiveDays> get() {
         Realm realm = Realm.getInstance(context);
-        RealmResults<FiveDaysWrapper> query = realm.where(FiveDaysWrapper.class).findAll();
-
-        FiveDays fiveDays = new FiveDays();
-
-        City city = new City();
-        city.setCountry("Aus");
-        city.setName("Sydney");
-        fiveDays.setCity(city);
-
-        Lista lista = new Lista();
-        Weather weather = new Weather();
-        weather.setDescription("Stored windy");
-        weather.setMain("Sunny");
-        ArrayList<Weather> weatherlist = new ArrayList<>();
-        weatherlist.add(weather);
-        lista.setWeather(weatherlist);
-
-        ArrayList<Lista> listaList = new ArrayList<>();
-        listaList.add(lista);
-        fiveDays.setLista(listaList);
+        FiveDaysWrapper query = realm.where(FiveDaysWrapper.class).findFirst();
 
         ArrayList<FiveDays> fiveDayses = new ArrayList<>();
-        fiveDayses.add(fiveDays);
-
+        fiveDayses.add(mapper.convert(query));
         return rx.Observable.from(fiveDayses);
     }
 
@@ -96,7 +79,12 @@ public class RealmCache implements DataCache {
         realm.beginTransaction();
         TimeStampWrapper lastUpdatedTimeWrapper = realm.where(TimeStampWrapper.class).findFirst();
 
-        realm.createObject(FiveDaysWrapper.class);
+        FiveDaysWrapper fiveDaysWrapper = realm.createObject(FiveDaysWrapper.class);
+
+        for (Lista l :
+                days.getLista()) {
+            fiveDaysWrapper.getLista().add(mapper.convert(l));
+        }
 
         if (lastUpdatedTimeWrapper == null) {
             TimeStampWrapper timeStampWrapper = realm.createObject(TimeStampWrapper.class);
