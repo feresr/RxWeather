@@ -4,6 +4,8 @@ package com.feresr.rxweather.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import io.realm.RealmObject;
+
 public class Sys_ {
 
     @SerializedName("pod")

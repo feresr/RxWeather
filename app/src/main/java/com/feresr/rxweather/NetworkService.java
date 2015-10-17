@@ -8,7 +8,7 @@ import android.util.Log;
 
 import com.feresr.rxweather.domain.GetForecastUseCase;
 import com.feresr.rxweather.injector.DaggerWeatherApiComponent;
-import com.feresr.rxweather.models.List;
+import com.feresr.rxweather.models.Lista;
 
 import javax.inject.Inject;
 
@@ -61,7 +61,7 @@ public class NetworkService extends Service {
         });*/
         getContentResolver().delete(WeatherProvider.CONTENT_URL, null, null);
 
-        getForecastUseCase.execute().cache().subscribe(new Subscriber<List>() {
+        getForecastUseCase.execute().cache().subscribe(new Subscriber<Lista>() {
             @Override
             public void onCompleted() {
                 Log.e("LIST", "completed");
@@ -74,22 +74,22 @@ public class NetworkService extends Service {
             }
 
             @Override
-            public void onNext(List list) {
+            public void onNext(Lista lista) {
                 ContentValues values = new ContentValues();
-                values.put(WeatherProvider.temp, list.getMain().getTemp());
-                values.put(WeatherProvider.temp_max, list.getMain().getTempMax());
-                values.put(WeatherProvider.temp_min, list.getMain().getTempMin());
-                values.put(WeatherProvider.pressure, list.getMain().getPressure());
-                values.put(WeatherProvider.humidity, list.getMain().getHumidity());
-                values.put(WeatherProvider.weather_main, list.getWeather().get(0).getMain());
-                values.put(WeatherProvider.weather_desc, list.getWeather().get(0).getDescription());
-                values.put(WeatherProvider.weather_id, list.getWeather().get(0).getId());
+                values.put(WeatherProvider.temp, lista.getMain().getTemp());
+                values.put(WeatherProvider.temp_max, lista.getMain().getTempMax());
+                values.put(WeatherProvider.temp_min, lista.getMain().getTempMin());
+                values.put(WeatherProvider.pressure, lista.getMain().getPressure());
+                values.put(WeatherProvider.humidity, lista.getMain().getHumidity());
+                values.put(WeatherProvider.weather_main, lista.getWeather().get(0).getMain());
+                values.put(WeatherProvider.weather_desc, lista.getWeather().get(0).getDescription());
+                values.put(WeatherProvider.weather_id, lista.getWeather().get(0).getId());
 
 
                 getContentResolver().insert(WeatherProvider.CONTENT_URL, values);
 
 
-                Log.e("LIST", list.getWeather().get(0).getDescription());
+                Log.e("LIST", lista.getWeather().get(0).getDescription());
             }
         });
         return super.onStartCommand(intent, flags, startId);

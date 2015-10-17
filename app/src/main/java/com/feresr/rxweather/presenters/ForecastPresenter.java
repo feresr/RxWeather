@@ -1,15 +1,16 @@
 package com.feresr.rxweather.presenters;
 
 import android.content.Intent;
+import android.util.Log;
 
-import com.feresr.rxweather.models.List;
 import com.feresr.rxweather.domain.GetForecastUseCase;
+import com.feresr.rxweather.models.Lista;
 import com.feresr.rxweather.presenters.views.ForecastView;
 import com.feresr.rxweather.presenters.views.View;
 
-import java.util.ArrayList;
-
 import javax.inject.Inject;
+
+import rx.Subscriber;
 import rx.Subscription;
 import rx.functions.Action1;
 
@@ -19,13 +20,11 @@ import rx.functions.Action1;
 public class ForecastPresenter implements Presenter {
     private GetForecastUseCase useCase;
     private Subscription forecastObservable;
-    private ArrayList<List> lists;
     private ForecastView forecastView;
 
     @Inject
     public ForecastPresenter(GetForecastUseCase forecastUseCase) {
         this.useCase = forecastUseCase;
-        lists = new ArrayList<>();
     }
 
     @Override
@@ -57,16 +56,21 @@ public class ForecastPresenter implements Presenter {
 
     @Override
     public void onCreate() {
-        if (lists.isEmpty()) {
-            forecastObservable = useCase.execute().cache().subscribe(new Action1<List>() {
-                @Override
-                public void call(List list) {
-                    lists.add(list);
-                    forecastView.addForecast(list.getWeather().get(0).getMain());
-                }
-            });
-        } else {
-            forecastView.addForecast(lists.get(0).toString());
-        }
+        forecastObservable = useCase.execute().subscribe(new Subscriber<Lista>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.e("error", e.toString());
+            }
+
+            @Override
+            public void onNext(Lista lista) {
+                forecastView.addForecast(lista.getWeather().get(0).getMain());
+            }
+        });
     }
 }

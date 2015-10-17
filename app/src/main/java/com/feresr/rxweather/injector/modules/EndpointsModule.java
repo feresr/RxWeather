@@ -1,10 +1,13 @@
 package com.feresr.rxweather.injector.modules;
 
-import com.feresr.rxweather.RestRepository;
+import com.feresr.rxweather.repository.DataStorageFactory;
+import com.feresr.rxweather.repository.RepositoryImp;
 import com.feresr.rxweather.WeatherEndpoints;
 import com.feresr.rxweather.presenters.ForecastPresenter;
 import com.feresr.rxweather.presenters.Presenter;
-import com.feresr.rxweather.rest.Repository;
+import com.feresr.rxweather.repository.Repository;
+import com.feresr.rxweather.storage.DataCache;
+import com.feresr.rxweather.storage.RealmCache;
 import com.squareup.okhttp.OkHttpClient;
 
 import javax.inject.Singleton;
@@ -40,7 +43,13 @@ public class EndpointsModule {
 
     @Provides
     @Singleton
-    Repository provideDataRepository(RestRepository restRepository) {
-        return restRepository;
+    Repository provideDataRepository(RepositoryImp repositoryImp) {
+        return repositoryImp;
+    }
+
+    @Provides
+    @Singleton
+    DataCache providesDataCache(RealmCache cache) {
+        return cache;
     }
 }

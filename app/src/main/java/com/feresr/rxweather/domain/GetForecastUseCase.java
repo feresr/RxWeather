@@ -1,7 +1,7 @@
 package com.feresr.rxweather.domain;
 
-import com.feresr.rxweather.models.List;
-import com.feresr.rxweather.rest.Repository;
+import com.feresr.rxweather.models.Lista;
+import com.feresr.rxweather.repository.Repository;
 
 import javax.inject.Inject;
 
@@ -12,7 +12,7 @@ import rx.schedulers.Schedulers;
 /**
  * Created by Fernando on 14/10/2015.
  */
-public class GetForecastUseCase implements UseCase<List> {
+public class GetForecastUseCase implements UseCase<Lista> {
 
     private final Repository repository;
     private final String cityName;
@@ -24,7 +24,7 @@ public class GetForecastUseCase implements UseCase<List> {
     }
 
     @Override
-    public Observable<List> execute() {
+    public Observable<Lista> execute() {
         return repository.getForecast(cityName)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread());

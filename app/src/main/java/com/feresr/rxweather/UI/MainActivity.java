@@ -1,6 +1,5 @@
 package com.feresr.rxweather.UI;
 
-import android.content.Intent;
 import android.database.ContentObserver;
 import android.database.Cursor;
 import android.net.Uri;
@@ -12,11 +11,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-import com.feresr.rxweather.NetworkService;
 import com.feresr.rxweather.R;
 import com.feresr.rxweather.WeatherProvider;
 import com.feresr.rxweather.injector.DaggerWeatherApiComponent;
-import com.feresr.rxweather.presenters.Presenter;
+import com.feresr.rxweather.injector.modules.ActivityModule;
+import com.feresr.rxweather.presenters.ForecastPresenter;
 import com.feresr.rxweather.presenters.views.ForecastView;
 
 import javax.inject.Inject;
@@ -24,6 +23,9 @@ import javax.inject.Inject;
 public class MainActivity extends AppCompatActivity implements ForecastView {
 
     private TextView text;
+
+    @Inject
+    ForecastPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,10 +36,23 @@ public class MainActivity extends AppCompatActivity implements ForecastView {
         setSupportActionBar(toolbar);
 
         if (savedInstanceState == null) {
-            startService(new Intent(this, NetworkService.class));
+            //startService(new Intent(this, NetworkService.class));
         }
-        updateView();
-        regiterToCP();
+        //updateView();
+        //regiterToCP();
+
+        initializeDependencies();
+        initializePresenter();
+    }
+
+    private void initializePresenter() {
+        presenter.attachView(this);
+        presenter.onCreate();
+    }
+
+    private void initializeDependencies() {
+        DaggerWeatherApiComponent.builder().activityModule(new ActivityModule(this)).build().inject(this);
+
     }
 
     private void regiterToCP() {
@@ -112,5 +127,18 @@ public class MainActivity extends AppCompatActivity implements ForecastView {
     @Override
     public void addForecast(String s) {
         text.setText(text.getText() + "\n" + s);
+    }
+
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        presenter.onStop();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        presenter.onPause();
     }
 }

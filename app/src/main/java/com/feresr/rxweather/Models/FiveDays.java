@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import io.realm.RealmObject;
+import io.realm.annotations.Ignore;
+
 public class FiveDays {
 
     @SerializedName("city")
@@ -21,7 +24,8 @@ public class FiveDays {
     private Integer cnt;
     @SerializedName("list")
     @Expose
-    private java.util.List<List> list = new ArrayList<List>();
+    @Ignore
+    private java.util.List<Lista> lista = new ArrayList<Lista>();
 
     /**
      * 
@@ -98,19 +102,19 @@ public class FiveDays {
     /**
      * 
      * @return
-     *     The list
+     *     The lista
      */
-    public java.util.List<List> getList() {
-        return list;
+    public java.util.List<Lista> getLista() {
+        return lista;
     }
 
     /**
      * 
-     * @param list
-     *     The list
+     * @param lista
+     *     The lista
      */
-    public void setList(java.util.List<List> list) {
-        this.list = list;
+    public void setLista(java.util.List<Lista> lista) {
+        this.lista = lista;
     }
 
 }
