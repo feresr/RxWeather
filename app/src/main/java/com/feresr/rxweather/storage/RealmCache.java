@@ -2,12 +2,9 @@ package com.feresr.rxweather.storage;
 
 import android.content.Context;
 import android.os.SystemClock;
-import android.util.Log;
 
-import com.feresr.rxweather.models.City;
 import com.feresr.rxweather.models.FiveDays;
 import com.feresr.rxweather.models.Lista;
-import com.feresr.rxweather.models.Weather;
 import com.feresr.rxweather.models.wrappers.FiveDaysWrapper;
 import com.feresr.rxweather.models.wrappers.RealmMapper;
 import com.feresr.rxweather.models.wrappers.TimeStampWrapper;
@@ -18,7 +15,6 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import io.realm.Realm;
-import io.realm.RealmResults;
 
 /**
  * Created by Fernando on 16/10/2015.
@@ -26,7 +22,7 @@ import io.realm.RealmResults;
 @Singleton
 public class RealmCache implements DataCache {
 
-    private static final long EXPIRATION_TIME =  30 * 1000;
+    private static final long EXPIRATION_TIME = 30 * 1000;
 
     private Context context;
     private RealmMapper mapper;
@@ -77,14 +73,18 @@ public class RealmCache implements DataCache {
         Realm realm = Realm.getInstance(context);
 
         realm.beginTransaction();
-        TimeStampWrapper lastUpdatedTimeWrapper = realm.where(TimeStampWrapper.class).findFirst();
 
-        FiveDaysWrapper fiveDaysWrapper = realm.createObject(FiveDaysWrapper.class);
+        FiveDaysWrapper fiveDaysWrapper = realm.where(FiveDaysWrapper.class).findFirst();
+        if (fiveDaysWrapper == null) {
+            fiveDaysWrapper = realm.createObject(FiveDaysWrapper.class);
+        }
 
         for (Lista l :
                 days.getLista()) {
             fiveDaysWrapper.getLista().add(mapper.convert(l));
         }
+
+        TimeStampWrapper lastUpdatedTimeWrapper = realm.where(TimeStampWrapper.class).findFirst();
 
         if (lastUpdatedTimeWrapper == null) {
             TimeStampWrapper timeStampWrapper = realm.createObject(TimeStampWrapper.class);
