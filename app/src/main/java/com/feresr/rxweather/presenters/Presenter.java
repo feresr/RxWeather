@@ -15,9 +15,9 @@ public interface Presenter {
 
     void onPause();
 
-    void attachView (View v);
+    void attachView(View v);
 
-    void attachIncomingIntent (Intent intent);
+    void attachIncomingIntent(Intent intent);
 
     void onCreate();
 }

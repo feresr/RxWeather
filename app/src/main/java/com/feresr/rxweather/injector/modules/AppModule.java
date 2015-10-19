@@ -37,5 +37,7 @@ public class AppModule {
 
     @Provides
     @Singleton
-    Context providesContext() {return rxWeatherApplication.getApplicationContext();}
+    Context providesContext() {
+        return rxWeatherApplication.getApplicationContext();
+    }
 }

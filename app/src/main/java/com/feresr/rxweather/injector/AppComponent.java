@@ -17,6 +17,8 @@ import dagger.Component;
 @Component(modules = AppModule.class)
 public interface AppComponent {
     RxWeatherApplication app();
+
     DataCache dataCache();
+
     Context context();
 }

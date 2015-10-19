@@ -37,12 +37,5 @@ public class RepositoryImp implements Repository {
                 return Observable.from(fiveDays.getLista());
             }
         });
-
-/*        return endpoints.getForecast(cityName, API_KEY).flatMap(new Func1<FiveDays, Observable<com.feresr.rxweather.models.Lista>>() {
-            @Override
-            public Observable<com.feresr.rxweather.models.Lista> call(FiveDays fiveDays) {
-                return Observable.from(fiveDays.getLista());
-            }
-        });*/
     }
 }

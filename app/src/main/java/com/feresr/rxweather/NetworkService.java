@@ -7,7 +7,6 @@ import android.os.IBinder;
 import android.util.Log;
 
 import com.feresr.rxweather.domain.GetForecastUseCase;
-
 import com.feresr.rxweather.models.Lista;
 
 import javax.inject.Inject;

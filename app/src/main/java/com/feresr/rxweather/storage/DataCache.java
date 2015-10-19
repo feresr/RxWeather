@@ -1,9 +1,6 @@
 package com.feresr.rxweather.storage;
 
 import com.feresr.rxweather.models.FiveDays;
-import com.feresr.rxweather.models.wrappers.FiveDaysWrapper;
-
-import java.util.List;
 
 import rx.Observable;
 

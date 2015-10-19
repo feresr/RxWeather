@@ -21,11 +21,7 @@ import java.util.HashMap;
  */
 public class WeatherProvider extends ContentProvider {
 
-    static final String PROVIDER_NAME = "com.feresr.rxweather.WeatherProvider";
-
-    public static final String URL = "content://" + PROVIDER_NAME + "/weather";
     public static final Uri CONTENT_URL = Uri.parse(URL);
-
     public static final String temp = "temp";
     public static final String temp_max = "temp_max";
     public static final String temp_min = "temp_min";
@@ -34,7 +30,8 @@ public class WeatherProvider extends ContentProvider {
     public static final String weather_main = "weather_main";
     public static final String weather_desc = "weather_desc";
     public static final String weather_id = "weather_id";
-
+    static final String PROVIDER_NAME = "com.feresr.rxweather.WeatherProvider";
+    public static final String URL = "content://" + PROVIDER_NAME + "/weather";
     static final int uriCode = 1;
     static final UriMatcher uriMatcher;
     private static final int DATABASE_VERSION = 9;
