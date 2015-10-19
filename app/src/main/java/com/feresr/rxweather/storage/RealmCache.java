@@ -1,10 +1,8 @@
 package com.feresr.rxweather.storage;
 
-import android.content.Context;
 import android.os.SystemClock;
 
-import com.feresr.rxweather.models.FiveDays;
-import com.feresr.rxweather.models.wrappers.RealmMapper;
+import com.feresr.rxweather.models.Forecast;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -18,10 +16,10 @@ import rx.Subscriber;
 @Singleton
 public class RealmCache implements DataCache {
 
-    private static final long EXPIRATION_TIME = 30 * 1000;
+    private static final long EXPIRATION_TIME = 60 * 1000;
 
     private long lastUpdated = 0;
-    private FiveDays fiveDays;
+    private Forecast fiveDays;
 
     @Inject
     public RealmCache() {
@@ -29,11 +27,7 @@ public class RealmCache implements DataCache {
 
     @Override
     public boolean isExpired() {
-        if (lastUpdated == 0 || fiveDays == null) {
-            return true;
-        }
-
-        boolean expired = (SystemClock.uptimeMillis() - lastUpdated > EXPIRATION_TIME);
+        boolean expired = (SystemClock.uptimeMillis() - lastUpdated > EXPIRATION_TIME) || fiveDays == null;
 
         if (expired) {
             this.evictAll();
@@ -43,10 +37,10 @@ public class RealmCache implements DataCache {
     }
 
     @Override
-    public rx.Observable<FiveDays> get() {
-        return Observable.create(new Observable.OnSubscribe<FiveDays>() {
+    public rx.Observable<Forecast> get() {
+        return Observable.create(new Observable.OnSubscribe<Forecast>() {
             @Override
-            public void call(Subscriber<? super FiveDays> subscriber) {
+            public void call(Subscriber<? super Forecast> subscriber) {
                 subscriber.onNext(fiveDays);
                 subscriber.onCompleted();
 
@@ -56,13 +50,12 @@ public class RealmCache implements DataCache {
 
     @Override
     public void evictAll() {
-        //TODO: clear cache
+        fiveDays = null;
     }
 
     @Override
-    public void put(FiveDays days) {
+    public void put(Forecast days) {
         this.fiveDays = days;
         lastUpdated = SystemClock.uptimeMillis();
-
     }
 }

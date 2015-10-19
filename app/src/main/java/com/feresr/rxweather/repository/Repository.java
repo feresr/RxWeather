@@ -1,6 +1,6 @@
 package com.feresr.rxweather.repository;
 
-import com.feresr.rxweather.models.Lista;
+import com.feresr.rxweather.models.Day;
 
 import rx.Observable;
 
@@ -8,5 +8,5 @@ import rx.Observable;
  * Created by Fernando on 14/10/2015.
  */
 public interface Repository {
-    Observable<Lista> getForecast(String cityName);
+    Observable<Day> getForecast(String cityName);
 }

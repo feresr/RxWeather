@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.feresr.rxweather.R;
-import com.feresr.rxweather.models.Lista;
+import com.feresr.rxweather.models.Day;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,9 +19,9 @@ import java.util.List;
 public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.ViewHolder> {
 
     private LayoutInflater inflater;
-    private List<Lista> weathers;
+    private List<Day> weathers;
 
-    public ForecastAdapter(Context context, List<Lista> weathers) {
+    public ForecastAdapter(Context context, List<Day> weathers) {
         super();
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         if (weathers != null) {
@@ -37,19 +37,19 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.ViewHo
         return new ViewHolder(view);
     }
 
-    public void addForecast(Lista lista) {
-        weathers.add(lista);
+    public void addForecast(Day day) {
+        weathers.add(day);
         notifyItemInserted(weathers.size());
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Lista lista = weathers.get(position);
+        Day lista = weathers.get(position);
         holder.mainTextView.setText(lista.getWeather().get(0).getMain());
         holder.descriptionTextView.setText(lista.getWeather().get(0).getDescription());
-        holder.tempMax.setText(lista.getMain().getTempMax().toString() + "°");
-        holder.tempMin.setText(lista.getMain().getTempMin().toString() + "°");
-        holder.temp.setText(lista.getMain().getTemp().toString() + "°");
+        holder.tempMax.setText(lista.getTemp().getMax().toString() + "°");
+        holder.tempMin.setText(lista.getTemp().getMin().toString() + "°");
+        holder.temp.setText(lista.getTemp().getDay().toString() + "°");
     }
 
     @Override

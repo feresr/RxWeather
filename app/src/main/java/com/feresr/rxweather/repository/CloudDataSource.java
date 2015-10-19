@@ -1,7 +1,7 @@
 package com.feresr.rxweather.repository;
 
 import com.feresr.rxweather.WeatherEndpoints;
-import com.feresr.rxweather.models.FiveDays;
+import com.feresr.rxweather.models.Forecast;
 import com.feresr.rxweather.storage.DataCache;
 
 import javax.inject.Inject;
@@ -25,11 +25,11 @@ public class CloudDataSource implements DataSource {
     }
 
     @Override
-    public Observable<FiveDays> getForecast(String city) {
-        return endpoints.getForecast(city, API_KEY).doOnNext(new Action1<FiveDays>() {
+    public Observable<Forecast> getForecast(String city) {
+        return endpoints.getForecast(city, 7, API_KEY).doOnNext(new Action1<Forecast>() {
             @Override
-            public void call(FiveDays fiveDays) {
-                cache.put(fiveDays);
+            public void call(Forecast forecast) {
+                cache.put(forecast);
             }
         });
     }

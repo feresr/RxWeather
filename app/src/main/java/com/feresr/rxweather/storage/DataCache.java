@@ -1,6 +1,8 @@
 package com.feresr.rxweather.storage;
 
-import com.feresr.rxweather.models.FiveDays;
+
+
+import com.feresr.rxweather.models.Forecast;
 
 import rx.Observable;
 
@@ -20,7 +22,7 @@ public interface DataCache {
      */
     void evictAll();
 
-    void put(FiveDays days);
+    void put(Forecast days);
 
-    Observable<FiveDays> get();
+    Observable<Forecast> get();
 }

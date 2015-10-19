@@ -4,7 +4,8 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.feresr.rxweather.domain.GetForecastUseCase;
-import com.feresr.rxweather.models.Lista;
+
+import com.feresr.rxweather.models.Day;
 import com.feresr.rxweather.presenters.views.ForecastView;
 import com.feresr.rxweather.presenters.views.View;
 
@@ -55,7 +56,7 @@ public class ForecastPresenter implements Presenter {
 
     @Override
     public void onCreate() {
-        forecastObservable = useCase.execute().subscribe(new Subscriber<Lista>() {
+        forecastObservable = useCase.execute().subscribe(new Subscriber<Day>() {
             @Override
             public void onCompleted() {
 
@@ -67,8 +68,8 @@ public class ForecastPresenter implements Presenter {
             }
 
             @Override
-            public void onNext(Lista lista) {
-                forecastView.addForecast(lista);
+            public void onNext(Day day) {
+                forecastView.addForecast(day);
             }
         });
     }
