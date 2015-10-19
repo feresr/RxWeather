@@ -1,10 +1,7 @@
-
 package com.feresr.rxweather.models;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-
-import io.realm.RealmObject;
 
 public class City {
 
@@ -28,108 +25,84 @@ public class City {
     private Sys sys;
 
     /**
-     * 
-     * @return
-     *     The id
+     * @return The id
      */
     public Integer getId() {
         return id;
     }
 
     /**
-     * 
-     * @param id
-     *     The id
+     * @param id The id
      */
     public void setId(Integer id) {
         this.id = id;
     }
 
     /**
-     * 
-     * @return
-     *     The name
+     * @return The name
      */
     public String getName() {
         return name;
     }
 
     /**
-     * 
-     * @param name
-     *     The name
+     * @param name The name
      */
     public void setName(String name) {
         this.name = name;
     }
 
     /**
-     * 
-     * @return
-     *     The coord
+     * @return The coord
      */
     public Coord getCoord() {
         return coord;
     }
 
     /**
-     * 
-     * @param coord
-     *     The coord
+     * @param coord The coord
      */
     public void setCoord(Coord coord) {
         this.coord = coord;
     }
 
     /**
-     * 
-     * @return
-     *     The country
+     * @return The country
      */
     public String getCountry() {
         return country;
     }
 
     /**
-     * 
-     * @param country
-     *     The country
+     * @param country The country
      */
     public void setCountry(String country) {
         this.country = country;
     }
 
     /**
-     * 
-     * @return
-     *     The population
+     * @return The population
      */
     public Integer getPopulation() {
         return population;
     }
 
     /**
-     * 
-     * @param population
-     *     The population
+     * @param population The population
      */
     public void setPopulation(Integer population) {
         this.population = population;
     }
 
     /**
-     * 
-     * @return
-     *     The sys
+     * @return The sys
      */
     public Sys getSys() {
         return sys;
     }
 
     /**
-     * 
-     * @param sys
-     *     The sys
+     * @param sys The sys
      */
     public void setSys(Sys sys) {
         this.sys = sys;

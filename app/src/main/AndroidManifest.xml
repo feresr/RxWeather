@@ -21,15 +21,6 @@
             </intent-filter>
         </activity>
 
-        <service
-            android:name=".NetworkService"
-            android:exported="false" >
-        </service>
-        
-        <provider
-            android:authorities="com.feresr.rxweather.WeatherProvider"
-            android:name="WeatherProvider"
-            android:exported="true"/>
     </application>
 
 </manifest>

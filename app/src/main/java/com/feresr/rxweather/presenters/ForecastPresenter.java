@@ -68,7 +68,7 @@ public class ForecastPresenter implements Presenter {
 
             @Override
             public void onNext(Lista lista) {
-                forecastView.addForecast(lista.getWeather().get(0).getMain());
+                forecastView.addForecast(lista);
             }
         });
     }

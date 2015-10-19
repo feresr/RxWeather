@@ -1,10 +1,7 @@
-
 package com.feresr.rxweather.models;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-
-import io.realm.RealmObject;
 
 public class Sys_ {
 
@@ -13,18 +10,14 @@ public class Sys_ {
     private String pod;
 
     /**
-     * 
-     * @return
-     *     The pod
+     * @return The pod
      */
     public String getPod() {
         return pod;
     }
 
     /**
-     * 
-     * @param pod
-     *     The pod
+     * @param pod The pod
      */
     public void setPod(String pod) {
         this.pod = pod;

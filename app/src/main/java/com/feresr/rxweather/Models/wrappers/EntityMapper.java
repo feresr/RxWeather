@@ -9,8 +9,12 @@ import com.feresr.rxweather.models.Weather;
  */
 public interface EntityMapper {
     FiveDays convert(FiveDaysWrapper wrapper);
+
     FiveDaysWrapper convert(FiveDays fiveDays);
+
     Lista convert(ListaWrapper listaWrapper);
+
     ListaWrapper convert(Lista listaWrapper);
+
     Weather convert(WeatherWrapper weatherWrapper);
 }

@@ -5,8 +5,6 @@ import com.feresr.rxweather.models.FiveDays;
 import com.feresr.rxweather.models.Lista;
 import com.feresr.rxweather.models.Weather;
 
-import java.util.ArrayList;
-
 import javax.inject.Inject;
 
 import io.realm.RealmList;
@@ -24,7 +22,7 @@ public class RealmMapper implements EntityMapper {
     @Override
     public FiveDays convert(FiveDaysWrapper wrapper) {
         FiveDays fiveDays = new FiveDays();
-        for(int i = 0; i < wrapper.getLista().size(); i++) {
+        for (int i = 0; i < wrapper.getLista().size(); i++) {
             fiveDays.getLista().add(convert(wrapper.getLista().get(i)));
         }
 
@@ -43,8 +41,8 @@ public class RealmMapper implements EntityMapper {
 
     @Override
     public Lista convert(ListaWrapper listaWrapper) {
-        Lista lista =new Lista();
-        for(int i = 0; i < listaWrapper.getWeather().size(); i++) {
+        Lista lista = new Lista();
+        for (int i = 0; i < listaWrapper.getWeather().size(); i++) {
             lista.getWeather().add(convert(listaWrapper.getWeather().get(i)));
         }
         return lista;

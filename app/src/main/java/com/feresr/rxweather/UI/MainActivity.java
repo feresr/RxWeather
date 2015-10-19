@@ -39,7 +39,6 @@ public class MainActivity extends AppCompatActivity implements HasComponent<Weat
         }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        text = (TextView) findViewById(R.id.weather);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 

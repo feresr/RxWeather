@@ -2,13 +2,15 @@ package com.feresr.rxweather.UI;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.feresr.rxweather.R;
 import com.feresr.rxweather.injector.WeatherApiComponent;
+import com.feresr.rxweather.models.Lista;
 import com.feresr.rxweather.presenters.ForecastPresenter;
 import com.feresr.rxweather.presenters.views.ForecastView;
 
@@ -21,6 +23,10 @@ public class ForecastFragment extends BaseFragment implements ForecastView {
 
     @Inject
     ForecastPresenter presenter;
+
+    ForecastAdapter adapter;
+    RecyclerView recyclerView;
+    RecyclerView.LayoutManager layoutManager;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -37,7 +43,13 @@ public class ForecastFragment extends BaseFragment implements ForecastView {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_main, container, false);
+        View view = inflater.inflate(R.layout.fragment_main, container, false);
+        recyclerView = (RecyclerView) view.findViewById(R.id.recyclerview);
+        layoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(layoutManager);
+        adapter = new ForecastAdapter(getActivity(), null);
+        recyclerView.setAdapter(adapter);
+        return view;
     }
 
     @Override
@@ -53,7 +65,7 @@ public class ForecastFragment extends BaseFragment implements ForecastView {
     }
 
     @Override
-    public void addForecast(String s) {
-        Log.e("WEATHER", s);
+    public void addForecast(Lista s) {
+        adapter.addForecast(s);
     }
 }
