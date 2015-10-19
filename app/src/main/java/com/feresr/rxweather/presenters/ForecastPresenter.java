@@ -5,7 +5,9 @@ import android.util.Log;
 
 import com.feresr.rxweather.domain.GetForecastUseCase;
 
+import com.feresr.rxweather.domain.GetTodaysWeatherUseCase;
 import com.feresr.rxweather.models.Day;
+import com.feresr.rxweather.models.Today;
 import com.feresr.rxweather.presenters.views.ForecastView;
 import com.feresr.rxweather.presenters.views.View;
 
@@ -18,13 +20,15 @@ import rx.Subscription;
  * Created by Fernando on 14/10/2015.
  */
 public class ForecastPresenter implements Presenter {
-    private GetForecastUseCase useCase;
+    private GetForecastUseCase forecastUseCase;
+    private GetTodaysWeatherUseCase todaysWeatherUseCase;
     private Subscription forecastObservable;
     private ForecastView forecastView;
 
     @Inject
-    public ForecastPresenter(GetForecastUseCase forecastUseCase) {
-        this.useCase = forecastUseCase;
+    public ForecastPresenter(GetForecastUseCase forecastUseCase, GetTodaysWeatherUseCase todaysWeatherUseCase) {
+        this.forecastUseCase = forecastUseCase;
+        this.todaysWeatherUseCase = todaysWeatherUseCase;
     }
 
     @Override
@@ -56,7 +60,7 @@ public class ForecastPresenter implements Presenter {
 
     @Override
     public void onCreate() {
-        forecastObservable = useCase.execute().subscribe(new Subscriber<Day>() {
+        forecastObservable = forecastUseCase.execute().subscribe(new Subscriber<Day>() {
             @Override
             public void onCompleted() {
 
@@ -70,6 +74,23 @@ public class ForecastPresenter implements Presenter {
             @Override
             public void onNext(Day day) {
                 forecastView.addForecast(day);
+            }
+        });
+
+        todaysWeatherUseCase.execute().subscribe(new Subscriber<Today>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onNext(Today today) {
+                Log.e("TODAY", today.getName());
             }
         });
     }

@@ -2,6 +2,7 @@ package com.feresr.rxweather.repository;
 
 import com.feresr.rxweather.WeatherEndpoints;
 import com.feresr.rxweather.models.Forecast;
+import com.feresr.rxweather.models.Today;
 import com.feresr.rxweather.storage.DataCache;
 
 import javax.inject.Inject;
@@ -30,6 +31,16 @@ public class CloudDataSource implements DataSource {
             @Override
             public void call(Forecast forecast) {
                 cache.put(forecast);
+            }
+        });
+    }
+
+    @Override
+    public Observable<Today> getTodaysWeather(String city) {
+        return endpoints.getTodaysWeather(city, "metric", API_KEY).doOnNext(new Action1<Today>() {
+            @Override
+            public void call(Today today) {
+                cache.put(today);
             }
         });
     }

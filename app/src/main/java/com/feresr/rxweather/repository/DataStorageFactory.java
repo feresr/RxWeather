@@ -30,7 +30,7 @@ public class DataStorageFactory {
         if (this.cache.isExpired()) {
             dataSource = cloudDataSourceLazy.get();
         } else {
-            dataSource = new DiskDataSource(context, this.cache);
+            dataSource = new DiskDataSource(this.cache);
         }
         return dataSource;
     }

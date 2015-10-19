@@ -4,6 +4,7 @@ import com.feresr.rxweather.WeatherEndpoints;
 import com.feresr.rxweather.models.Day;
 
 import com.feresr.rxweather.models.Forecast;
+import com.feresr.rxweather.models.Today;
 
 
 import javax.inject.Inject;
@@ -23,6 +24,11 @@ public class RepositoryImp implements Repository {
         this.dataStorageFactory = factory;
     }
 
+    public Observable<Today> getTodaysWeather(String cityName) {
+        final DataSource dataSource = this.dataStorageFactory.create();
+
+        return dataSource.getTodaysWeather(cityName);
+    }
 
     public Observable<Day> getForecast(String cityName) {
         final DataSource dataSource = this.dataStorageFactory.create();

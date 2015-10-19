@@ -1,6 +1,7 @@
 package com.feresr.rxweather.repository;
 
 import com.feresr.rxweather.models.Forecast;
+import com.feresr.rxweather.models.Today;
 
 import rx.Observable;
 
@@ -9,4 +10,6 @@ import rx.Observable;
  */
 public interface DataSource {
     Observable<Forecast> getForecast(String city);
+
+    Observable<Today> getTodaysWeather(String city);
 }

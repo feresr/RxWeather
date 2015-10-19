@@ -1,9 +1,8 @@
 package com.feresr.rxweather.repository;
 
-import android.content.Context;
-
 
 import com.feresr.rxweather.models.Forecast;
+import com.feresr.rxweather.models.Today;
 import com.feresr.rxweather.storage.DataCache;
 
 import rx.Observable;
@@ -14,15 +13,18 @@ import rx.Observable;
  */
 public class DiskDataSource implements DataSource {
     private DataCache cache;
-    private Context context;
 
-    public DiskDataSource(Context context, DataCache cache) {
-        this.context = context;
+    public DiskDataSource(DataCache cache) {
         this.cache = cache;
     }
 
     @Override
     public Observable<Forecast> getForecast(String city) {
-        return cache.get();
+        return cache.getForecast();
+    }
+
+    @Override
+    public Observable<Today> getTodaysWeather(String city) {
+        return cache.getTodaysWeather();
     }
 }
