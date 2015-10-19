@@ -45,7 +45,11 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.ViewHo
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Lista lista = weathers.get(position);
-        holder.weatherTextView.setText(lista.getWeather().get(0).getMain());
+        holder.mainTextView.setText(lista.getWeather().get(0).getMain());
+        holder.descriptionTextView.setText(lista.getWeather().get(0).getDescription());
+        holder.tempMax.setText(lista.getMain().getTempMax().toString() + "°");
+        holder.tempMin.setText(lista.getMain().getTempMin().toString() + "°");
+        holder.temp.setText(lista.getMain().getTemp().toString() + "°");
     }
 
     @Override
@@ -54,11 +58,19 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.ViewHo
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView weatherTextView;
+        TextView mainTextView;
+        TextView descriptionTextView;
+        TextView temp;
+        TextView tempMax;
+        TextView tempMin;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            weatherTextView = (TextView) itemView.findViewById(R.id.weatherTextView);
+            mainTextView = (TextView) itemView.findViewById(R.id.main);
+            descriptionTextView = (TextView) itemView.findViewById(R.id.description);
+            temp = (TextView) itemView.findViewById(R.id.temp);
+            tempMax = (TextView) itemView.findViewById(R.id.tempMax);
+            tempMin = (TextView) itemView.findViewById(R.id.tempMin);
         }
     }
 }
