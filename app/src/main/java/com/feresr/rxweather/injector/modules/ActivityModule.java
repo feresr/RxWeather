@@ -1,6 +1,8 @@
 package com.feresr.rxweather.injector.modules;
 
+import android.app.Activity;
 import android.content.Context;
+import android.support.v7.app.AppCompatActivity;
 
 import javax.inject.Singleton;
 
@@ -19,8 +21,5 @@ public class ActivityModule {
         this.mContext = context;
     }
 
-    @Provides
-    Context provideActivityContext() {
-        return mContext;
-    }
+
 }

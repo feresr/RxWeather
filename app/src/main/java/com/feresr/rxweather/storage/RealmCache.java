@@ -7,14 +7,13 @@ import com.feresr.rxweather.models.FiveDays;
 import com.feresr.rxweather.models.Lista;
 import com.feresr.rxweather.models.wrappers.FiveDaysWrapper;
 import com.feresr.rxweather.models.wrappers.RealmMapper;
-import com.feresr.rxweather.models.wrappers.TimeStampWrapper;
-
-import java.util.ArrayList;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import io.realm.Realm;
+import rx.Observable;
+import rx.Subscriber;
 
 /**
  * Created by Fernando on 16/10/2015.
@@ -26,6 +25,7 @@ public class RealmCache implements DataCache {
 
     private Context context;
     private RealmMapper mapper;
+    private long lastUpdated = 0;
 
     @Inject
     public RealmCache(Context context, RealmMapper mapper) {
@@ -36,15 +36,13 @@ public class RealmCache implements DataCache {
     @Override
     public boolean isExpired() {
 
-        Realm realm = Realm.getInstance(context);
 
-        TimeStampWrapper lastUpdatedTimeWrapper = realm.where(TimeStampWrapper.class).findFirst();
-        if (lastUpdatedTimeWrapper == null) {
+        if (lastUpdated == 0) {
             return true;
         }
 
 
-        boolean expired = (SystemClock.uptimeMillis() - lastUpdatedTimeWrapper.getLastime() > EXPIRATION_TIME);
+        boolean expired = (SystemClock.uptimeMillis() - lastUpdated > EXPIRATION_TIME);
 
         if (expired) {
             this.evictAll();
@@ -55,12 +53,17 @@ public class RealmCache implements DataCache {
 
     @Override
     public rx.Observable<FiveDays> get() {
-        Realm realm = Realm.getInstance(context);
-        FiveDaysWrapper query = realm.where(FiveDaysWrapper.class).findFirst();
+        return Observable.create(new Observable.OnSubscribe<FiveDays>() {
+            @Override
+            public void call(Subscriber<? super FiveDays> subscriber) {
+                Realm realm = Realm.getInstance(context);
+                FiveDaysWrapper query = realm.where(FiveDaysWrapper.class).findFirst();
+                subscriber.onNext(mapper.convert(query));
+                realm.close();
+                subscriber.onCompleted();
 
-        ArrayList<FiveDays> fiveDayses = new ArrayList<>();
-        fiveDayses.add(mapper.convert(query));
-        return rx.Observable.from(fiveDayses);
+            }
+        });
     }
 
     @Override
@@ -79,20 +82,15 @@ public class RealmCache implements DataCache {
             fiveDaysWrapper = realm.createObject(FiveDaysWrapper.class);
         }
 
+        fiveDaysWrapper.getLista().clear();
         for (Lista l :
                 days.getLista()) {
             fiveDaysWrapper.getLista().add(mapper.convert(l));
         }
-
-        TimeStampWrapper lastUpdatedTimeWrapper = realm.where(TimeStampWrapper.class).findFirst();
-
-        if (lastUpdatedTimeWrapper == null) {
-            TimeStampWrapper timeStampWrapper = realm.createObject(TimeStampWrapper.class);
-            timeStampWrapper.setLastime(SystemClock.uptimeMillis());
-        } else {
-            lastUpdatedTimeWrapper.setLastime(SystemClock.uptimeMillis());
-        }
-
         realm.commitTransaction();
+
+        lastUpdated = SystemClock.uptimeMillis();
+
+        realm.close();
     }
 }

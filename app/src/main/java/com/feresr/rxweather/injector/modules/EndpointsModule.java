@@ -21,10 +21,10 @@ import retrofit.RxJavaCallAdapterFactory;
 /**
  * Created by Fernando on 13/10/2015.
  */
-@Module @Singleton
+@Module
 public class EndpointsModule {
 
-    @Provides @Singleton
+    @Provides
     WeatherEndpoints provideEndpoints() {
         Retrofit retrofit = new Retrofit.Builder()
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
@@ -35,21 +35,9 @@ public class EndpointsModule {
         return retrofit.create(WeatherEndpoints.class);
     }
 
-    @Provides @Singleton
-    Presenter providesPresenter(ForecastPresenter presenter) {
-        return presenter;
-    }
-
-
     @Provides
-    @Singleton
     Repository provideDataRepository(RepositoryImp repositoryImp) {
         return repositoryImp;
     }
 
-    @Provides
-    @Singleton
-    DataCache providesDataCache(RealmCache cache) {
-        return cache;
-    }
 }

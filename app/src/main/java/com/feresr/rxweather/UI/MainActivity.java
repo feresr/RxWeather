@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -12,23 +13,40 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.feresr.rxweather.R;
+import com.feresr.rxweather.RxWeatherApplication;
 import com.feresr.rxweather.WeatherProvider;
 import com.feresr.rxweather.injector.DaggerWeatherApiComponent;
 import com.feresr.rxweather.injector.modules.ActivityModule;
+import com.feresr.rxweather.injector.modules.AppModule;
 import com.feresr.rxweather.presenters.ForecastPresenter;
+import com.feresr.rxweather.presenters.Presenter;
 import com.feresr.rxweather.presenters.views.ForecastView;
 
 import javax.inject.Inject;
 
 public class MainActivity extends AppCompatActivity implements ForecastView {
 
-    private TextView text;
-
+    private final boolean DEVELOPER_MODE = true;
     @Inject
     ForecastPresenter presenter;
+    private TextView text;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if (DEVELOPER_MODE) {
+            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+                    .detectDiskReads()
+                    .detectDiskWrites()
+                    .detectAll()   // or .detectAll() for all detectable problems
+                    .penaltyLog()
+                    .build());
+            StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
+                    .detectLeakedSqlLiteObjects()
+                    .detectLeakedClosableObjects()
+                    .penaltyLog()
+                    .penaltyDeath()
+                    .build());
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         text = (TextView) findViewById(R.id.weather);
@@ -51,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements ForecastView {
     }
 
     private void initializeDependencies() {
-        DaggerWeatherApiComponent.builder().activityModule(new ActivityModule(this)).build().inject(this);
+        DaggerWeatherApiComponent.builder().activityModule(new ActivityModule(this)).appComponent(((RxWeatherApplication) getApplication()).getAppComponent()).build().inject(this);
 
     }
 

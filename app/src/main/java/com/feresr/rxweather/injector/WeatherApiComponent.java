@@ -1,5 +1,8 @@
 package com.feresr.rxweather.injector;
 
+import android.content.Context;
+import android.support.v7.app.AppCompatActivity;
+
 import com.feresr.rxweather.NetworkService;
 import com.feresr.rxweather.UI.MainActivity;
 import com.feresr.rxweather.injector.modules.ActivityModule;
@@ -14,8 +17,7 @@ import dagger.Component;
  * Created by Fernando on 13/10/2015.
  */
 
-@Singleton @Component(modules = {EndpointsModule.class, ActivityModule.class})
+@ActivityScope @Component(modules = {EndpointsModule.class, ActivityModule.class}, dependencies = AppComponent.class)
 public interface WeatherApiComponent {
-    void inject(MainActivity context);
-    void inject(NetworkService context);
+    void inject(MainActivity activity);
 }

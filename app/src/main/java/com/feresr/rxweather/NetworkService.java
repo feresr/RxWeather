@@ -7,7 +7,7 @@ import android.os.IBinder;
 import android.util.Log;
 
 import com.feresr.rxweather.domain.GetForecastUseCase;
-import com.feresr.rxweather.injector.DaggerWeatherApiComponent;
+
 import com.feresr.rxweather.models.Lista;
 
 import javax.inject.Inject;
@@ -20,7 +20,7 @@ public class NetworkService extends Service {
     GetForecastUseCase getForecastUseCase;
 
     public NetworkService() {
-        DaggerWeatherApiComponent.builder().build().inject(this);
+        //DaggerWeatherApiComponent.builder().build().inject(this);
     }
 
     @Override
