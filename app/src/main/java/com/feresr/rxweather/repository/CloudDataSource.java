@@ -26,7 +26,7 @@ public class CloudDataSource implements DataSource {
 
     @Override
     public Observable<Forecast> getForecast(String city) {
-        return endpoints.getForecast(city, 7, API_KEY).doOnNext(new Action1<Forecast>() {
+        return endpoints.getForecast(city, 7, "metric", API_KEY).doOnNext(new Action1<Forecast>() {
             @Override
             public void call(Forecast forecast) {
                 cache.put(forecast);

@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.feresr.rxweather.RxWeatherApplication;
 import com.feresr.rxweather.storage.DataCache;
-import com.feresr.rxweather.storage.RealmCache;
+import com.feresr.rxweather.storage.SimpleCache;
 
 import javax.inject.Singleton;
 
@@ -31,7 +31,7 @@ public class AppModule {
 
     @Provides
     @Singleton
-    DataCache providesDataCache(RealmCache cache) {
+    DataCache providesDataCache(SimpleCache cache) {
         return cache;
     }
 

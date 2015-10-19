@@ -15,5 +15,5 @@ public interface WeatherEndpoints {
     //Observable<Current> getCurrent(@Query("q") String city, @Query("appid") String APIKEY);
 
     @GET("forecast/daily?")
-    Observable<Forecast> getForecast(@Query("q") String city, @Query("cnt") int days, @Query("appid") String APIKEY);
+    Observable<Forecast> getForecast(@Query("q") String city, @Query("cnt") int days, @Query("units") String units, @Query("appid") String APIKEY);
 }

@@ -14,25 +14,23 @@ import rx.Subscriber;
  * Created by Fernando on 16/10/2015.
  */
 @Singleton
-public class RealmCache implements DataCache {
+public class SimpleCache implements DataCache {
 
     private static final long EXPIRATION_TIME = 60 * 1000;
 
     private long lastUpdated = 0;
-    private Forecast fiveDays;
+    private Forecast forecast;
 
     @Inject
-    public RealmCache() {
+    public SimpleCache() {
     }
 
     @Override
     public boolean isExpired() {
-        boolean expired = (SystemClock.uptimeMillis() - lastUpdated > EXPIRATION_TIME) || fiveDays == null;
-
+        boolean expired = (SystemClock.uptimeMillis() - lastUpdated > EXPIRATION_TIME) || forecast == null;
         if (expired) {
             this.evictAll();
         }
-
         return expired;
     }
 
@@ -41,7 +39,7 @@ public class RealmCache implements DataCache {
         return Observable.create(new Observable.OnSubscribe<Forecast>() {
             @Override
             public void call(Subscriber<? super Forecast> subscriber) {
-                subscriber.onNext(fiveDays);
+                subscriber.onNext(forecast);
                 subscriber.onCompleted();
 
             }
@@ -50,12 +48,12 @@ public class RealmCache implements DataCache {
 
     @Override
     public void evictAll() {
-        fiveDays = null;
+        forecast = null;
     }
 
     @Override
-    public void put(Forecast days) {
-        this.fiveDays = days;
-        lastUpdated = SystemClock.uptimeMillis();
+    public void put(Forecast forecast) {
+        this.forecast = forecast;
+        this.lastUpdated = SystemClock.uptimeMillis();
     }
 }
