@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import com.feresr.rxweather.R;
 import com.feresr.rxweather.injector.WeatherApiComponent;
 import com.feresr.rxweather.models.Day;
+import com.feresr.rxweather.models.Today;
 import com.feresr.rxweather.presenters.ForecastPresenter;
 import com.feresr.rxweather.presenters.views.ForecastView;
 
@@ -67,5 +68,10 @@ public class ForecastFragment extends BaseFragment implements ForecastView {
     @Override
     public void addForecast(Day s) {
         adapter.addForecast(s);
+    }
+
+    @Override
+    public void addToday(Today today) {
+        adapter.addToday(today);
     }
 }

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="InfoDisplayWidget">
+        <attr name="main" format="string"/>
+        <attr name="sub" format="string"/>
+
+    </declare-styleable>
+</resources>

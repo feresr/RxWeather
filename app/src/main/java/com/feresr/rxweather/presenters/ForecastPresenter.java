@@ -90,7 +90,7 @@ public class ForecastPresenter implements Presenter {
 
             @Override
             public void onNext(Today today) {
-                Log.e("TODAY", today.getName());
+                forecastView.addToday(today);
             }
         });
     }
