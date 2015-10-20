@@ -3,12 +3,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
+    <TextView
         android:id="@+id/icon"
         android:layout_width="wrap_content"
+        android:layout_centerVertical="true"
         android:layout_height="wrap_content"
-        android:layout_marginRight="5dp"
-        android:src="@android:drawable/ic_dialog_alert" />
+        android:layout_marginRight="12dp"
+        android:textSize="20sp"
+        android:text="&#xf002;" />
 
     <TextView
         android:id="@+id/main"
@@ -17,6 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/icon"
         android:text="17 km/H"
+        android:textSize="12sp"
         android:textColor="@color/normal_text" />
 
     <TextView

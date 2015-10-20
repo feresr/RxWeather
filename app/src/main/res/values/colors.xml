@@ -5,6 +5,6 @@
     <color name="colorAccent">#FF4081</color>
     <color name="background_material_light">#222222</color>
     <color name="normal_text">#222</color>
-    <color name="light_text">#666</color>
+    <color name="light_text">#777</color>
     <color name="background_material_dark">#222</color>
 </resources>

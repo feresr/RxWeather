@@ -21,7 +21,7 @@ public class GetTodaysWeatherUseCase implements UseCase<Today> {
     public GetTodaysWeatherUseCase(Repository repository) {
         super();
         this.repository = repository;
-        this.city = "Sydney";
+        this.city = "San Francisco, AR";
     }
 
     @Override

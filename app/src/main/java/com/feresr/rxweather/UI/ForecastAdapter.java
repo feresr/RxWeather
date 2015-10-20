@@ -1,7 +1,9 @@
 package com.feresr.rxweather.UI;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
+import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,10 +25,12 @@ public class ForecastAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private LayoutInflater inflater;
     private List<Day> weathers;
     private Today today;
+    private Context context;
 
     public ForecastAdapter(Context context, List<Day> weathers) {
         super();
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.context = context;
         if (weathers != null) {
             this.weathers = weathers;
         } else {
@@ -69,11 +73,17 @@ public class ForecastAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             case 0:
                 if (today != null) {
                     TodayViewHolder todayholder = (TodayViewHolder) viewHolder;
-                    todayholder.city.setText(today.getName());
+                    todayholder.city.setText(today.getName() + " " + today.getSys().getCountry());
+                    todayholder.description.setText(today.getWeather().get(0).getDescription());
                     todayholder.temp.setText(today.getMain().getTemp() + " °");
                     todayholder.humidity.setValue(today.getMain().getHumidity().toString() + "%");
-                    todayholder.max.setValue(today.getMain().getTempMax().toString() + " °");
-                    todayholder.min.setValue(today.getMain().getTempMin().toString() + " °");
+                    todayholder.wind.setValue(today.getWind().getSpeed().toString() + " m/s");
+                    todayholder.pressure.setValue(today.getMain().getPressure()/100 + " kPa");
+                    todayholder.clouds.setValue(today.getClouds().getAll() + "%");
+                    todayholder.sunrise.setValue(DateFormat.getTimeFormat(context).format(today.getSys().getSunrise()));
+                    todayholder.sunset.setValue(DateFormat.getTimeFormat(context).format(today.getSys().getSunset()));
+                    todayholder.main_icon.setText(today.getWeather().get(0).getIcon(context));
+
                 }
                 break;
             case 1:
@@ -119,17 +129,34 @@ public class ForecastAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public class TodayViewHolder extends RecyclerView.ViewHolder {
         TextView city;
         TextView temp;
+        TextView description;
         InfoDisplay humidity;
-        InfoDisplay max;
-        InfoDisplay min;
+        InfoDisplay wind;
+        InfoDisplay pressure;
+        InfoDisplay clouds;
+        InfoDisplay sunrise;
+        InfoDisplay sunset;
+        TextView main_icon;
 
         public TodayViewHolder(View itemView) {
             super(itemView);
             city = (TextView) itemView.findViewById(R.id.city);
             temp = (TextView) itemView.findViewById(R.id.temp);
+            description = (TextView) itemView.findViewById(R.id.description);
             humidity = (InfoDisplay) itemView.findViewById(R.id.humidity);
-            max = (InfoDisplay) itemView.findViewById(R.id.tempMax);
-            min = (InfoDisplay) itemView.findViewById(R.id.tempMin);
+            wind = (InfoDisplay) itemView.findViewById(R.id.tempMax);
+            pressure = (InfoDisplay) itemView.findViewById(R.id.tempMin);
+            clouds = (InfoDisplay) itemView.findViewById(R.id.clouds);
+            sunrise = (InfoDisplay) itemView.findViewById(R.id.sunrise);
+            sunset = (InfoDisplay) itemView.findViewById(R.id.sunset);
+
+            Typeface font = Typeface.createFromAsset(context.getAssets(), "weathericons-regular-webfont.ttf");
+            main_icon = (TextView) itemView.findViewById(R.id.main_icon);
+            main_icon.setTypeface(font);
+
+            main_icon.setText(R.string.today_weather_main_icon);
+
+
         }
     }
 }
