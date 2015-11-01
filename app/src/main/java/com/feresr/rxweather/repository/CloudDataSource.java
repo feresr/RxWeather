@@ -1,7 +1,8 @@
 package com.feresr.rxweather.repository;
 
 import com.feresr.rxweather.WeatherEndpoints;
-import com.feresr.rxweather.models.Forecast;
+import com.feresr.rxweather.models.DailyForecast;
+import com.feresr.rxweather.models.HourlyForecast;
 import com.feresr.rxweather.models.Today;
 import com.feresr.rxweather.storage.DataCache;
 
@@ -26,11 +27,21 @@ public class CloudDataSource implements DataSource {
     }
 
     @Override
-    public Observable<Forecast> getForecast(String city) {
-        return endpoints.getForecast(city, 16, "metric", API_KEY).doOnNext(new Action1<Forecast>() {
+    public Observable<DailyForecast> getForecast(String city) {
+        return endpoints.getForecast(city, 16, "metric", API_KEY).doOnNext(new Action1<DailyForecast>() {
             @Override
-            public void call(Forecast forecast) {
-                cache.put(forecast);
+            public void call(DailyForecast dailyForecast) {
+                cache.putNextDaysForecast(dailyForecast);
+            }
+        });
+    }
+
+    @Override
+    public Observable<HourlyForecast> getTodaysForecast(String city) {
+        return endpoints.getTodaysForecast(city, 5, "metric", API_KEY).doOnNext(new Action1<HourlyForecast>() {
+            @Override
+            public void call(HourlyForecast hourlyForecast) {
+                cache.putTodayForecast(hourlyForecast);
             }
         });
     }
@@ -40,7 +51,7 @@ public class CloudDataSource implements DataSource {
         return endpoints.getTodaysWeather(city, "metric", API_KEY).doOnNext(new Action1<Today>() {
             @Override
             public void call(Today today) {
-                cache.put(today);
+                cache.putTodayWeather(today);
             }
         });
     }

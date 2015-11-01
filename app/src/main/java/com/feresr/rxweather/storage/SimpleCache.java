@@ -2,7 +2,8 @@ package com.feresr.rxweather.storage;
 
 import android.os.SystemClock;
 
-import com.feresr.rxweather.models.Forecast;
+import com.feresr.rxweather.models.DailyForecast;
+import com.feresr.rxweather.models.HourlyForecast;
 import com.feresr.rxweather.models.Today;
 
 import javax.inject.Inject;
@@ -20,7 +21,8 @@ public class SimpleCache implements DataCache {
     private static final long EXPIRATION_TIME = 60 * 1000;
 
     private long lastUpdated = 0;
-    private Forecast forecast;
+    private DailyForecast dailyForecast;
+    private HourlyForecast hourlyForecast;
     private Today today;
 
     @Inject
@@ -29,7 +31,8 @@ public class SimpleCache implements DataCache {
 
     @Override
     public boolean isExpired() {
-        boolean expired = (SystemClock.uptimeMillis() - lastUpdated > EXPIRATION_TIME) || forecast == null || today == null;
+        boolean expired = (SystemClock.uptimeMillis() - lastUpdated > EXPIRATION_TIME) ||
+                dailyForecast == null || today == null || hourlyForecast == null;
         if (expired) {
             this.evictAll();
         }
@@ -37,13 +40,24 @@ public class SimpleCache implements DataCache {
     }
 
     @Override
-    public rx.Observable<Forecast> getForecast() {
-        return Observable.create(new Observable.OnSubscribe<Forecast>() {
+    public rx.Observable<DailyForecast> getDailyForecast() {
+        return Observable.create(new Observable.OnSubscribe<DailyForecast>() {
             @Override
-            public void call(Subscriber<? super Forecast> subscriber) {
-                subscriber.onNext(forecast);
+            public void call(Subscriber<? super DailyForecast> subscriber) {
+                subscriber.onNext(dailyForecast);
                 subscriber.onCompleted();
 
+            }
+        });
+    }
+
+    @Override
+    public Observable<HourlyForecast> getHourlyForecast() {
+        return Observable.create(new Observable.OnSubscribe<HourlyForecast>() {
+            @Override
+            public void call(Subscriber<? super HourlyForecast> subscriber) {
+                subscriber.onNext(hourlyForecast);
+                subscriber.onCompleted();
             }
         });
     }
@@ -61,19 +75,26 @@ public class SimpleCache implements DataCache {
 
     @Override
     public void evictAll() {
-        forecast = null;
+        dailyForecast = null;
         today = null;
+        hourlyForecast = null;
     }
 
     @Override
-    public void put(Forecast forecast) {
-        this.forecast = forecast;
+    public void putNextDaysForecast(DailyForecast dailyForecast) {
+        this.dailyForecast = dailyForecast;
         this.lastUpdated = SystemClock.uptimeMillis();
     }
 
     @Override
-    public void put(Today today) {
+    public void putTodayWeather(Today today) {
         this.today = today;
+        this.lastUpdated = SystemClock.uptimeMillis();
+    }
+
+    @Override
+    public void putTodayForecast(HourlyForecast hours) {
+        this.hourlyForecast = hours;
         this.lastUpdated = SystemClock.uptimeMillis();
     }
 }

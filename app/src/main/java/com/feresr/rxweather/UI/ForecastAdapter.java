@@ -78,7 +78,7 @@ public class ForecastAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     todayholder.temp.setText(today.getMain().getTemp() + " °");
                     todayholder.humidity.setValue(today.getMain().getHumidity().toString() + "%");
                     todayholder.wind.setValue(today.getWind().getSpeed().toString() + " m/s");
-                    todayholder.pressure.setValue(today.getMain().getPressure()/100 + " kPa");
+                    todayholder.pressure.setValue(today.getMain().getPressure() / 100 + " kPa");
                     todayholder.clouds.setValue(today.getClouds().getAll() + "%");
                     todayholder.sunrise.setValue(DateFormat.getTimeFormat(context).format(today.getSys().getSunrise()));
                     todayholder.sunset.setValue(DateFormat.getTimeFormat(context).format(today.getSys().getSunset()));
@@ -155,8 +155,6 @@ public class ForecastAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             main_icon.setTypeface(font);
 
             main_icon.setText(R.string.today_weather_main_icon);
-
-
         }
     }
 }

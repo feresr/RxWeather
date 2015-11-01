@@ -1,6 +1,6 @@
 package com.feresr.rxweather.domain;
 
-import com.feresr.rxweather.models.Day;
+import com.feresr.rxweather.models.Hour;
 import com.feresr.rxweather.repository.Repository;
 
 import javax.inject.Inject;
@@ -10,22 +10,22 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 /**
- * Created by Fernando on 14/10/2015.
+ * Created by Fernando on 1/11/2015.
+ * Get weather information for the following hours (current day)
  */
-public class GetForecastUseCase implements UseCase<Day> {
+public class GetTodayForecastUseCase implements UseCase<Hour> {
 
-    private final Repository repository;
-    private final String cityName;
+    Repository repository;
 
     @Inject
-    GetForecastUseCase(Repository repository) {
+    public GetTodayForecastUseCase(Repository repository) {
+        super();
         this.repository = repository;
-        this.cityName = "San Francisco Argentina, AR";
     }
 
     @Override
-    public Observable<Day> execute() {
-        return repository.getForecast(cityName)
+    public Observable<Hour> execute() {
+        return repository.getTodayForecast("San Francisco, AR")
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread());
     }

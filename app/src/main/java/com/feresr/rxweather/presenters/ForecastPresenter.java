@@ -5,8 +5,10 @@ import android.util.Log;
 
 import com.feresr.rxweather.domain.GetForecastUseCase;
 
+import com.feresr.rxweather.domain.GetTodayForecastUseCase;
 import com.feresr.rxweather.domain.GetTodaysWeatherUseCase;
 import com.feresr.rxweather.models.Day;
+import com.feresr.rxweather.models.Hour;
 import com.feresr.rxweather.models.Today;
 import com.feresr.rxweather.presenters.views.ForecastView;
 import com.feresr.rxweather.presenters.views.View;
@@ -22,13 +24,17 @@ import rx.Subscription;
 public class ForecastPresenter implements Presenter {
     private GetForecastUseCase forecastUseCase;
     private GetTodaysWeatherUseCase todaysWeatherUseCase;
+    private GetTodayForecastUseCase todaysForecastUseCase;
     private Subscription forecastObservable;
+    private Subscription todaysForecastObservable;
+    private Subscription todayObservable;
     private ForecastView forecastView;
 
     @Inject
-    public ForecastPresenter(GetForecastUseCase forecastUseCase, GetTodaysWeatherUseCase todaysWeatherUseCase) {
+    public ForecastPresenter(GetForecastUseCase forecastUseCase, GetTodaysWeatherUseCase todaysWeatherUseCase, GetTodayForecastUseCase todaysForecastUseCase) {
         this.forecastUseCase = forecastUseCase;
         this.todaysWeatherUseCase = todaysWeatherUseCase;
+        this.todaysForecastUseCase = todaysForecastUseCase;
     }
 
     @Override
@@ -39,6 +45,14 @@ public class ForecastPresenter implements Presenter {
     @Override
     public void onStop() {
         if (forecastObservable.isUnsubscribed()) {
+            forecastObservable.unsubscribe();
+        }
+
+        if (todayObservable.isUnsubscribed()) {
+            forecastObservable.unsubscribe();
+        }
+
+        if (todaysForecastObservable.isUnsubscribed()) {
             forecastObservable.unsubscribe();
         }
     }
@@ -77,7 +91,7 @@ public class ForecastPresenter implements Presenter {
             }
         });
 
-        todaysWeatherUseCase.execute().subscribe(new Subscriber<Today>() {
+        todayObservable = todaysWeatherUseCase.execute().subscribe(new Subscriber<Today>() {
             @Override
             public void onCompleted() {
 
@@ -85,12 +99,29 @@ public class ForecastPresenter implements Presenter {
 
             @Override
             public void onError(Throwable e) {
-
+                Log.e("error", e.toString());
             }
 
             @Override
             public void onNext(Today today) {
                 forecastView.addToday(today);
+            }
+        });
+
+        todaysForecastObservable = todaysForecastUseCase.execute().subscribe(new Subscriber<Hour>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.e("error", e.toString());
+            }
+
+            @Override
+            public void onNext(Hour hour) {
+                forecastView.addTodayForecast(hour);
             }
         });
     }

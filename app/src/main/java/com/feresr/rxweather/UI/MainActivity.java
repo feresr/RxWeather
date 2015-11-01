@@ -17,8 +17,6 @@ import com.feresr.rxweather.injector.modules.ActivityModule;
 public class MainActivity extends AppCompatActivity implements HasComponent<WeatherApiComponent> {
 
     private final boolean DEVELOPER_MODE = true;
-
-    private TextView text;
     private WeatherApiComponent weatherComponent;
 
     @Override

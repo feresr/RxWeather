@@ -7,10 +7,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.feresr.rxweather.R;
 import com.feresr.rxweather.injector.WeatherApiComponent;
 import com.feresr.rxweather.models.Day;
+import com.feresr.rxweather.models.Hour;
 import com.feresr.rxweather.models.Today;
 import com.feresr.rxweather.presenters.ForecastPresenter;
 import com.feresr.rxweather.presenters.views.ForecastView;
@@ -73,5 +75,10 @@ public class ForecastFragment extends BaseFragment implements ForecastView {
     @Override
     public void addToday(Today today) {
         adapter.addToday(today);
+    }
+
+    @Override
+    public void addTodayForecast(Hour hour) {
+        Toast.makeText(getActivity(), hour.getWeather().get(0).getMain(), Toast.LENGTH_LONG).show();
     }
 }

@@ -1,9 +1,10 @@
 package com.feresr.rxweather.repository;
 
-import com.feresr.rxweather.WeatherEndpoints;
 import com.feresr.rxweather.models.Day;
 
-import com.feresr.rxweather.models.Forecast;
+import com.feresr.rxweather.models.DailyForecast;
+import com.feresr.rxweather.models.Hour;
+import com.feresr.rxweather.models.HourlyForecast;
 import com.feresr.rxweather.models.Today;
 
 
@@ -33,10 +34,22 @@ public class RepositoryImp implements Repository {
     public Observable<Day> getForecast(String cityName) {
         final DataSource dataSource = this.dataStorageFactory.create();
 
-        return dataSource.getForecast(cityName).flatMap(new Func1<Forecast, Observable<Day>>() {
+        return dataSource.getForecast(cityName).flatMap(new Func1<DailyForecast, Observable<Day>>() {
             @Override
-            public Observable<Day> call(Forecast forecast) {
-                return Observable.from(forecast.getDays());
+            public Observable<Day> call(DailyForecast dailyForecast) {
+                return Observable.from(dailyForecast.getDays());
+            }
+        });
+    }
+
+    @Override
+    public Observable<Hour> getTodayForecast(String cityName) {
+        final DataSource dataSource = this.dataStorageFactory.create();
+
+        return dataSource.getTodaysForecast(cityName).flatMap(new Func1<HourlyForecast, Observable<Hour>>() {
+            @Override
+            public Observable<Hour> call(HourlyForecast hourlyForecast) {
+                return Observable.from(hourlyForecast.getDays());
             }
         });
     }
