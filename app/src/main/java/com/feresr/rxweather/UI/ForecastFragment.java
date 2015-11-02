@@ -79,6 +79,6 @@ public class ForecastFragment extends BaseFragment implements ForecastView {
 
     @Override
     public void addTodayForecast(Hour hour) {
-        Toast.makeText(getActivity(), hour.getWeather().get(0).getMain(), Toast.LENGTH_LONG).show();
+        adapter.getDayForecastAdapter().addHourForecast(hour);
     }
 }

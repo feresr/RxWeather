@@ -38,7 +38,7 @@ public class CloudDataSource implements DataSource {
 
     @Override
     public Observable<HourlyForecast> getTodaysForecast(String city) {
-        return endpoints.getTodaysForecast(city, 5, "metric", API_KEY).doOnNext(new Action1<HourlyForecast>() {
+        return endpoints.getTodaysForecast(city, 8, "metric", API_KEY).doOnNext(new Action1<HourlyForecast>() {
             @Override
             public void call(HourlyForecast hourlyForecast) {
                 cache.putTodayForecast(hourlyForecast);
