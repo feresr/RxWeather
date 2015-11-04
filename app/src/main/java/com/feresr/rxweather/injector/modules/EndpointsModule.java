@@ -1,6 +1,6 @@
 package com.feresr.rxweather.injector.modules;
 
-import com.feresr.rxweather.WeatherEndpoints;
+import com.feresr.rxweather.ForecastIOEndpoints;
 import com.feresr.rxweather.repository.Repository;
 import com.feresr.rxweather.repository.RepositoryImp;
 import com.squareup.okhttp.OkHttpClient;
@@ -18,14 +18,14 @@ import retrofit.RxJavaCallAdapterFactory;
 public class EndpointsModule {
 
     @Provides
-    WeatherEndpoints provideEndpoints() {
+    ForecastIOEndpoints provideEndpoints() {
         Retrofit retrofit = new Retrofit.Builder()
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(new OkHttpClient())
-                .baseUrl("http://api.openweathermap.org/data/2.5/")
+                .baseUrl("https://api.forecast.io/")
                 .build();
-        return retrofit.create(WeatherEndpoints.class);
+        return retrofit.create(ForecastIOEndpoints.class);
     }
 
     @Provides

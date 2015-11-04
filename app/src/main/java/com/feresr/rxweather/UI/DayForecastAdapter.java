@@ -17,6 +17,7 @@ import com.feresr.rxweather.models.Hour;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Fernando on 2/11/2015.
@@ -45,9 +46,9 @@ public class DayForecastAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         HourlyForecastViewHolder hourlyForecastViewHolder = ((HourlyForecastViewHolder) holder);
-        hourlyForecastViewHolder.hour.setText(DateFormat.getTimeFormat(context).format(new Date(hours.get(position).getDt() * 1000L)));
-        hourlyForecastViewHolder.temp.setText(hours.get(position).getMain().getTemp().toString() + "°");
-        hourlyForecastViewHolder.icon.setText(hours.get(position).getWeather().get(0).getIcon(context));
+        hourlyForecastViewHolder.hour.setText(DateFormat.getTimeFormat(context).format(new Date(hours.get(position).getTime() * 1000L)));
+        hourlyForecastViewHolder.temp.setText(hours.get(position).getTemperature() + "°");
+        hourlyForecastViewHolder.icon.setText(hours.get(position).getIcon(context));
 
         //Adjust margins according to their positions
         Resources r = context.getResources();
@@ -73,7 +74,7 @@ public class DayForecastAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             params.setMargins(8, 0, 8, 0);
         }
 
-        hourlyForecastViewHolder.itemView.setLayoutParams(params);
+        //hourlyForecastViewHolder.itemView.setLayoutParams(params);
     }
 
     @Override
@@ -81,9 +82,9 @@ public class DayForecastAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         return hours.size();
     }
 
-    public void addHourForecast(Hour hour) {
-        hours.add(hour);
-        notifyItemInserted(hours.size() - 1);
+    public void addHourForecast(List<Hour> hours) {
+        this.hours = (ArrayList<Hour>) hours;
+        notifyDataSetChanged();
     }
 
     public class HourlyForecastViewHolder extends RecyclerView.ViewHolder {

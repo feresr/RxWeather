@@ -1,7 +1,5 @@
 package com.feresr.rxweather.repository;
 
-import android.content.Context;
-
 import com.feresr.rxweather.storage.DataCache;
 
 import javax.inject.Inject;
@@ -14,21 +12,18 @@ import dagger.Lazy;
 public class DataStorageFactory {
 
     private DataCache cache;
-    private Lazy<CloudDataSource> cloudDataSourceLazy;
-    private Context context;
+    private Lazy<DataSource> lazyDataSource;
 
     @Inject
-    public DataStorageFactory(Context context, DataCache cache, Lazy<CloudDataSource> cloudDataSourceLazy) {
-        this.cloudDataSourceLazy = cloudDataSourceLazy;
+    public DataStorageFactory(DataCache cache, Lazy<DataSource> lazyDataSource) {
+        this.lazyDataSource = lazyDataSource;
         this.cache = cache;
-        this.context = context;
     }
 
     public DataSource create() {
         DataSource dataSource;
-
         if (this.cache.isExpired()) {
-            dataSource = cloudDataSourceLazy.get();
+            dataSource = lazyDataSource.get();
         } else {
             dataSource = new DiskDataSource(this.cache);
         }

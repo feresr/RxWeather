@@ -15,16 +15,18 @@
     <string name="day_haze">&#xf0b6;</string>
     <string name="dust">&#xf063;</string>
     <string name="fog">&#xf014;</string>
-    <string name="cloudy_goust">&#xf011;</string>
     <string name="tornado">&#xf056;</string>
     <string name="default_icon">&#xf00d;</string>
     <string name="day_sunny">&#xf00d;</string>
     <string name="day_cloudy_gusts">&#xf000;</string>
+    <string name="cloudy_gusts">&#xf011;</string>
     <string name="day_sunny_overcast">&#xf00c;</string>
+    <string name="cloudy">&#xf013;</string>
     <string name="hurricane">&#xf073;</string>
     <string name="snowflake_cold">&#xf076;</string>
     <string name="hot">&#xf072;</string>
     <string name="day_hail">&#xf004;</string>
     <string name="strong_wind">&#xf050;</string>
+    <string name="city_country_name">%1$s %2$s</string>
 
 </resources>

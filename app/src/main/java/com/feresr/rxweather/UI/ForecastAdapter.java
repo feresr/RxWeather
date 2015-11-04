@@ -3,140 +3,210 @@ package com.feresr.rxweather.UI;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Typeface;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.format.DateFormat;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.feresr.rxweather.R;
 import com.feresr.rxweather.UI.views.InfoDisplay;
+import com.feresr.rxweather.UI.views.RoundedCardLayout;
+import com.feresr.rxweather.models.CityWeather;
+import com.feresr.rxweather.models.Currently;
+import com.feresr.rxweather.models.Daily;
 import com.feresr.rxweather.models.Day;
-import com.feresr.rxweather.models.Today;
+import com.feresr.rxweather.models.DisplayWeatherInfo;
+import com.feresr.rxweather.models.Hourly;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by Fernando on 19/10/2015.
  */
 public class ForecastAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
+    private static final int CURRENTLY = 0;
+    private static final int HOURLY = 1;
+    private static final int DAILY = 2;
+    private static final int DAY = 3;
+
     private LayoutInflater inflater;
-    private List<Day> weathers;
-    private Today today;
+    private List<DisplayWeatherInfo> weatherInfo;
     private Context context;
     private DayForecastAdapter dayForecastAdapter;
+    private int groupTopBottomMargin;
+    private int groupLeftRightMargin;
 
-    public ForecastAdapter(Context context, List<Day> weathers) {
+    public ForecastAdapter(Context context) {
         super();
-        inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-        dayForecastAdapter = new DayForecastAdapter(context);
         this.context = context;
-        if (weathers != null) {
-            this.weathers = weathers;
-        } else {
-            this.weathers = new ArrayList<>();
-        }
+        inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        dayForecastAdapter = new DayForecastAdapter(context);
+        this.weatherInfo = new ArrayList<>();
+
+        Resources r = context.getResources();
+        groupTopBottomMargin = (int) TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                5,
+                r.getDisplayMetrics()
+        );
+        groupLeftRightMargin = (int) TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                10,
+                r.getDisplayMetrics()
+        );
     }
 
     @Override
     public int getItemViewType(int position) {
-        return position;
+        DisplayWeatherInfo weatherInfoObject = weatherInfo.get(position);
+
+        if (weatherInfoObject instanceof Currently) {
+            return CURRENTLY;
+        } else if (weatherInfoObject instanceof Hourly) {
+            return HOURLY;
+        } else if (weatherInfoObject instanceof Daily) {
+            return DAILY;
+        } else if (weatherInfoObject instanceof Day) {
+            return DAY;
+        }
+        return -1;
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view;
         switch (viewType) {
-            case 0:
-                view = this.inflater.inflate(R.layout.today_view, parent, false);
-                return new TodayViewHolder(view);
-            case 1:
-                view = new RecyclerView(context);
-                view.setLayoutParams(new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 300));
-                return new NextHoursViewHolder(view);
+            case CURRENTLY:
+                view = this.inflater.inflate(R.layout.currently_view, parent, false);
+                return new CurrentlyViewHolder(view);
+            case HOURLY:
+                view = this.inflater.inflate(R.layout.hourly_view, parent, false);
+                return new HourlyViewHolder(view);
+            case DAILY:
+                view = this.inflater.inflate(R.layout.daily_view, parent, false);
+                return new DailyViewHolder(view);
+            case DAY:
+                view = this.inflater.inflate(R.layout.day_view, parent, false);
+                return new DayViewHolder(view);
             default:
-                view = this.inflater.inflate(R.layout.weather_view, parent, false);
-                return new ViewHolder(view);
+                return null;
+        }
+    }
+
+
+    public void addForecast(CityWeather cityWeather) {
+        weatherInfo.add(cityWeather.getCurrently());
+        weatherInfo.add(cityWeather.getHourly());
+
+        dayForecastAdapter.addHourForecast(cityWeather.getHourly().getData());
+
+        weatherInfo.add(cityWeather.getDaily());
+        for (Day day : cityWeather.getDaily().getDays()) {
+            weatherInfo.add(day);
         }
 
-    }
 
-
-    public void addForecast(Day day) {
-        weathers.add(day);
-        notifyItemInserted(weathers.size() + 1);
-    }
-
-    public DayForecastAdapter getDayForecastAdapter() {
-        return dayForecastAdapter;
+        notifyDataSetChanged();
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
         switch (viewHolder.getItemViewType()) {
-            case 0:
-                if (today != null) {
-                    TodayViewHolder todayholder = (TodayViewHolder) viewHolder;
-                    todayholder.city.setText(today.getName() + " " + today.getSys().getCountry());
-                    todayholder.description.setText(today.getWeather().get(0).getDescription());
-                    todayholder.temp.setText(today.getMain().getTemp() + " °");
-                    todayholder.humidity.setValue(today.getMain().getHumidity().toString() + "%");
-                    todayholder.wind.setValue(today.getWind().getSpeed().toString() + " m/s");
-                    todayholder.pressure.setValue(today.getMain().getPressure() / 100 + " kPa");
-                    todayholder.clouds.setValue(today.getClouds().getAll() + "%");
-                    todayholder.sunrise.setValue(DateFormat.getTimeFormat(context).format(today.getSys().getSunrise()));
-                    todayholder.sunset.setValue(DateFormat.getTimeFormat(context).format(today.getSys().getSunset()));
-                    todayholder.icon.setText(today.getWeather().get(0).getIcon(context));
+            case CURRENTLY:
+                CurrentlyViewHolder currentlyViewHolder = (CurrentlyViewHolder) viewHolder;
+                Currently currently = (Currently) weatherInfo.get(position);
 
+//                    currentlyViewHolder.city.setText(String.format(context.getResources().getString(R.string.city_country_name),
+//                            today.getName(), today.getSys().getCountry()));
+                currentlyViewHolder.description.setText(currently.getSummary());
+                currentlyViewHolder.temp.setText(currently.getTemperature() + " °");
+                currentlyViewHolder.humidity.setValue(currently.getHumidity() * 100 + "%");
+                currentlyViewHolder.wind.setValue(currently.getWindSpeed() + " m/s");
+                currentlyViewHolder.pressure.setValue(currently.getPressure() + " kPa");
+                currentlyViewHolder.clouds.setValue(currently.getCloudCover() * 100 + "%");
+                //currentlyViewHolder.sunrise.setValue(DateFormat.getTimeFormat(context).format(today.getSys().getSunrise()));
+                //currentlyViewHolder.sunset.setValue(DateFormat.getTimeFormat(context).format(today.getSys().getSunset()));
+                currentlyViewHolder.icon.setText(currently.getIcon(context));
+
+                break;
+            case HOURLY:
+                HourlyViewHolder labelViewHolder = (HourlyViewHolder) viewHolder;
+                Hourly hourly = (Hourly) weatherInfo.get(position);
+                labelViewHolder.description.setText(hourly.getSummary());
+
+                break;
+            case DAILY:
+                DailyViewHolder dailyViewHolder = (DailyViewHolder) viewHolder;
+                Daily daily = (Daily) weatherInfo.get(position);
+                dailyViewHolder.description.setText(daily.getSummary());
+                break;
+            case DAY:
+                Day day = (Day) weatherInfo.get(position);
+                DayViewHolder holder = (DayViewHolder) viewHolder;
+                holder.dayName.setText(new SimpleDateFormat("EEEE", new Locale("EN")).format(new Date(day.getTime() * 1000L)).toUpperCase());
+                holder.main.setText(day.getSummary());
+                holder.tempMax.setText(day.getTemperatureMax() + "°");
+                holder.tempMin.setText(day.getTemperatureMin() + "°");
+                holder.icon.setText(day.getIcon(context));
+
+                //First
+                if (day == ((Daily) weatherInfo.get(2)).getDays().get(0)) {
+                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    params.setMargins(groupLeftRightMargin, groupTopBottomMargin, groupLeftRightMargin, 0);
+
+                    holder.view.setLayoutParams(params);
+                    holder.view.setUpperRadius(10);
+                    holder.view.setLowerRadius(0);
+                } else if (day == ((Daily) weatherInfo.get(2)).getDays().get(7)) {
+                    holder.view.setLowerRadius(10);
+                    holder.view.setUpperRadius(0);
+
+                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    params.setMargins(groupLeftRightMargin, 0, groupLeftRightMargin, groupTopBottomMargin);
+                    holder.view.setLayoutParams(params);
+                } else {
+                    holder.view.setUpperRadius(0);
+                    holder.view.setLowerRadius(0);
+
+                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    params.setMargins(groupLeftRightMargin, 0, groupLeftRightMargin, 0);
+                    holder.view.setLayoutParams(params);
+
+                    if (position % 3 == 0) {
+                        //holder.view.setBackgroundColor(ContextCompat.getColor(context, android.R.color.holo_blue_bright));
+                    }
                 }
-                break;
-            case 1:
-
-                break;
-            default:
-                Day lista = weathers.get(position - 2);
-                ViewHolder holder = (ViewHolder) viewHolder;
-                holder.mainTextView.setText(lista.getWeather().get(0).getMain());
-                holder.descriptionTextView.setText(lista.getWeather().get(0).getDescription());
-                holder.tempMax.setText(lista.getTemp().getMax().toString() + "°");
-                holder.tempMin.setText(lista.getTemp().getMin().toString() + "°");
-                holder.temp.setText(lista.getTemp().getDay().toString() + "°");
-                holder.icon.setText(lista.getWeather().get(0).getIcon(context));
-
-                break;
         }
     }
 
     @Override
     public int getItemCount() {
-        return weathers != null ? weathers.size() + 2 : 2;
+        return weatherInfo.size();
     }
 
-    public void addToday(Today today) {
-        this.today = today;
-        this.notifyItemChanged(0);
-    }
-
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView mainTextView;
-        TextView descriptionTextView;
+    public class DayViewHolder extends RecyclerView.ViewHolder {
+        TextView dayName;
+        TextView main;
         TextView temp;
         TextView tempMax;
         TextView icon;
         TextView tempMin;
+        RoundedCardLayout view;
 
-        public ViewHolder(View itemView) {
+        public DayViewHolder(View itemView) {
             super(itemView);
-            mainTextView = (TextView) itemView.findViewById(R.id.main);
-            descriptionTextView = (TextView) itemView.findViewById(R.id.description);
+            view = (RoundedCardLayout) itemView;
+            dayName = (TextView) itemView.findViewById(R.id.day);
+            main = (TextView) itemView.findViewById(R.id.main);
             temp = (TextView) itemView.findViewById(R.id.temp);
             tempMax = (TextView) itemView.findViewById(R.id.tempMax);
             tempMin = (TextView) itemView.findViewById(R.id.tempMin);
@@ -148,23 +218,33 @@ public class ForecastAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
     }
 
-    public class NextHoursViewHolder extends RecyclerView.ViewHolder {
 
+    public class DailyViewHolder extends RecyclerView.ViewHolder {
+        TextView description;
+
+        public DailyViewHolder(View itemView) {
+            super(itemView);
+            description = (TextView) itemView.findViewById(R.id.description);
+        }
+    }
+
+    public class HourlyViewHolder extends RecyclerView.ViewHolder {
+        TextView description;
         RecyclerView recyclerView;
 
-        public NextHoursViewHolder(View itemView) {
+        public HourlyViewHolder(View itemView) {
             super(itemView);
-            recyclerView = (RecyclerView) itemView;
+            description = (TextView) itemView.findViewById(R.id.description);
+            recyclerView = (RecyclerView) itemView.findViewById(R.id.nextHoursRecyclerview);
+
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
             linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
             recyclerView.setLayoutManager(linearLayoutManager);
             recyclerView.setAdapter(dayForecastAdapter);
-
         }
     }
 
-
-    public class TodayViewHolder extends RecyclerView.ViewHolder {
+    public class CurrentlyViewHolder extends RecyclerView.ViewHolder {
         TextView city;
         TextView temp;
         TextView description;
@@ -176,7 +256,7 @@ public class ForecastAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         InfoDisplay sunset;
         TextView icon;
 
-        public TodayViewHolder(View itemView) {
+        public CurrentlyViewHolder(View itemView) {
             super(itemView);
             city = (TextView) itemView.findViewById(R.id.city);
             temp = (TextView) itemView.findViewById(R.id.temp);

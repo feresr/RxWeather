@@ -2,9 +2,7 @@ package com.feresr.rxweather.storage;
 
 import android.os.SystemClock;
 
-import com.feresr.rxweather.models.DailyForecast;
-import com.feresr.rxweather.models.HourlyForecast;
-import com.feresr.rxweather.models.Today;
+import com.feresr.rxweather.models.CityWeather;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -21,9 +19,7 @@ public class SimpleCache implements DataCache {
     private static final long EXPIRATION_TIME = 60 * 1000;
 
     private long lastUpdated = 0;
-    private DailyForecast dailyForecast;
-    private HourlyForecast hourlyForecast;
-    private Today today;
+    private CityWeather cityWeather;
 
     @Inject
     public SimpleCache() {
@@ -32,7 +28,7 @@ public class SimpleCache implements DataCache {
     @Override
     public boolean isExpired() {
         boolean expired = (SystemClock.uptimeMillis() - lastUpdated > EXPIRATION_TIME) ||
-                dailyForecast == null || today == null || hourlyForecast == null;
+                cityWeather == null;
         if (expired) {
             this.evictAll();
         }
@@ -40,61 +36,25 @@ public class SimpleCache implements DataCache {
     }
 
     @Override
-    public rx.Observable<DailyForecast> getDailyForecast() {
-        return Observable.create(new Observable.OnSubscribe<DailyForecast>() {
+    public rx.Observable<CityWeather> getForecast() {
+        return Observable.create(new Observable.OnSubscribe<CityWeather>() {
             @Override
-            public void call(Subscriber<? super DailyForecast> subscriber) {
-                subscriber.onNext(dailyForecast);
+            public void call(Subscriber<? super CityWeather> subscriber) {
+                subscriber.onNext(cityWeather);
                 subscriber.onCompleted();
 
-            }
-        });
-    }
-
-    @Override
-    public Observable<HourlyForecast> getHourlyForecast() {
-        return Observable.create(new Observable.OnSubscribe<HourlyForecast>() {
-            @Override
-            public void call(Subscriber<? super HourlyForecast> subscriber) {
-                subscriber.onNext(hourlyForecast);
-                subscriber.onCompleted();
-            }
-        });
-    }
-
-    @Override
-    public Observable<Today> getTodaysWeather() {
-        return Observable.create(new Observable.OnSubscribe<Today>() {
-            @Override
-            public void call(Subscriber<? super Today> subscriber) {
-                subscriber.onNext(today);
-                subscriber.onCompleted();
             }
         });
     }
 
     @Override
     public void evictAll() {
-        dailyForecast = null;
-        today = null;
-        hourlyForecast = null;
+        cityWeather = null;
     }
 
     @Override
-    public void putNextDaysForecast(DailyForecast dailyForecast) {
-        this.dailyForecast = dailyForecast;
-        this.lastUpdated = SystemClock.uptimeMillis();
-    }
-
-    @Override
-    public void putTodayWeather(Today today) {
-        this.today = today;
-        this.lastUpdated = SystemClock.uptimeMillis();
-    }
-
-    @Override
-    public void putTodayForecast(HourlyForecast hours) {
-        this.hourlyForecast = hours;
+    public void putForecast(CityWeather cityWeather) {
+        this.cityWeather = cityWeather;
         this.lastUpdated = SystemClock.uptimeMillis();
     }
 }

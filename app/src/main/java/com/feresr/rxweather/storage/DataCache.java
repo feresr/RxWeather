@@ -2,9 +2,7 @@ package com.feresr.rxweather.storage;
 
 
 
-import com.feresr.rxweather.models.DailyForecast;
-import com.feresr.rxweather.models.HourlyForecast;
-import com.feresr.rxweather.models.Today;
+import com.feresr.rxweather.models.CityWeather;
 
 import rx.Observable;
 
@@ -24,13 +22,7 @@ public interface DataCache {
      */
     void evictAll();
 
-    void putNextDaysForecast(DailyForecast days);
-    void putTodayWeather(Today today);
-    void putTodayForecast(HourlyForecast hours);
+    void putForecast(CityWeather forecast);
 
-    Observable<DailyForecast> getDailyForecast();
-
-    Observable<HourlyForecast> getHourlyForecast();
-
-    Observable<Today> getTodaysWeather();
+    Observable<CityWeather> getForecast();
 }

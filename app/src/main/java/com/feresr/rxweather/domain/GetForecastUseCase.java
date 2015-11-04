@@ -1,6 +1,6 @@
 package com.feresr.rxweather.domain;
 
-import com.feresr.rxweather.models.Day;
+import com.feresr.rxweather.models.CityWeather;
 import com.feresr.rxweather.repository.Repository;
 
 import javax.inject.Inject;
@@ -12,20 +12,18 @@ import rx.schedulers.Schedulers;
 /**
  * Created by Fernando on 14/10/2015.
  */
-public class GetForecastUseCase implements UseCase<Day> {
+public class GetForecastUseCase implements UseCase<CityWeather> {
 
     private final Repository repository;
-    private final String cityName;
 
     @Inject
     GetForecastUseCase(Repository repository) {
         this.repository = repository;
-        this.cityName = "San Francisco Argentina, AR";
     }
 
     @Override
-    public Observable<Day> execute() {
-        return repository.getForecast(cityName)
+    public Observable<CityWeather> execute() {
+        return repository.getForecast("-31.4286", "-61.9143")
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread());
     }
