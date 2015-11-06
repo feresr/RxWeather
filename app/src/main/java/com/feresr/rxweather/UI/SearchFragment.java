@@ -35,7 +35,7 @@ public class SearchFragment extends Fragment implements TextWatcher, RecyclerIte
     private EditText searchEditText;
     private RecyclerView suggestionsRecyclerView;
     private GoogleApiClientProvider googleApiClientProvider;
-    private CitiesAdapter suggestionAdapter;
+    private SuggestionAdapter suggestionAdapter;
     private AutocompleteFilter filter;
     private PendingResult<AutocompletePredictionBuffer> result;
     private FragmentInteractionsListener listener;
@@ -54,8 +54,8 @@ public class SearchFragment extends Fragment implements TextWatcher, RecyclerIte
         searchEditText = (EditText) view.findViewById(R.id.search);
         suggestionsRecyclerView = (RecyclerView) view.findViewById(R.id.suggestions_recyclerview);
         searchEditText.addTextChangedListener(this);
-
-        suggestionAdapter = new CitiesAdapter(getActivity());
+        searchEditText.requestFocus();
+        suggestionAdapter = new SuggestionAdapter(getActivity());
         suggestionsRecyclerView.setAdapter(suggestionAdapter);
         suggestionsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         suggestionsRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), this));

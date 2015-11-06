@@ -1,9 +1,11 @@
 package com.feresr.rxweather.models;
 
+import io.realm.RealmObject;
+
 /**
  * Created by Fernando on 5/11/2015.
  */
-public class City {
+public class City extends RealmObject {
     private String id;
     private String name;
     private Double lat;

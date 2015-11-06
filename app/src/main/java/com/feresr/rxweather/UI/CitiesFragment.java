@@ -20,12 +20,12 @@ import com.feresr.rxweather.R;
  */
 public class CitiesFragment extends Fragment {
 
-    RecyclerView citiesRecyclerView;
-    CitiesAdapter adapter;
-    RecyclerView.LayoutManager layoutManager;
-    FloatingActionButton addCityFab;
+    private RecyclerView citiesRecyclerView;
+    private CitiesAdapter adapter;
+    private RecyclerView.LayoutManager layoutManager;
+    private FloatingActionButton addCityFab;
 
-    private PlaceSearchListener placeSearchListener;
+    private FragmentInteractionsListener placeSearchListener;
 
     public CitiesFragment() {
         // Required empty public constructor
@@ -44,7 +44,7 @@ public class CitiesFragment extends Fragment {
         citiesRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), new RecyclerItemClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                placeSearchListener.onPlaceSuggestionSelected(adapter.getCities().get(position).getId());
+                placeSearchListener.onCitySelected(adapter.getCities().get(position));
 
             }
         }));
@@ -60,6 +60,8 @@ public class CitiesFragment extends Fragment {
                 ft.commit();
             }
         });
+
+        updateCities();
         return view;
     }
 
@@ -67,15 +69,13 @@ public class CitiesFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         try {
-            placeSearchListener = (PlaceSearchListener) context;
+            placeSearchListener = (FragmentInteractionsListener) context;
         } catch (ClassCastException e) {
             e.printStackTrace();
         }
-
     }
 
-    public interface PlaceSearchListener {
-        public void onPlaceSuggestionSelected(String placeId);
+    public void updateCities() {
+        adapter.update();
     }
-
 }

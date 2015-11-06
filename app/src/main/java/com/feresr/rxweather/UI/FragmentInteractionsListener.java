@@ -7,4 +7,5 @@ import com.feresr.rxweather.models.City;
  */
 public interface FragmentInteractionsListener {
     void onCitySuggestionSelected(City city);
+    void onCitySelected(City city);
 }

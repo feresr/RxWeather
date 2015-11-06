@@ -12,40 +12,27 @@ import com.feresr.rxweather.models.City;
 
 import java.util.ArrayList;
 
-import io.realm.Realm;
-import io.realm.RealmResults;
-
 /**
  * Created by Fernando on 4/11/2015.
  */
-public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.ViewHolder> {
+public class SuggestionAdapter extends RecyclerView.Adapter<SuggestionAdapter.ViewHolder> {
 
     private ArrayList<City> cities;
     private LayoutInflater inflater;
-    private Context context;
 
-    public CitiesAdapter(Context context) {
+    public SuggestionAdapter(Context context) {
         super();
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         cities = new ArrayList<>();
-        this.context = context;
+    }
+
+    public void setCities(ArrayList<City> cities) {
+        this.cities = cities;
+        notifyDataSetChanged();
     }
 
     public ArrayList<City> getCities() {
         return this.cities;
-    }
-
-
-
-    public void update() {
-        Realm realm = Realm.getInstance(context);
-        RealmResults<City> query = realm.where(City.class)
-                .findAll();
-        cities.clear();
-        for (City city : query) {
-            cities.add(city);
-        }
-        notifyDataSetChanged();
     }
 
     @Override

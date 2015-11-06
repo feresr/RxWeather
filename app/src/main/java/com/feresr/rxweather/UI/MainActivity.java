@@ -1,5 +1,6 @@
 package com.feresr.rxweather.UI;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -7,6 +8,8 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 import com.feresr.rxweather.R;
 import com.feresr.rxweather.RxWeatherApplication;
@@ -22,7 +25,9 @@ import com.google.android.gms.common.data.DataBufferUtils;
 import com.google.android.gms.location.places.PlaceBuffer;
 import com.google.android.gms.location.places.Places;
 
-public class MainActivity extends AppCompatActivity implements HasComponent<WeatherApiComponent>, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, CitiesFragment.PlaceSearchListener, GoogleApiClientProvider, FragmentInteractionsListener {
+import io.realm.Realm;
+
+public class MainActivity extends AppCompatActivity implements HasComponent<WeatherApiComponent>, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, GoogleApiClientProvider, FragmentInteractionsListener {
 
     private final boolean DEVELOPER_MODE = true;
     private WeatherApiComponent weatherComponent;
@@ -112,32 +117,56 @@ public class MainActivity extends AppCompatActivity implements HasComponent<Weat
     }
 
     @Override
-    public void onPlaceSuggestionSelected(String placeId) {
-
-    }
-
-    @Override
     public GoogleApiClient getApiClient() {
         return googleApiClient;
     }
 
     @Override
     public void onCitySuggestionSelected(City city) {
+
+        View view = this.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+
         getSupportFragmentManager().popBackStack();
+        final Context context = this;
+
         if (googleApiClient.isConnected()) {
-            final Intent i = new Intent(this, WeatherDetailActivity.class);
             Places.GeoDataApi.getPlaceById(googleApiClient, city.getId()).setResultCallback(new ResultCallback<PlaceBuffer>() {
                 @Override
                 public void onResult(PlaceBuffer places) {
                     if (places != null && places.get(0) != null) {
                         places.get(0).getLatLng();
 
-                        //if PHONE
-                        i.putExtra("lat", places.get(0).getLatLng().latitude);
-                        i.putExtra("lon", places.get(0).getLatLng().longitude);
-                        startActivity(i);
+                        Realm realm = Realm.getInstance(context);
+                        realm.beginTransaction();
+                        City city = realm.createObject(City.class);
+                        city.setName(places.get(0).getName().toString());
+                        city.setId(places.get(0).getId());
+                        city.setLat(places.get(0).getLatLng().latitude);
+                        city.setLon(places.get(0).getLatLng().longitude);
+                        realm.commitTransaction();
+                        ((CitiesFragment) getSupportFragmentManager().findFragmentById(R.id.fragment)).updateCities();
 
-                        //TODO: if TABLET
+                        DataBufferUtils.freezeAndClose(places);
+                    }
+
+                }
+            });
+        }
+    }
+
+    @Override
+    public void onCitySelected(City city) {
+        //if PHONE
+        Intent i = new Intent(this, WeatherDetailActivity.class);
+        i.putExtra("lat", city.getLat());
+        i.putExtra("lon", city.getLon());
+        startActivity(i);
+
+        //TODO: if TABLET
 /*                        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                         ForecastFragment fragment = new ForecastFragment();
                         Bundle bundle = new Bundle();
@@ -148,11 +177,5 @@ public class MainActivity extends AppCompatActivity implements HasComponent<Weat
                         ft.replace(R.id.fragment, fragment, null);
                         ft.addToBackStack(null);
                         ft.commit();*/
-                        DataBufferUtils.freezeAndClose(places);
-                    }
-
-                }
-            });
-        }
     }
 }
