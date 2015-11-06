@@ -16,6 +16,7 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBi6migqAVncDWr9o4gYmB9_8gFF9s5nGw" />
+
         <activity
             android:name=".UI.MainActivity"
             android:label="@string/app_name"
@@ -23,10 +24,19 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".UI.WeatherDetailActivity"
+            android:parentActivityName=".UI.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".UI.MainActivity" />
 
+        </activity>
     </application>
 
 </manifest>

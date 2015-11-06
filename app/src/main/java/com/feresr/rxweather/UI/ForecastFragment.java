@@ -38,7 +38,9 @@ public class ForecastFragment extends BaseFragment implements ForecastView {
     private void initialize() {
         this.getComponent(WeatherApiComponent.class).inject(this);
         presenter.attachView(this);
-        presenter.attachIncomingArg(getArguments());
+        if (getArguments() != null) {
+            presenter.attachIncomingArg(getArguments());
+        }
         presenter.onCreate();
     }
 

@@ -1,13 +1,11 @@
 package com.feresr.rxweather.UI;
 
-import android.app.SearchManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 
 import com.feresr.rxweather.R;
@@ -65,15 +63,7 @@ public class MainActivity extends AppCompatActivity implements HasComponent<Weat
                 .addOnConnectionFailedListener(this)
                 .build();
 
-        handleSearch(getIntent());
         initializeDependencies();
-    }
-
-    private void handleSearch(Intent intent) {
-        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-            String query = intent.getStringExtra(SearchManager.QUERY);
-            Log.e("TAG", query);
-        }
     }
 
     private void initializeDependencies() {
@@ -92,12 +82,6 @@ public class MainActivity extends AppCompatActivity implements HasComponent<Weat
     protected void onStop() {
         googleApiClient.disconnect();
         super.onStop();
-    }
-
-    @Override
-    protected void onNewIntent(Intent intent) {
-        setIntent(intent);
-        handleSearch(intent);
     }
 
     @Override
@@ -141,12 +125,20 @@ public class MainActivity extends AppCompatActivity implements HasComponent<Weat
     public void onCitySuggestionSelected(City city) {
         getSupportFragmentManager().popBackStack();
         if (googleApiClient.isConnected()) {
+            final Intent i = new Intent(this, WeatherDetailActivity.class);
             Places.GeoDataApi.getPlaceById(googleApiClient, city.getId()).setResultCallback(new ResultCallback<PlaceBuffer>() {
                 @Override
                 public void onResult(PlaceBuffer places) {
                     if (places != null && places.get(0) != null) {
                         places.get(0).getLatLng();
-                        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+
+                        //if PHONE
+                        i.putExtra("lat", places.get(0).getLatLng().latitude);
+                        i.putExtra("lon", places.get(0).getLatLng().longitude);
+                        startActivity(i);
+
+                        //TODO: if TABLET
+/*                        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                         ForecastFragment fragment = new ForecastFragment();
                         Bundle bundle = new Bundle();
                         bundle.putDouble("lat", places.get(0).getLatLng().latitude);
@@ -155,7 +147,7 @@ public class MainActivity extends AppCompatActivity implements HasComponent<Weat
                         fragment.setArguments(bundle);
                         ft.replace(R.id.fragment, fragment, null);
                         ft.addToBackStack(null);
-                        ft.commit();
+                        ft.commit();*/
                         DataBufferUtils.freezeAndClose(places);
                     }
 
