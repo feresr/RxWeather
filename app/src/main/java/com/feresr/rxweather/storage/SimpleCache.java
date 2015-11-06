@@ -16,7 +16,7 @@ import rx.Subscriber;
 @Singleton
 public class SimpleCache implements DataCache {
 
-    private static final long EXPIRATION_TIME = 60 * 1000;
+    private static final long EXPIRATION_TIME = 4 * 1000;//60 * 1000;
 
     private long lastUpdated = 0;
     private CityWeather cityWeather;

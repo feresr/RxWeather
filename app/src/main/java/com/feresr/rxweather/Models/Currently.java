@@ -20,8 +20,8 @@ public class Currently extends DisplayWeatherInfo {
     private Double dewPoint;
     private Double humidity;
     private Double windSpeed;
-    private Integer windBearing;
-    private Integer cloudCover;
+    private Double windBearing;
+    private Double cloudCover;
     private Double pressure;
     private Double ozone;
 
@@ -186,28 +186,28 @@ public class Currently extends DisplayWeatherInfo {
     /**
      * @return The windBearing
      */
-    public Integer getWindBearing() {
+    public Double getWindBearing() {
         return windBearing;
     }
 
     /**
      * @param windBearing The windBearing
      */
-    public void setWindBearing(Integer windBearing) {
+    public void setWindBearing(Double windBearing) {
         this.windBearing = windBearing;
     }
 
     /**
      * @return The cloudCover
      */
-    public Integer getCloudCover() {
+    public Double getCloudCover() {
         return cloudCover;
     }
 
     /**
      * @param cloudCover The cloudCover
      */
-    public void setCloudCover(Integer cloudCover) {
+    public void setCloudCover(Double cloudCover) {
         this.cloudCover = cloudCover;
     }
 

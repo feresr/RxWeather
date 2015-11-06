@@ -1,6 +1,6 @@
 package com.feresr.rxweather.presenters;
 
-import android.content.Intent;
+import android.os.Bundle;
 
 import com.feresr.rxweather.presenters.views.View;
 
@@ -17,7 +17,7 @@ public interface Presenter {
 
     void attachView(View v);
 
-    void attachIncomingIntent(Intent intent);
+    void attachIncomingArg(Bundle intent);
 
     void onCreate();
 }

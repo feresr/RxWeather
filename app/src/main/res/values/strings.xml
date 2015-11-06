@@ -29,4 +29,9 @@
     <string name="strong_wind">&#xf050;</string>
     <string name="city_country_name">%1$s %2$s</string>
 
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="search_hint">Search cities</string>
+    <string name="search_city_hint">Search city, state or province</string>
+
 </resources>

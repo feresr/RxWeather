@@ -10,7 +10,7 @@ public class CityWeather {
     private Double latitude;
     private Double longitude;
     private String timezone;
-    private Integer offset;
+    private Double offset;
     private Currently currently;
     private Hourly hourly;
     private Daily daily;
@@ -62,14 +62,14 @@ public class CityWeather {
     /**
      * @return The offset
      */
-    public Integer getOffset() {
+    public Double getOffset() {
         return offset;
     }
 
     /**
      * @param offset The offset
      */
-    public void setOffset(Integer offset) {
+    public void setOffset(Double offset) {
         this.offset = offset;
     }
 

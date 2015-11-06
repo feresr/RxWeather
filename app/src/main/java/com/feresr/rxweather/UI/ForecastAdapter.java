@@ -127,8 +127,8 @@ public class ForecastAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
 //                    currentlyViewHolder.city.setText(String.format(context.getResources().getString(R.string.city_country_name),
 //                            today.getName(), today.getSys().getCountry()));
-                currentlyViewHolder.description.setText(currently.getSummary());
-                currentlyViewHolder.temp.setText(currently.getTemperature() + " °");
+                currentlyViewHolder.description.setText(currently.getSummary().toUpperCase());
+                currentlyViewHolder.temp.setText(Math.round(currently.getTemperature()) + "°");
                 currentlyViewHolder.humidity.setValue(currently.getHumidity() * 100 + "%");
                 currentlyViewHolder.wind.setValue(currently.getWindSpeed() + " m/s");
                 currentlyViewHolder.pressure.setValue(currently.getPressure() + " kPa");
@@ -152,31 +152,37 @@ public class ForecastAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             case DAY:
                 Day day = (Day) weatherInfo.get(position);
                 DayViewHolder holder = (DayViewHolder) viewHolder;
-                holder.dayName.setText(new SimpleDateFormat("EEEE", new Locale("EN")).format(new Date(day.getTime() * 1000L)).toUpperCase());
                 holder.main.setText(day.getSummary());
                 holder.tempMax.setText(day.getTemperatureMax() + "°");
                 holder.tempMin.setText(day.getTemperatureMin() + "°");
                 holder.icon.setText(day.getIcon(context));
 
+
                 //First
                 if (day == ((Daily) weatherInfo.get(2)).getDays().get(0)) {
                     LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                     params.setMargins(groupLeftRightMargin, groupTopBottomMargin, groupLeftRightMargin, 0);
+                    holder.dayName.setText("TODAY");
 
                     holder.view.setLayoutParams(params);
                     holder.view.setUpperRadius(10);
                     holder.view.setLowerRadius(0);
-                } else if (day == ((Daily) weatherInfo.get(2)).getDays().get(7)) {
+                }
+                else if (day == ((Daily) weatherInfo.get(2)).getDays().get(7)) {
                     holder.view.setLowerRadius(10);
                     holder.view.setUpperRadius(0);
-
+                    holder.dayName.setText(new SimpleDateFormat("EEEE", new Locale("EN")).format(new Date(day.getTime() * 1000L)).toUpperCase());
                     LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                     params.setMargins(groupLeftRightMargin, 0, groupLeftRightMargin, groupTopBottomMargin);
                     holder.view.setLayoutParams(params);
                 } else {
                     holder.view.setUpperRadius(0);
                     holder.view.setLowerRadius(0);
-
+                    if (day == ((Daily) weatherInfo.get(2)).getDays().get(1)) {
+                        holder.dayName.setText("TOMORROW");
+                    } else {
+                        holder.dayName.setText(new SimpleDateFormat("EEEE", new Locale("EN")).format(new Date(day.getTime() * 1000L)).toUpperCase());
+                    }
                     LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                     params.setMargins(groupLeftRightMargin, 0, groupLeftRightMargin, 0);
                     holder.view.setLayoutParams(params);

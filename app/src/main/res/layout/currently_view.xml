@@ -3,53 +3,55 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginBottom="5dp"
     android:layout_marginLeft="10dp"
     android:layout_marginRight="10dp"
     android:layout_marginTop="5dp"
-    android:layout_marginBottom="5dp">
+    app:contentPadding="14dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        <TextView
+            android:id="@+id/city"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Right Now"
+            android:textColor="@color/normal_text"
+            android:textSize="16dp"
+            android:textStyle="bold" />
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
-            android:paddingTop="20dp">
-
-            <TextView
-                android:id="@+id/main_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="IC"
-                android:layout_marginRight="10dp"
-                android:textSize="30sp" />
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
 
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/city"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Sydney NSW"
-                    android:textColor="@color/normal_text"
-                    android:textSize="16dp"
-                    android:textStyle="bold" />
+                    android:id="@+id/main_icon"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="IC"
+                    android:textSize="100sp" />
 
                 <TextView
                     android:id="@+id/description"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Light Snow"
+                    android:gravity="center"
+                    android:text="LIGHT SNOW"
                     android:textColor="@color/light_text"
-                    android:textSize="12dp" />
+                    android:textSize="14dp" />
             </LinearLayout>
 
             <TextView
@@ -57,19 +59,22 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:gravity="right"
-                android:text="12 °"
+                android:gravity="center"
+                android:text="12°"
                 android:textColor="@color/normal_text"
-                android:textSize="24dp"
+                android:textSize="86dp"
                 android:textStyle="bold" />
-
         </LinearLayout>
+
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="20dp">
+            android:paddingLeft="20dp"
+
+            android:paddingRight="20dp"
+            android:paddingTop="20dp">
 
             <com.feresr.rxweather.UI.views.InfoDisplay
                 android:id="@+id/humidity"
@@ -99,7 +104,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#ececec"
             android:orientation="horizontal"
             android:padding="20dp">
 

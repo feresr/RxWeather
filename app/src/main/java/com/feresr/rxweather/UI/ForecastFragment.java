@@ -23,20 +23,22 @@ public class ForecastFragment extends BaseFragment implements ForecastView {
 
     @Inject
     ForecastPresenter presenter;
-
     ForecastAdapter adapter;
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
 
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
         initialize();
     }
 
     private void initialize() {
         this.getComponent(WeatherApiComponent.class).inject(this);
         presenter.attachView(this);
+        presenter.attachIncomingArg(getArguments());
         presenter.onCreate();
     }
 
@@ -68,4 +70,5 @@ public class ForecastFragment extends BaseFragment implements ForecastView {
     public void addForecast(CityWeather s) {
         adapter.addForecast(s);
     }
+
 }
