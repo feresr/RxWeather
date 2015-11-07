@@ -2,6 +2,7 @@ package com.feresr.rxweather.injector;
 
 import com.feresr.rxweather.UI.CitiesFragment;
 import com.feresr.rxweather.UI.ForecastFragment;
+import com.feresr.rxweather.UI.SearchFragment;
 import com.feresr.rxweather.injector.modules.ActivityModule;
 import com.feresr.rxweather.injector.modules.EndpointsModule;
 
@@ -16,4 +17,5 @@ import dagger.Component;
 public interface WeatherApiComponent {
     void inject(ForecastFragment fragment);
     void inject(CitiesFragment fragment);
+    void inject(SearchFragment fragment);
 }

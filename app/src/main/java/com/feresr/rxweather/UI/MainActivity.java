@@ -20,12 +20,7 @@ import com.feresr.rxweather.injector.modules.ActivityModule;
 import com.feresr.rxweather.models.City;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.data.DataBufferUtils;
-import com.google.android.gms.location.places.PlaceBuffer;
 import com.google.android.gms.location.places.Places;
-
-import io.realm.Realm;
 
 public class MainActivity extends AppCompatActivity implements HasComponent<WeatherApiComponent>, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, GoogleApiClientProvider, FragmentInteractionsListener {
 
@@ -124,6 +119,8 @@ public class MainActivity extends AppCompatActivity implements HasComponent<Weat
     @Override
     public void onCitySuggestionSelected(City city) {
 
+        getSupportFragmentManager().popBackStack();
+
         //Hide soft keyboard
         View view = this.getCurrentFocus();
         if (view != null) {
@@ -131,32 +128,9 @@ public class MainActivity extends AppCompatActivity implements HasComponent<Weat
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
 
-        getSupportFragmentManager().popBackStack();
-        final Context context = this;
+        getSupportFragmentManager().executePendingTransactions();
+        ((CitiesFragment) getSupportFragmentManager().findFragmentById(R.id.fragment)).presenter.addNewCity(city);
 
-        if (googleApiClient.isConnected()) {
-            Places.GeoDataApi.getPlaceById(googleApiClient, city.getId()).setResultCallback(new ResultCallback<PlaceBuffer>() {
-                @Override
-                public void onResult(PlaceBuffer places) {
-                    if (places != null && places.get(0) != null) {
-                        places.get(0).getLatLng();
-
-                        Realm realm = Realm.getInstance(context);
-                        realm.beginTransaction();
-                        City city = realm.createObject(City.class);
-                        city.setName(places.get(0).getName().toString());
-                        city.setId(places.get(0).getId());
-                        city.setLat(places.get(0).getLatLng().latitude);
-                        city.setLon(places.get(0).getLatLng().longitude);
-                        realm.commitTransaction();
-
-                        DataBufferUtils.freezeAndClose(places);
-                        ((CitiesFragment) getSupportFragmentManager().findFragmentById(R.id.fragment)).presenter.addNewCity(city);
-                    }
-
-                }
-            });
-        }
     }
 
     @Override

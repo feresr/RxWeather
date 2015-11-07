@@ -1,5 +1,6 @@
 package com.feresr.rxweather.storage;
 
+import android.content.Context;
 import android.os.SystemClock;
 
 import com.feresr.rxweather.models.City;
@@ -21,15 +22,15 @@ import rx.Subscriber;
 @Singleton
 public class SimpleCache implements DataCache {
 
-    private static final long EXPIRATION_TIME = 1000;//60 * 1000;
+    private static final long EXPIRATION_TIME = 10 * 1000;//60 * 1000;
 
     private long lastUpdated = 0;
     private CityWeather cityWeather;
-    private Realm realm;
+    private Context context;
 
     @Inject
-    public SimpleCache(Realm realm) {
-        this.realm = realm;
+    public SimpleCache(Context context) {
+        this.context = context;
     }
 
     @Override
@@ -56,14 +57,51 @@ public class SimpleCache implements DataCache {
 
     @Override
     public Observable<City> getCities() {
-        RealmResults<City> query = realm.where(City.class)
-                .findAll();
-        ArrayList<City> cities = new ArrayList<>();
-        for (City city :
-                query) {
-            cities.add(city);
-        }
-        return Observable.from(cities);
+        return Observable.create(new Observable.OnSubscribe<City>() {
+            @Override
+            public void call(Subscriber<? super City> subscriber) {
+                try {
+                    Realm realm = Realm.getInstance(context);
+                    RealmResults<City> query = realm.where(City.class)
+                            .findAll();
+                    for (City city : query) {
+                        subscriber.onNext(copyCity(city));
+                    }
+                    realm.close();
+                } catch (Exception e) {
+                    subscriber.onError(e);
+                }
+                subscriber.onCompleted();
+            }
+        });
+
+    }
+
+    @Override
+    public Observable<City> putCity(final String id, final String name, final Double lat, final Double lon) {
+        return Observable.create(new Observable.OnSubscribe<City>() {
+            @Override
+            public void call(Subscriber<? super City> subscriber) {
+                try {
+                    Realm realm = Realm.getInstance(context);
+                    realm.beginTransaction();
+                    City city = realm.createObject(City.class);
+                    city.setName(name);
+                    city.setId(id);
+                    city.setLat(lat);
+                    city.setLon(lon);
+
+                    City city1 = copyCity(city);
+
+                    realm.commitTransaction();
+                    realm.close();
+                    subscriber.onNext(city1);
+                } catch (Exception e) {
+                    subscriber.onError(e);
+                }
+                subscriber.onCompleted();
+            }
+        });
     }
 
     @Override
@@ -75,5 +113,14 @@ public class SimpleCache implements DataCache {
     public void putForecast(CityWeather cityWeather) {
         this.cityWeather = cityWeather;
         this.lastUpdated = SystemClock.uptimeMillis();
+    }
+
+    private City copyCity(City city) {
+        City city1 = new City();
+        city1.setName(city.getName());
+        city1.setId(city.getId());
+        city1.setLat(city.getLat());
+        city1.setLon(city.getLon());
+        return city1;
     }
 }

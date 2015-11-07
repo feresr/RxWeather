@@ -28,4 +28,6 @@ public interface DataCache {
     Observable<CityWeather> getForecast();
 
     Observable<City> getCities();
+
+    Observable<City> putCity(String id, String name, Double lat, Double lon);
 }

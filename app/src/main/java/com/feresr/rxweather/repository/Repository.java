@@ -11,4 +11,5 @@ import rx.Observable;
 public interface Repository {
     Observable<CityWeather> getForecast(String lat, String lon);
     Observable<City> getCities();
+    Observable<City> saveCity(String id, String name, Double lat, Double lon);
 }

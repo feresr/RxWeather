@@ -30,4 +30,10 @@ public class RepositoryImp implements Repository {
         DiskDataSource diskDataSource = dataStorageFactory.getDiskDataSource();
         return diskDataSource.getCities();
     }
+
+    @Override
+    public Observable<City> saveCity(String id, String name, Double lat, Double lon) {
+        DiskDataSource diskDataSource = dataStorageFactory.getDiskDataSource();
+        return diskDataSource.saveCity(id, name, lat, lon);
+    }
 }

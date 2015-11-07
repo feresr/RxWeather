@@ -2,15 +2,18 @@ package com.feresr.rxweather.models;
 
 import io.realm.RealmObject;
 import io.realm.annotations.Ignore;
+
 /**
  * Created by Fernando on 5/11/2015.
  */
 public class City extends RealmObject {
+
     private String id;
     private String name;
     private Double lat;
     private Double lon;
-    @Ignore private CityWeather cityWeather;
+    @Ignore
+    private CityWeather cityWeather;
 
     public String getId() {
         return id;
@@ -51,4 +54,5 @@ public class City extends RealmObject {
     public void setCityWeather(CityWeather cityWeather) {
         this.cityWeather = cityWeather;
     }
+
 }
