@@ -124,9 +124,10 @@ public class MainActivity extends AppCompatActivity implements HasComponent<Weat
     @Override
     public void onCitySuggestionSelected(City city) {
 
+        //Hide soft keyboard
         View view = this.getCurrentFocus();
         if (view != null) {
-            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
 
@@ -148,9 +149,9 @@ public class MainActivity extends AppCompatActivity implements HasComponent<Weat
                         city.setLat(places.get(0).getLatLng().latitude);
                         city.setLon(places.get(0).getLatLng().longitude);
                         realm.commitTransaction();
-                        ((CitiesFragment) getSupportFragmentManager().findFragmentById(R.id.fragment)).updateCities();
 
                         DataBufferUtils.freezeAndClose(places);
+                        ((CitiesFragment) getSupportFragmentManager().findFragmentById(R.id.fragment)).presenter.addNewCity(city);
                     }
 
                 }

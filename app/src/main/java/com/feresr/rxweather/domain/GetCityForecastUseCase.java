@@ -12,7 +12,7 @@ import rx.schedulers.Schedulers;
 /**
  * Created by Fernando on 14/10/2015.
  */
-public class GetForecastUseCase implements UseCase<CityWeather> {
+public class GetCityForecastUseCase implements UseCase<CityWeather> {
 
     private final Repository repository;
 
@@ -20,7 +20,7 @@ public class GetForecastUseCase implements UseCase<CityWeather> {
     private String lon;
 
     @Inject
-    GetForecastUseCase(Repository repository) {
+    GetCityForecastUseCase(Repository repository) {
         this.repository = repository;
     }
 
@@ -32,7 +32,7 @@ public class GetForecastUseCase implements UseCase<CityWeather> {
     @Override
     public Observable<CityWeather> execute() {
         return repository.getForecast(lat, lon)//("-31.4286", "-61.9143")
-        .subscribeOn(Schedulers.newThread())
+                .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread());
     }
 }

@@ -2,6 +2,7 @@ package com.feresr.rxweather.storage;
 
 
 
+import com.feresr.rxweather.models.City;
 import com.feresr.rxweather.models.CityWeather;
 
 import rx.Observable;
@@ -25,4 +26,6 @@ public interface DataCache {
     void putForecast(CityWeather forecast);
 
     Observable<CityWeather> getForecast();
+
+    Observable<City> getCities();
 }

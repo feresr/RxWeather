@@ -2,11 +2,16 @@ package com.feresr.rxweather.storage;
 
 import android.os.SystemClock;
 
+import com.feresr.rxweather.models.City;
 import com.feresr.rxweather.models.CityWeather;
+
+import java.util.ArrayList;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import io.realm.Realm;
+import io.realm.RealmResults;
 import rx.Observable;
 import rx.Subscriber;
 
@@ -16,13 +21,15 @@ import rx.Subscriber;
 @Singleton
 public class SimpleCache implements DataCache {
 
-    private static final long EXPIRATION_TIME = 4 * 1000;//60 * 1000;
+    private static final long EXPIRATION_TIME = 1000;//60 * 1000;
 
     private long lastUpdated = 0;
     private CityWeather cityWeather;
+    private Realm realm;
 
     @Inject
-    public SimpleCache() {
+    public SimpleCache(Realm realm) {
+        this.realm = realm;
     }
 
     @Override
@@ -45,6 +52,18 @@ public class SimpleCache implements DataCache {
 
             }
         });
+    }
+
+    @Override
+    public Observable<City> getCities() {
+        RealmResults<City> query = realm.where(City.class)
+                .findAll();
+        ArrayList<City> cities = new ArrayList<>();
+        for (City city :
+                query) {
+            cities.add(city);
+        }
+        return Observable.from(cities);
     }
 
     @Override

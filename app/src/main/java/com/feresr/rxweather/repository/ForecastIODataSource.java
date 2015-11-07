@@ -1,6 +1,7 @@
 package com.feresr.rxweather.repository;
 
 import com.feresr.rxweather.ForecastIOEndpoints;
+import com.feresr.rxweather.models.City;
 import com.feresr.rxweather.models.CityWeather;
 import com.feresr.rxweather.storage.DataCache;
 
@@ -33,5 +34,11 @@ public class ForecastIODataSource implements DataSource {
                 cache.putForecast(cityWeather);
             }
         });
+    }
+
+    @Override
+    public Observable<City> getCities() {
+        //We do not get cities from ForecastIO
+        return null;
     }
 }

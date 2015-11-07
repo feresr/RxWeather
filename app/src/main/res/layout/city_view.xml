@@ -2,17 +2,26 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:layout_margin="10dp"
     android:background="#080"
     android:padding="50dp">
 
     <TextView
         android:id="@+id/city_name"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="City"
         android:textSize="20dp"
         android:textColor="#fff"
+        />
+
+    <TextView
+        android:id="@+id/temp"
+        android:gravity="right"
+        android:textSize="20dp"
+        android:textColor="#fff"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         />
 </LinearLayout>

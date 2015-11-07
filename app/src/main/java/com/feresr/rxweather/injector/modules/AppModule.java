@@ -10,6 +10,7 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import io.realm.Realm;
 
 /**
  * Created by Fernando on 14/10/2015.
@@ -39,5 +40,11 @@ public class AppModule {
     @Singleton
     Context providesContext() {
         return rxWeatherApplication.getApplicationContext();
+    }
+
+    @Provides
+    @Singleton
+    Realm providesRealm() {
+        return Realm.getInstance(rxWeatherApplication);
     }
 }

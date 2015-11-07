@@ -9,6 +9,7 @@ import com.feresr.rxweather.storage.DataCache;
 import javax.inject.Singleton;
 
 import dagger.Component;
+import io.realm.Realm;
 
 /**
  * Created by Fernando on 14/10/2015.
@@ -21,4 +22,6 @@ public interface AppComponent {
     DataCache dataCache();
 
     Context context();
+
+    Realm realm();
 }

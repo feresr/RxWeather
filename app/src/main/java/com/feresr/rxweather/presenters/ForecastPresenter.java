@@ -1,12 +1,10 @@
 package com.feresr.rxweather.presenters;
 
 import android.content.Context;
-import android.content.Intent;
-import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.feresr.rxweather.domain.GetForecastUseCase;
+import com.feresr.rxweather.domain.GetCityForecastUseCase;
 import com.feresr.rxweather.models.CityWeather;
 import com.feresr.rxweather.presenters.views.ForecastView;
 import com.feresr.rxweather.presenters.views.View;
@@ -28,13 +26,13 @@ public class ForecastPresenter implements Presenter, GoogleApiClient.ConnectionC
 
     private Double lat;
     private Double lon;
-    private GetForecastUseCase forecastUseCase;
+    private GetCityForecastUseCase forecastUseCase;
     private Subscription forecastObservable;
     private ForecastView forecastView;
     private GoogleApiClient mGoogleApiClient;
 
     @Inject
-    public ForecastPresenter(GetForecastUseCase forecastUseCase, Context context) {
+    public ForecastPresenter(GetCityForecastUseCase forecastUseCase, Context context) {
         this.forecastUseCase = forecastUseCase;
         this.context = context;
     }

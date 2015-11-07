@@ -12,9 +12,6 @@ import com.feresr.rxweather.models.City;
 
 import java.util.ArrayList;
 
-import io.realm.Realm;
-import io.realm.RealmResults;
-
 /**
  * Created by Fernando on 4/11/2015.
  */
@@ -22,13 +19,11 @@ public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.ViewHolder
 
     private ArrayList<City> cities;
     private LayoutInflater inflater;
-    private Context context;
 
     public CitiesAdapter(Context context) {
         super();
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         cities = new ArrayList<>();
-        this.context = context;
     }
 
     public ArrayList<City> getCities() {
@@ -36,16 +31,19 @@ public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.ViewHolder
     }
 
 
+    public void addCity(City city) {
+        cities.add(city);
+        notifyItemInserted(cities.size() - 1);
+    }
 
-    public void update() {
-        Realm realm = Realm.getInstance(context);
-        RealmResults<City> query = realm.where(City.class)
-                .findAll();
-        cities.clear();
-        for (City city : query) {
-            cities.add(city);
+    public void updateCity(City city) {
+        for (int i = 0; i < cities.size(); i++) {
+            if (cities.get(i).getId().equals(city.getId())) {
+                cities.get(i).setCityWeather(city.getCityWeather());
+                notifyItemChanged(i);
+                return;
+            }
         }
-        notifyDataSetChanged();
     }
 
     @Override
@@ -57,6 +55,9 @@ public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.ViewHolder
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
         holder.cityName.setText(cities.get(position).getName());
+        if (cities.get(position).getCityWeather() != null) {
+            holder.temp.setText(cities.get(position).getCityWeather().getCurrently().getTemperature().toString() + "°");
+        }
     }
 
     @Override
@@ -66,10 +67,12 @@ public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.ViewHolder
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView cityName;
+        TextView temp;
 
         public ViewHolder(View itemView) {
             super(itemView);
             cityName = (TextView) itemView.findViewById(R.id.city_name);
+            temp = (TextView) itemView.findViewById(R.id.temp);
         }
     }
 }

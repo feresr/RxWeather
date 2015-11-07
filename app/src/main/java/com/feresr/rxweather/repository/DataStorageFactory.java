@@ -29,4 +29,8 @@ public class DataStorageFactory {
         }
         return dataSource;
     }
+
+    public DiskDataSource getDiskDataSource() {
+        return new DiskDataSource(cache);
+    }
 }

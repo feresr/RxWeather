@@ -1,5 +1,6 @@
 package com.feresr.rxweather.injector;
 
+import com.feresr.rxweather.UI.CitiesFragment;
 import com.feresr.rxweather.UI.ForecastFragment;
 import com.feresr.rxweather.injector.modules.ActivityModule;
 import com.feresr.rxweather.injector.modules.EndpointsModule;
@@ -13,5 +14,6 @@ import dagger.Component;
 @ActivityScope
 @Component(modules = {EndpointsModule.class, ActivityModule.class}, dependencies = AppComponent.class)
 public interface WeatherApiComponent {
-    void inject(ForecastFragment activity);
+    void inject(ForecastFragment fragment);
+    void inject(CitiesFragment fragment);
 }

@@ -1,5 +1,6 @@
 package com.feresr.rxweather.repository;
 
+import com.feresr.rxweather.models.City;
 import com.feresr.rxweather.models.CityWeather;
 
 import javax.inject.Inject;
@@ -22,5 +23,11 @@ public class RepositoryImp implements Repository {
     public Observable<CityWeather> getForecast(String lat, String lon) {
         final DataSource dataSource = this.dataStorageFactory.create();
         return dataSource.getForecast(lat, lon);
+    }
+
+    @Override
+    public Observable<City> getCities() {
+        DiskDataSource diskDataSource = dataStorageFactory.getDiskDataSource();
+        return diskDataSource.getCities();
     }
 }

@@ -1,6 +1,7 @@
 package com.feresr.rxweather.repository;
 
 
+import com.feresr.rxweather.models.City;
 import com.feresr.rxweather.models.CityWeather;
 import com.feresr.rxweather.storage.DataCache;
 
@@ -21,4 +22,10 @@ public class DiskDataSource implements DataSource {
     public Observable<CityWeather> getForecast(String lat, String lon) {
         return cache.getForecast();
     }
+
+    @Override
+    public Observable<City> getCities() {
+        return cache.getCities();
+    }
+
 }

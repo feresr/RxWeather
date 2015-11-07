@@ -13,12 +13,21 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.feresr.rxweather.R;
+import com.feresr.rxweather.injector.WeatherApiComponent;
+import com.feresr.rxweather.models.City;
+import com.feresr.rxweather.presenters.CitiesPresenter;
+import com.feresr.rxweather.presenters.CitiesView;
+
+import javax.inject.Inject;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CitiesFragment extends Fragment {
+public class CitiesFragment extends BaseFragment implements CitiesView {
+
+    @Inject
+    CitiesPresenter presenter;
 
     private RecyclerView citiesRecyclerView;
     private CitiesAdapter adapter;
@@ -61,7 +70,6 @@ public class CitiesFragment extends Fragment {
             }
         });
 
-        updateCities();
         return view;
     }
 
@@ -75,7 +83,40 @@ public class CitiesFragment extends Fragment {
         }
     }
 
-    public void updateCities() {
-        adapter.update();
+    @Override
+    public void addCity(City city) {
+        adapter.addCity(city);
+    }
+
+    @Override
+    public void updateCity(City city) {
+        adapter.updateCity(city);
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        initialize();
+    }
+
+    private void initialize() {
+        this.getComponent(WeatherApiComponent.class).inject(this);
+        presenter.attachView(this);
+        if (getArguments() != null) {
+            presenter.attachIncomingArg(getArguments());
+        }
+        presenter.onCreate();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        presenter.onPause();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        presenter.onStop();
     }
 }
