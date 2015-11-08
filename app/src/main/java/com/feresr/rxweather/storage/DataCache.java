@@ -16,16 +16,16 @@ public interface DataCache {
      *
      * @return true, the cache is expired, otherwise false.
      */
-    boolean isExpired();
+    boolean isExpired(String cityId);
 
     /**
      * Evict all elements of the cache.
      */
     void evictAll();
 
-    void putForecast(CityWeather forecast);
+    void putForecast(String cityId, CityWeather forecast);
 
-    Observable<CityWeather> getForecast();
+    Observable<CityWeather> getForecast(String cityId);
 
     Observable<City> getCities();
 

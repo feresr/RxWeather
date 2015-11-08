@@ -20,9 +20,9 @@ public class DataStorageFactory {
         this.cache = cache;
     }
 
-    public DataSource create() {
+    public DataSource create(String cityId) {
         DataSource dataSource;
-        if (this.cache.isExpired()) {
+        if (this.cache.isExpired(cityId)) {
             dataSource = lazyDataSource.get();
         } else {
             dataSource = new DiskDataSource(this.cache);

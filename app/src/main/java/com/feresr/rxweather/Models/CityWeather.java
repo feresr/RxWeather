@@ -15,7 +15,15 @@ public class CityWeather {
     private Hourly hourly;
     private Daily daily;
     private Flags flags;
+    private long fetchTime;
     private List<Alert> alerts;
+
+    public long getFetchTime() {
+        return fetchTime;
+    }
+    public void setFetchTime(long fetchTime) {
+        this.fetchTime = fetchTime;
+    }
 
     /**
      * @return The latitude

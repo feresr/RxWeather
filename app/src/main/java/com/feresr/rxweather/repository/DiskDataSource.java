@@ -19,8 +19,8 @@ public class DiskDataSource implements DataSource {
     }
 
     @Override
-    public Observable<CityWeather> getForecast(String lat, String lon) {
-        return cache.getForecast();
+    public Observable<CityWeather> getForecast(String cityId, String lat, String lon) {
+        return cache.getForecast(cityId);
     }
 
     @Override

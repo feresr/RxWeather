@@ -18,20 +18,22 @@ public class GetCityForecastUseCase implements UseCase<CityWeather> {
 
     private String lat;
     private String lon;
+    private String cityId;
 
     @Inject
     GetCityForecastUseCase(Repository repository) {
         this.repository = repository;
     }
 
-    public void setLatLon(String lat, String lon) {
+    public void setLatLon(String lat, String lon, String cityId) {
         this.lat = lat;
         this.lon = lon;
+        this.cityId = cityId;
     }
 
     @Override
     public Observable<CityWeather> execute() {
-        return repository.getForecast(lat, lon)//("-31.4286", "-61.9143")
+        return repository.getForecast(lat, lon, cityId)//("-31.4286", "-61.9143")
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread());
     }

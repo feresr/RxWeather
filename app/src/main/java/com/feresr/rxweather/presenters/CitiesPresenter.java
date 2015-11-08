@@ -74,7 +74,7 @@ public class CitiesPresenter implements Presenter {
             @Override
             public void onNext(final City city) {
                 citiesView.addCity(city);
-                getCityWeatherUseCase.setLatLon(city.getLat().toString(), city.getLon().toString());
+                getCityWeatherUseCase.setLatLon(city.getLat().toString(), city.getLon().toString(), city.getId());
 
                 subscriptions.add(getCityWeatherUseCase.execute().subscribe(new Subscriber<CityWeather>() {
                             @Override
@@ -101,7 +101,7 @@ public class CitiesPresenter implements Presenter {
 
     public void addNewCity(final City city) {
         citiesView.addCity(city);
-        getCityWeatherUseCase.setLatLon(city.getLat().toString(), city.getLon().toString());
+        getCityWeatherUseCase.setLatLon(city.getLat().toString(), city.getLon().toString(), city.getId());
 
         subscriptions.add(getCityWeatherUseCase.execute().subscribe(new Subscriber<CityWeather>() {
             @Override

@@ -26,12 +26,12 @@ public class ForecastIODataSource implements DataSource {
     }
 
     @Override
-    public Observable<CityWeather> getForecast(String lat, String lon) {
+    public Observable<CityWeather> getForecast(final String cityId, String lat, String lon) {
         String latlong = String.format("%s,%s", lat, lon);
         return endpoints.getForecast(latlong, API_KEY, "si").doOnNext(new Action1<CityWeather>() {
             @Override
             public void call(CityWeather cityWeather) {
-                cache.putForecast(cityWeather);
+                cache.putForecast(cityId, cityWeather);
             }
         });
     }

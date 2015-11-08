@@ -9,6 +9,6 @@ import rx.Observable;
  * Created by Fernando on 16/10/2015.
  */
 public interface DataSource {
-    Observable<CityWeather> getForecast(String lat, String lon);
+    Observable<CityWeather> getForecast(String cityId, String lat, String lon);
     Observable<City> getCities();
 }

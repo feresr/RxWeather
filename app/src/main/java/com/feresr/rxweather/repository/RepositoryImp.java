@@ -20,9 +20,9 @@ public class RepositoryImp implements Repository {
     }
 
 
-    public Observable<CityWeather> getForecast(String lat, String lon) {
-        final DataSource dataSource = this.dataStorageFactory.create();
-        return dataSource.getForecast(lat, lon);
+    public Observable<CityWeather> getForecast(String lat, String lon, String cityId) {
+        final DataSource dataSource = this.dataStorageFactory.create(cityId);
+        return dataSource.getForecast(cityId, lat, lon);
     }
 
     @Override

@@ -62,7 +62,7 @@ public class ForecastPresenter implements Presenter, GoogleApiClient.ConnectionC
 
     @Override
     public void attachIncomingArg(Bundle bundle) {
-        lat = bundle.getDouble("lat");
+/*        lat = bundle.getDouble("lat");
         lon = bundle.getDouble("lon");
 
         forecastUseCase.setLatLon(lat.toString(), lon.toString());
@@ -82,7 +82,7 @@ public class ForecastPresenter implements Presenter, GoogleApiClient.ConnectionC
             public void onNext(CityWeather cityWeather) {
                 forecastView.addForecast(cityWeather);
             }
-        });
+        });*/
     }
 
     @Override

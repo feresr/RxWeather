@@ -6,7 +6,7 @@ import android.os.SystemClock;
 import com.feresr.rxweather.models.City;
 import com.feresr.rxweather.models.CityWeather;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -22,35 +22,37 @@ import rx.Subscriber;
 @Singleton
 public class SimpleCache implements DataCache {
 
-    private static final long EXPIRATION_TIME = 10 * 1000;//60 * 1000;
-
-    private long lastUpdated = 0;
-    private CityWeather cityWeather;
+    private static final long EXPIRATION_TIME = 30 * 60 * 1000;
+    HashMap<String, CityWeather> weathers;
     private Context context;
 
     @Inject
     public SimpleCache(Context context) {
         this.context = context;
+        weathers = new HashMap<>();
     }
 
     @Override
-    public boolean isExpired() {
-        boolean expired = (SystemClock.uptimeMillis() - lastUpdated > EXPIRATION_TIME) ||
-                cityWeather == null;
-        if (expired) {
-            this.evictAll();
+    public boolean isExpired(String cityId) {
+        if (weathers.get(cityId) == null) {
+            return true;
         }
-        return expired;
+
+        return (SystemClock.uptimeMillis() - weathers.get(cityId).getFetchTime() > EXPIRATION_TIME);
     }
 
     @Override
-    public rx.Observable<CityWeather> getForecast() {
+    public rx.Observable<CityWeather> getForecast(final String citiId) {
         return Observable.create(new Observable.OnSubscribe<CityWeather>() {
             @Override
             public void call(Subscriber<? super CityWeather> subscriber) {
-                subscriber.onNext(cityWeather);
-                subscriber.onCompleted();
-
+                try {
+                    subscriber.onNext(weathers.get(citiId));
+                } catch (Exception e) {
+                    subscriber.onError(e);
+                } finally {
+                    subscriber.onCompleted();
+                }
             }
         });
     }
@@ -106,13 +108,13 @@ public class SimpleCache implements DataCache {
 
     @Override
     public void evictAll() {
-        cityWeather = null;
+        weathers.clear();
     }
 
     @Override
-    public void putForecast(CityWeather cityWeather) {
-        this.cityWeather = cityWeather;
-        this.lastUpdated = SystemClock.uptimeMillis();
+    public void putForecast(String cityId, CityWeather cityWeather) {
+        cityWeather.setFetchTime(SystemClock.uptimeMillis());
+        weathers.put(cityId, cityWeather);
     }
 
     private City copyCity(City city) {
