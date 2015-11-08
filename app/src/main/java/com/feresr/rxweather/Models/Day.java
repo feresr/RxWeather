@@ -5,9 +5,11 @@ import android.content.Context;
 
 import com.feresr.rxweather.R;
 
+import java.io.Serializable;
+
 import javax.annotation.Generated;
 
-public class Day extends DisplayWeatherInfo {
+public class Day extends DisplayWeatherInfo implements Serializable {
 
     private Integer time;
     private String summary;

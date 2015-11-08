@@ -3,12 +3,13 @@ package com.feresr.rxweather.models;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Generated;
 
 @Generated("org.jsonschema2pojo")
-public class Daily extends DisplayWeatherInfo {
+public class Daily extends DisplayWeatherInfo implements Serializable {
 
     private String summary;
     private String icon;

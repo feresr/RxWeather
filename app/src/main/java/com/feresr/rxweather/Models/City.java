@@ -1,12 +1,14 @@
 package com.feresr.rxweather.models;
 
+import java.io.Serializable;
+
 import io.realm.RealmObject;
 import io.realm.annotations.Ignore;
 
 /**
  * Created by Fernando on 5/11/2015.
  */
-public class City extends RealmObject {
+public class City extends RealmObject implements Serializable {
 
     private String id;
     private String name;

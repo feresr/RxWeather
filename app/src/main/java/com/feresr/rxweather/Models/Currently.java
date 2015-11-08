@@ -4,10 +4,12 @@ import android.content.Context;
 
 import com.feresr.rxweather.R;
 
+import java.io.Serializable;
+
 import javax.annotation.Generated;
 
 @Generated("org.jsonschema2pojo")
-public class Currently extends DisplayWeatherInfo {
+public class Currently extends DisplayWeatherInfo implements Serializable {
 
     private Integer time;
     private String summary;

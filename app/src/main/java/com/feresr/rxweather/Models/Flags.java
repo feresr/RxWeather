@@ -1,12 +1,13 @@
 
 package com.feresr.rxweather.models;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Generated;
 
 @Generated("org.jsonschema2pojo")
-public class Flags {
+public class Flags implements Serializable {
 
     private List<String> sources = new ArrayList<String>();
     private List<String> isdStations = new ArrayList<String>();

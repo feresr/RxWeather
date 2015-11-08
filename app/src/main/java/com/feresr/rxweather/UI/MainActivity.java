@@ -137,8 +137,7 @@ public class MainActivity extends AppCompatActivity implements HasComponent<Weat
     public void onCitySelected(City city) {
         //if PHONE
         Intent i = new Intent(this, WeatherDetailActivity.class);
-        i.putExtra("lat", city.getLat());
-        i.putExtra("lon", city.getLon());
+        i.putExtra("city", city);
         startActivity(i);
 
         //TODO: if TABLET

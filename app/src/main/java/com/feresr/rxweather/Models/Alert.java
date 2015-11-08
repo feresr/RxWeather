@@ -1,9 +1,11 @@
 package com.feresr.rxweather.models;
 
+import java.io.Serializable;
+
 /**
  * Created by Fernando on 4/11/2015.
  */
-public class Alert {
+public class Alert implements Serializable {
     private String title;
     private String description;
     private String uri;

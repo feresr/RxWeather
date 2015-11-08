@@ -27,8 +27,7 @@ public class WeatherDetailActivity extends AppCompatActivity implements HasCompo
             Intent intent = getIntent();
 
             Bundle bundle = new Bundle();
-            bundle.putDouble("lat", intent.getExtras().getDouble("lat"));
-            bundle.putDouble("lon", intent.getExtras().getDouble("lon"));
+            bundle.putSerializable("city", intent.getExtras().getSerializable("city"));
 
             fragment.setArguments(bundle);
             ft.add(R.id.container, fragment, null);

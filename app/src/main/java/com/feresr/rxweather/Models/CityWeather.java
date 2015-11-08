@@ -1,11 +1,12 @@
 package com.feresr.rxweather.models;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.annotation.Generated;
 
 @Generated("org.jsonschema2pojo")
-public class CityWeather {
+public class CityWeather implements Serializable {
 
     private Double latitude;
     private Double longitude;

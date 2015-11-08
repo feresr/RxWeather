@@ -5,10 +5,12 @@ import android.content.Context;
 
 import com.feresr.rxweather.R;
 
+import java.io.Serializable;
+
 import javax.annotation.Generated;
 
 @Generated("org.jsonschema2pojo")
-public class Hour {
+public class Hour implements Serializable {
 
     private Integer time;
     private String summary;

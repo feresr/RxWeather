@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.feresr.rxweather.domain.GetCityForecastUseCase;
+import com.feresr.rxweather.models.City;
 import com.feresr.rxweather.models.CityWeather;
 import com.feresr.rxweather.presenters.views.ForecastView;
 import com.feresr.rxweather.presenters.views.View;
@@ -62,27 +63,10 @@ public class ForecastPresenter implements Presenter, GoogleApiClient.ConnectionC
 
     @Override
     public void attachIncomingArg(Bundle bundle) {
-/*        lat = bundle.getDouble("lat");
-        lon = bundle.getDouble("lon");
-
-        forecastUseCase.setLatLon(lat.toString(), lon.toString());
-
-        forecastObservable = forecastUseCase.execute().subscribe(new Subscriber<CityWeather>() {
-            @Override
-            public void onCompleted() {
-
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                Log.e("error", e.toString());
-            }
-
-            @Override
-            public void onNext(CityWeather cityWeather) {
-                forecastView.addForecast(cityWeather);
-            }
-        });*/
+        City city = (City) bundle.getSerializable("city");
+        if (city != null) {
+            forecastView.addForecast(city.getCityWeather());
+        }
     }
 
     @Override

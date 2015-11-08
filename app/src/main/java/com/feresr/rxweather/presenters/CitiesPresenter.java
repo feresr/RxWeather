@@ -69,6 +69,7 @@ public class CitiesPresenter implements Presenter {
 
             @Override
             public void onError(Throwable e) {
+                Log.e("error", e.toString());
             }
 
             @Override
