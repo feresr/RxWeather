@@ -132,7 +132,7 @@ public class SearchPresenter implements Presenter, TextWatcher {
 
                             @Override
                             public void onError(Throwable e) {
-
+                                Log.e("error", e.toString());
                             }
 
                             @Override

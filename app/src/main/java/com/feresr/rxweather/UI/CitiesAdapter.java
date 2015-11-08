@@ -57,6 +57,8 @@ public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.ViewHolder
         holder.cityName.setText(cities.get(position).getName());
         if (cities.get(position).getCityWeather() != null) {
             holder.temp.setText(cities.get(position).getCityWeather().getCurrently().getTemperature().toString() + "°");
+        } else {
+            holder.temp.setText("");
         }
     }
 

@@ -21,7 +21,7 @@ public class GetCitiesUseCase implements UseCase<City> {
     }
     @Override
     public Observable<City> execute() {
-        return repository.getCities()
+        return repository.getCities().onBackpressureDrop()
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread());
     }

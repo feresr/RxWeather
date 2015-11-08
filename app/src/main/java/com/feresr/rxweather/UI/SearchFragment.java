@@ -6,9 +6,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,21 +17,10 @@ import com.feresr.rxweather.models.City;
 import com.feresr.rxweather.presenters.SearchPresenter;
 import com.feresr.rxweather.presenters.views.SearchView;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.PendingResult;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.data.DataBufferUtils;
-import com.google.android.gms.location.places.AutocompleteFilter;
-import com.google.android.gms.location.places.AutocompletePrediction;
-import com.google.android.gms.location.places.AutocompletePredictionBuffer;
-import com.google.android.gms.location.places.PlaceBuffer;
-import com.google.android.gms.location.places.Places;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.inject.Inject;
-
-import io.realm.Realm;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -99,6 +85,9 @@ public class SearchFragment extends BaseFragment implements SearchView, Recycler
 
     @Override
     public void onItemClick(View view, int position) {
+        if (position == -1) {
+            return;
+        }
         presenter.onCitySuggestionSelected(suggestionAdapter.getCities().get(position), listener);
     }
 
