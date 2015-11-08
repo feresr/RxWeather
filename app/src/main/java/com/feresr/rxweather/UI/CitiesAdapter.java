@@ -30,6 +30,11 @@ public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.ViewHolder
         return this.cities;
     }
 
+    public void setCities(ArrayList<City> cities) {
+        this.cities = cities;
+        notifyDataSetChanged();
+    }
+
 
     public void addCity(City city) {
         cities.add(city);

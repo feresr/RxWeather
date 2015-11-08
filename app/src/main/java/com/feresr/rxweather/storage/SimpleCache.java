@@ -6,7 +6,9 @@ import android.os.SystemClock;
 import com.feresr.rxweather.models.City;
 import com.feresr.rxweather.models.CityWeather;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -58,17 +60,19 @@ public class SimpleCache implements DataCache {
     }
 
     @Override
-    public Observable<City> getCities() {
-        return Observable.create(new Observable.OnSubscribe<City>() {
+    public Observable<List<City>> getCities() {
+        return Observable.create(new Observable.OnSubscribe<List<City>>() {
             @Override
-            public void call(Subscriber<? super City> subscriber) {
+            public void call(Subscriber<? super List<City>> subscriber) {
                 try {
+                    ArrayList<City> cities = new ArrayList<>();
                     Realm realm = Realm.getInstance(context);
                     RealmResults<City> query = realm.where(City.class)
                             .findAll();
                     for (City city : query) {
-                        subscriber.onNext(copyCity(city));
+                        cities.add(copyCity(city));
                     }
+                    subscriber.onNext(cities);
                     realm.close();
                 } catch (Exception e) {
                     subscriber.onError(e);

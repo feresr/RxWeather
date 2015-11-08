@@ -18,6 +18,9 @@ import com.feresr.rxweather.models.City;
 import com.feresr.rxweather.presenters.CitiesPresenter;
 import com.feresr.rxweather.presenters.CitiesView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.inject.Inject;
 
 
@@ -86,6 +89,11 @@ public class CitiesFragment extends BaseFragment implements CitiesView {
     @Override
     public void addCity(City city) {
         adapter.addCity(city);
+    }
+
+    @Override
+    public void addCities(List<City> cities) {
+        adapter.setCities((ArrayList) cities);
     }
 
     @Override

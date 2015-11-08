@@ -3,6 +3,8 @@ package com.feresr.rxweather.repository;
 import com.feresr.rxweather.models.City;
 import com.feresr.rxweather.models.CityWeather;
 
+import java.util.List;
+
 import rx.Observable;
 
 /**
@@ -10,6 +12,6 @@ import rx.Observable;
  */
 public interface Repository {
     Observable<CityWeather> getForecast(String lat, String lon, String cityId);
-    Observable<City> getCities();
+    Observable<List<City>> getCities();
     Observable<City> saveCity(String id, String name, Double lat, Double lon);
 }

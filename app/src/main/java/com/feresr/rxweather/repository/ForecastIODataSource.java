@@ -5,6 +5,8 @@ import com.feresr.rxweather.models.City;
 import com.feresr.rxweather.models.CityWeather;
 import com.feresr.rxweather.storage.DataCache;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import rx.Observable;
@@ -37,7 +39,7 @@ public class ForecastIODataSource implements DataSource {
     }
 
     @Override
-    public Observable<City> getCities() {
+    public Observable<List<City>> getCities() {
         //We do not get cities from ForecastIO
         return null;
     }

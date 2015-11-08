@@ -9,6 +9,8 @@ import com.feresr.rxweather.models.City;
 import com.feresr.rxweather.models.CityWeather;
 import com.feresr.rxweather.presenters.views.View;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import rx.Subscriber;
@@ -62,7 +64,7 @@ public class CitiesPresenter implements Presenter {
     @Override
     public void onCreate() {
 
-        Subscription subscription = getCitiesUseCase.execute().subscribe(new Subscriber<City>() {
+        Subscription subscription = getCitiesUseCase.execute().subscribe(new Subscriber<List<City>>() {
             @Override
             public void onCompleted() {
             }
@@ -73,11 +75,12 @@ public class CitiesPresenter implements Presenter {
             }
 
             @Override
-            public void onNext(final City city) {
-                citiesView.addCity(city);
-                getCityWeatherUseCase.setLatLon(city.getLat().toString(), city.getLon().toString(), city.getId());
-
-                getCityWeather(city);
+            public void onNext(final List<City> cities) {
+                citiesView.addCities(cities);
+                for (City city : cities) {
+                    getCityWeatherUseCase.setLatLon(city.getLat().toString(), city.getLon().toString(), city.getId());
+                    getCityWeather(city);
+                }
             }
         });
 

@@ -5,6 +5,8 @@ package com.feresr.rxweather.storage;
 import com.feresr.rxweather.models.City;
 import com.feresr.rxweather.models.CityWeather;
 
+import java.util.List;
+
 import rx.Observable;
 
 /**
@@ -27,7 +29,7 @@ public interface DataCache {
 
     Observable<CityWeather> getForecast(String cityId);
 
-    Observable<City> getCities();
+    Observable<List<City>> getCities();
 
     Observable<City> putCity(String id, String name, Double lat, Double lon);
 }
