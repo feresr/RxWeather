@@ -136,9 +136,11 @@ public class MainActivity extends AppCompatActivity implements HasComponent<Weat
     @Override
     public void onCitySelected(City city) {
         //if PHONE
-        Intent i = new Intent(this, WeatherDetailActivity.class);
-        i.putExtra("city", city);
-        startActivity(i);
+        if (city != null && city.getCityWeather() != null) {
+            Intent i = new Intent(this, WeatherDetailActivity.class);
+            i.putExtra("city", city);
+            startActivity(i);
+        }
 
         //TODO: if TABLET
 /*                        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();

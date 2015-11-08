@@ -77,23 +77,7 @@ public class CitiesPresenter implements Presenter {
                 citiesView.addCity(city);
                 getCityWeatherUseCase.setLatLon(city.getLat().toString(), city.getLon().toString(), city.getId());
 
-                subscriptions.add(getCityWeatherUseCase.execute().subscribe(new Subscriber<CityWeather>() {
-                            @Override
-                            public void onCompleted() {
-                            }
-
-                            @Override
-                            public void onError(Throwable e) {
-                                Log.e("error", e.toString());
-                            }
-
-                            @Override
-                            public void onNext(CityWeather cityWeather) {
-                                city.setCityWeather(cityWeather);
-                                citiesView.updateCity(city);
-                            }
-                        })
-                );
+                getCityWeather(city);
             }
         });
 
@@ -104,6 +88,10 @@ public class CitiesPresenter implements Presenter {
         citiesView.addCity(city);
         getCityWeatherUseCase.setLatLon(city.getLat().toString(), city.getLon().toString(), city.getId());
 
+        getCityWeather(city);
+    }
+
+    private void getCityWeather(final City city) {
         subscriptions.add(getCityWeatherUseCase.execute().subscribe(new Subscriber<CityWeather>() {
             @Override
             public void onCompleted() {
@@ -122,6 +110,5 @@ public class CitiesPresenter implements Presenter {
             }
         }));
     }
-
 
 }
