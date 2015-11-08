@@ -72,6 +72,11 @@ public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.ViewHolder
         return cities.size();
     }
 
+    public void onItemDismiss(int adapterPosition) {
+        cities.remove(adapterPosition);
+        notifyItemRemoved(adapterPosition);
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView cityName;
         TextView temp;

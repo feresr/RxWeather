@@ -38,4 +38,10 @@ public class RepositoryImp implements Repository {
         DiskDataSource diskDataSource = dataStorageFactory.getDiskDataSource();
         return diskDataSource.saveCity(id, name, lat, lon);
     }
+
+    @Override
+    public Observable removeCity(City city) {
+        DiskDataSource diskDataSource = dataStorageFactory.getDiskDataSource();
+        return diskDataSource.removeCity(city);
+    }
 }

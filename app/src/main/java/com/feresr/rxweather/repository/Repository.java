@@ -14,4 +14,6 @@ public interface Repository {
     Observable<CityWeather> getForecast(String lat, String lon, String cityId);
     Observable<List<City>> getCities();
     Observable<City> saveCity(String id, String name, Double lat, Double lon);
+
+    Observable removeCity(City city);
 }

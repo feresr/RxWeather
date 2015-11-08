@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.feresr.rxweather.domain.GetCitiesUseCase;
 import com.feresr.rxweather.domain.GetCityForecastUseCase;
+import com.feresr.rxweather.domain.RemoveCityUseCase;
 import com.feresr.rxweather.models.City;
 import com.feresr.rxweather.models.CityWeather;
 import com.feresr.rxweather.presenters.views.View;
@@ -23,15 +24,17 @@ import rx.subscriptions.CompositeSubscription;
 public class CitiesPresenter implements Presenter {
 
     private GetCityForecastUseCase getCityWeatherUseCase;
+    private RemoveCityUseCase removeCityUseCase;
     private CitiesView citiesView;
     private CompositeSubscription subscriptions;
     private GetCitiesUseCase getCitiesUseCase;
 
     @Inject
-    public CitiesPresenter(GetCitiesUseCase getCitiesUseCase, GetCityForecastUseCase getCityForecastUseCase) {
+    public CitiesPresenter(GetCitiesUseCase getCitiesUseCase, GetCityForecastUseCase getCityForecastUseCase, RemoveCityUseCase removeCityUseCase) {
         super();
         this.getCityWeatherUseCase = getCityForecastUseCase;
         this.getCitiesUseCase = getCitiesUseCase;
+        this.removeCityUseCase = removeCityUseCase;
         this.subscriptions = new CompositeSubscription();
     }
 
@@ -114,4 +117,8 @@ public class CitiesPresenter implements Presenter {
         }));
     }
 
+    public void onRemoveCity(City city) {
+        removeCityUseCase.setCity(city);
+        subscriptions.add(removeCityUseCase.execute().subscribe());
+    }
 }
