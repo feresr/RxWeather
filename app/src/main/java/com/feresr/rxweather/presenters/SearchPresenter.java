@@ -118,6 +118,7 @@ public class SearchPresenter implements Presenter, TextWatcher {
 
     public void onCitySuggestionSelected(City city, final FragmentInteractionsListener listener) {
         if (searchView.getGoogleApiClient().isConnected()) {
+            listener.onCitySuggestionSelected(city);
             Places.GeoDataApi.getPlaceById(searchView.getGoogleApiClient(), city.getId()).setResultCallback(new ResultCallback<PlaceBuffer>() {
                 @Override
                 public void onResult(PlaceBuffer places) {
@@ -127,7 +128,7 @@ public class SearchPresenter implements Presenter, TextWatcher {
                         saveCityUseCase.execute().subscribe(new Subscriber<City>() {
                             @Override
                             public void onCompleted() {
-
+                                this.unsubscribe();
                             }
 
                             @Override
@@ -137,7 +138,7 @@ public class SearchPresenter implements Presenter, TextWatcher {
 
                             @Override
                             public void onNext(City city) {
-                                listener.onCitySuggestionSelected(city);
+
                             }
                         });
                         DataBufferUtils.freezeAndClose(places);

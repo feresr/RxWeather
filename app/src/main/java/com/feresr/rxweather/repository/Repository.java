@@ -15,5 +15,5 @@ public interface Repository {
     Observable<List<City>> getCities();
     Observable<City> saveCity(String id, String name, Double lat, Double lon);
 
-    Observable removeCity(City city);
+    Observable<City> removeCity(City city);
 }

@@ -119,6 +119,21 @@ public class CitiesPresenter implements Presenter {
 
     public void onRemoveCity(City city) {
         removeCityUseCase.setCity(city);
-        subscriptions.add(removeCityUseCase.execute().subscribe());
+        removeCityUseCase.execute().subscribe(new Subscriber<City>() {
+            @Override
+            public void onCompleted() {
+                this.unsubscribe();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.e("error", e.toString());
+            }
+
+            @Override
+            public void onNext(City city) {
+                //City deleted
+            }
+        });
     }
 }

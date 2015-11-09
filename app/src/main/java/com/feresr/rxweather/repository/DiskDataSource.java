@@ -34,7 +34,7 @@ public class DiskDataSource implements DataSource {
         return cache.putCity(id, name, lat, lon);
     }
 
-    public Observable removeCity(City city) {
+    public Observable<City> removeCity(City city) {
         return cache.removeCity(city);
     }
 }

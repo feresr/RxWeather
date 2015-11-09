@@ -28,7 +28,7 @@ public class RemoveCityUseCase implements UseCase<City> {
     }
 
     @Override
-    public Observable execute() {
+    public Observable<City> execute() {
         return repository.removeCity(city)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread());

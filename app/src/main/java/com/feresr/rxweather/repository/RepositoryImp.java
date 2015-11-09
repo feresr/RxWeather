@@ -40,7 +40,7 @@ public class RepositoryImp implements Repository {
     }
 
     @Override
-    public Observable removeCity(City city) {
+    public Observable<City> removeCity(City city) {
         DiskDataSource diskDataSource = dataStorageFactory.getDiskDataSource();
         return diskDataSource.removeCity(city);
     }

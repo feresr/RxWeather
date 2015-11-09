@@ -111,15 +111,22 @@ public class SimpleCache implements DataCache {
     }
 
     @Override
-    public Observable removeCity(final City city) {
-        return Observable.create(new Observable.OnSubscribe() {
+    public Observable<City> removeCity(final City city) {
+        return Observable.create(new Observable.OnSubscribe<City>() {
             @Override
-            public void call(Object o) {
-                Realm realm = Realm.getInstance(context);
-                realm.beginTransaction();
-                realm.where(City.class).contains("id", city.getId()).findFirst().removeFromRealm();
-                realm.commitTransaction();
-                realm.close();
+            public void call(Subscriber<? super City> subscriber) {
+                try {
+                    Realm realm = Realm.getInstance(context);
+                    realm.beginTransaction();
+                    realm.where(City.class).contains("id", city.getId()).findFirst().removeFromRealm();
+                    realm.commitTransaction();
+                    realm.close();
+                    subscriber.onNext(city);
+                } catch (Exception e) {
+                    subscriber.onError(e);
+                } finally {
+                    subscriber.onCompleted();
+                }
             }
         });
     }
