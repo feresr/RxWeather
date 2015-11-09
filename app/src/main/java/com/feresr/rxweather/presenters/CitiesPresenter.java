@@ -21,8 +21,10 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
+import rx.functions.Func1;
 import rx.subscriptions.CompositeSubscription;
 
 /**
@@ -112,7 +114,13 @@ public class CitiesPresenter implements Presenter {
 
                             Place place = places.get(0);
                             saveCityUseCase.setParameters(place.getId(), place.getName().toString(), place.getLatLng().latitude, place.getLatLng().longitude);
-                            saveCityUseCase.execute().subscribe(new Subscriber<City>() {
+                            saveCityUseCase.execute().flatMap(new Func1<City, Observable<CityWeather>>() {
+                                @Override
+                                public Observable<CityWeather> call(City city) {
+                                    getCityWeatherUseCase.setLatLon(city.getLat().toString(), city.getLon().toString(), city.getId());
+                                    return getCityWeatherUseCase.execute();
+                                }
+                            }).subscribe(new Subscriber<CityWeather>() {
                                 @Override
                                 public void onCompleted() {
                                     this.unsubscribe();
@@ -120,15 +128,16 @@ public class CitiesPresenter implements Presenter {
 
                                 @Override
                                 public void onError(Throwable e) {
-                                    Log.e("error", e.toString());
+
                                 }
 
                                 @Override
-                                public void onNext(City city) {
-                                    getCityWeatherUseCase.setLatLon(city.getLat().toString(), city.getLon().toString(), city.getId());
-                                    getCityWeather(city);
+                                public void onNext(CityWeather cityWeather) {
+                                    city.setCityWeather(cityWeather);
+                                    citiesView.updateCity(city);
                                 }
                             });
+
                             DataBufferUtils.freezeAndClose(places);
 
                         }
