@@ -6,18 +6,18 @@ import android.text.TextWatcher;
 import android.util.Log;
 
 import com.feresr.rxweather.UI.FragmentInteractionsListener;
-import com.feresr.rxweather.domain.SaveCityUseCase;
+import com.feresr.rxweather.UI.RecyclerItemClickListener;
+import com.feresr.rxweather.UI.SuggestionAdapter;
 import com.feresr.rxweather.models.City;
 import com.feresr.rxweather.presenters.views.SearchView;
 import com.feresr.rxweather.presenters.views.View;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.data.DataBufferUtils;
 import com.google.android.gms.location.places.AutocompleteFilter;
 import com.google.android.gms.location.places.AutocompletePrediction;
 import com.google.android.gms.location.places.AutocompletePredictionBuffer;
-import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.PlaceBuffer;
 import com.google.android.gms.location.places.Places;
 
 import java.util.ArrayList;
@@ -25,23 +25,23 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import rx.Subscriber;
-
 /**
  * Created by Fernando on 7/11/2015.
  */
-public class SearchPresenter implements Presenter, TextWatcher {
+public class SearchPresenter implements Presenter, TextWatcher, RecyclerItemClickListener.OnItemClickListener {
 
     private SearchView searchView;
     private ArrayList<City> cities;
     private AutocompleteFilter filter;
     private PendingResult<AutocompletePredictionBuffer> result;
-    private SaveCityUseCase saveCityUseCase;
+
+    private GoogleApiClient googleApiClient;
+    private FragmentInteractionsListener fragmentInteractionListener;
+    private SuggestionAdapter suggestionAdapter;
 
     @Inject
-    public SearchPresenter(SaveCityUseCase saveCityUseCase) {
+    public SearchPresenter() {
         super();
-        this.saveCityUseCase = saveCityUseCase;
     }
 
     @Override
@@ -69,6 +69,10 @@ public class SearchPresenter implements Presenter, TextWatcher {
 
     }
 
+    public void setGoogleApiClient(GoogleApiClient googleApiClient) {
+        this.googleApiClient = googleApiClient;
+    }
+
     @Override
     public void onCreate() {
         List<Integer> filterTypes = new ArrayList<>();
@@ -84,9 +88,11 @@ public class SearchPresenter implements Presenter, TextWatcher {
 
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
-        if (searchView.getGoogleApiClient().isConnected()) {
-
-            result = Places.GeoDataApi.getAutocompletePredictions(searchView.getGoogleApiClient(), s.toString(),
+        if (googleApiClient.isConnected()) {
+            if (result != null) {
+                result.cancel();
+            }
+            result = Places.GeoDataApi.getAutocompletePredictions(googleApiClient, s.toString(),
                     null, filter);
 
             result.setResultCallback(new ResultCallback<AutocompletePredictionBuffer>() {
@@ -116,37 +122,24 @@ public class SearchPresenter implements Presenter, TextWatcher {
 
     }
 
-    public void onCitySuggestionSelected(City city, final FragmentInteractionsListener listener) {
-        if (searchView.getGoogleApiClient().isConnected()) {
-            listener.onCitySuggestionSelected(city);
-            Places.GeoDataApi.getPlaceById(searchView.getGoogleApiClient(), city.getId()).setResultCallback(new ResultCallback<PlaceBuffer>() {
-                @Override
-                public void onResult(PlaceBuffer places) {
-                    if (places != null && places.get(0) != null) {
-                        Place place = places.get(0);
-                        saveCityUseCase.setParameters(place.getId(), place.getName().toString(), place.getLatLng().latitude, place.getLatLng().longitude);
-                        saveCityUseCase.execute().subscribe(new Subscriber<City>() {
-                            @Override
-                            public void onCompleted() {
-                                this.unsubscribe();
-                            }
+    private void onCitySuggestionSelected(final City city) {
+        fragmentInteractionListener.onCitySuggestionSelected(city);
+    }
 
-                            @Override
-                            public void onError(Throwable e) {
-                                Log.e("error", e.toString());
-                            }
-
-                            @Override
-                            public void onNext(City city) {
-
-                            }
-                        });
-                        DataBufferUtils.freezeAndClose(places);
-
-                    }
-
-                }
-            });
+    @Override
+    public void onItemClick(android.view.View view, int position) {
+        if (position == -1) {
+            return;
         }
+        onCitySuggestionSelected(suggestionAdapter.getCities().get(position));
+    }
+
+
+    public void setSuggestionAdapter(SuggestionAdapter adapter) {
+        this.suggestionAdapter = adapter;
+    }
+
+    public void setFragmentInteractionListener(FragmentInteractionsListener listener) {
+        this.fragmentInteractionListener = listener;
     }
 }

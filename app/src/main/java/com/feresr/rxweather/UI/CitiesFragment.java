@@ -37,6 +37,7 @@ public class CitiesFragment extends BaseFragment implements CitiesView {
     private CitiesAdapter adapter;
     private RecyclerView.LayoutManager layoutManager;
     private FloatingActionButton addCityFab;
+    private GoogleApiClientProvider googleApiClientProvider;
 
     private FragmentInteractionsListener placeSearchListener;
 
@@ -96,6 +97,7 @@ public class CitiesFragment extends BaseFragment implements CitiesView {
         super.onAttach(context);
         try {
             placeSearchListener = (FragmentInteractionsListener) context;
+            googleApiClientProvider = (GoogleApiClientProvider) context;
         } catch (ClassCastException e) {
             e.printStackTrace();
         }
@@ -128,6 +130,7 @@ public class CitiesFragment extends BaseFragment implements CitiesView {
         if (getArguments() != null) {
             presenter.attachIncomingArg(getArguments());
         }
+        presenter.setGoogleApiClient(googleApiClientProvider.getApiClient());
         presenter.onCreate();
     }
 

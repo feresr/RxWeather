@@ -16,7 +16,6 @@ import com.feresr.rxweather.injector.WeatherApiComponent;
 import com.feresr.rxweather.models.City;
 import com.feresr.rxweather.presenters.SearchPresenter;
 import com.feresr.rxweather.presenters.views.SearchView;
-import com.google.android.gms.common.api.GoogleApiClient;
 
 import java.util.ArrayList;
 
@@ -25,7 +24,7 @@ import javax.inject.Inject;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SearchFragment extends BaseFragment implements SearchView, RecyclerItemClickListener.OnItemClickListener {
+public class SearchFragment extends BaseFragment implements SearchView {
 
     @Inject
     SearchPresenter presenter;
@@ -50,7 +49,6 @@ public class SearchFragment extends BaseFragment implements SearchView, Recycler
         suggestionAdapter = new SuggestionAdapter(getActivity());
         suggestionsRecyclerView.setAdapter(suggestionAdapter);
         suggestionsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        suggestionsRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), this));
 
         return view;
     }
@@ -67,7 +65,11 @@ public class SearchFragment extends BaseFragment implements SearchView, Recycler
         if (getArguments() != null) {
             presenter.attachIncomingArg(getArguments());
         }
+        presenter.setGoogleApiClient(googleApiClientProvider.getApiClient());
         presenter.onCreate();
+        presenter.setFragmentInteractionListener(listener);
+        presenter.setSuggestionAdapter(suggestionAdapter);
+        suggestionsRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), presenter));
         searchEditText.addTextChangedListener(presenter);
     }
 
@@ -84,14 +86,6 @@ public class SearchFragment extends BaseFragment implements SearchView, Recycler
     }
 
     @Override
-    public void onItemClick(View view, int position) {
-        if (position == -1) {
-            return;
-        }
-        presenter.onCitySuggestionSelected(suggestionAdapter.getCities().get(position), listener);
-    }
-
-    @Override
     public void onPause() {
         super.onPause();
         presenter.onPause();
@@ -101,11 +95,6 @@ public class SearchFragment extends BaseFragment implements SearchView, Recycler
     public void onStop() {
         super.onStop();
         presenter.onStop();
-    }
-
-    @Override
-    public GoogleApiClient getGoogleApiClient() {
-        return googleApiClientProvider.getApiClient();
     }
 
     @Override

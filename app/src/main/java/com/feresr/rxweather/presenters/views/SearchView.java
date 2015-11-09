@@ -9,6 +9,5 @@ import java.util.ArrayList;
  * Created by Fernando on 7/11/2015.
  */
 public interface SearchView extends View {
-    GoogleApiClient getGoogleApiClient();
     void setCities(ArrayList<City> cities);
 }
