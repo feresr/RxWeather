@@ -88,7 +88,8 @@ public class CitiesPresenter implements Presenter {
         }).subscribe(new Subscriber<City>() {
             @Override
             public void onCompleted() {
-
+                subscriptions.remove(this);
+                this.unsubscribe();
             }
 
             @Override
@@ -118,7 +119,9 @@ public class CitiesPresenter implements Presenter {
 
                             Place place = places.get(0);
                             saveCityUseCase.setParameters(place.getId(), place.getName().toString(), place.getLatLng().latitude, place.getLatLng().longitude);
-                            saveCityUseCase.execute().flatMap(new Func1<City, Observable<CityWeather>>() {
+
+                            //Touches UI, we unsubscribe when completed, but also on conf changes (subscription.unsubscribe)
+                            subscriptions.add(saveCityUseCase.execute().flatMap(new Func1<City, Observable<CityWeather>>() {
                                 @Override
                                 public Observable<CityWeather> call(City city) {
                                     getCityWeatherUseCase.setLatLon(city.getLat().toString(), city.getLon().toString(), city.getId());
@@ -127,6 +130,7 @@ public class CitiesPresenter implements Presenter {
                             }).subscribe(new Subscriber<CityWeather>() {
                                 @Override
                                 public void onCompleted() {
+                                    subscriptions.remove(this);
                                     this.unsubscribe();
                                 }
 
@@ -140,7 +144,7 @@ public class CitiesPresenter implements Presenter {
                                     city.setCityWeather(cityWeather);
                                     citiesView.updateCity(city);
                                 }
-                            });
+                            }));
 
                             DataBufferUtils.freezeAndClose(places);
 
@@ -155,10 +159,12 @@ public class CitiesPresenter implements Presenter {
     }
 
     private void getCityWeather(final City city) {
+        //Touches UI, we unsubscribe when completed, but also on conf changes (subscription.unsubscribe)
         subscriptions.add(getCityWeatherUseCase.execute().subscribe(new Subscriber<CityWeather>() {
             @Override
             public void onCompleted() {
-
+                subscriptions.remove(this);
+                this.unsubscribe();
             }
 
             @Override
@@ -176,6 +182,8 @@ public class CitiesPresenter implements Presenter {
 
     public void onRemoveCity(City city) {
         removeCityUseCase.setCity(city);
+
+        //Does not touch UI, let it run on the background and un-subscribe by itself
         removeCityUseCase.execute().subscribe(new Subscriber<City>() {
             @Override
             public void onCompleted() {
@@ -189,7 +197,7 @@ public class CitiesPresenter implements Presenter {
 
             @Override
             public void onNext(City city) {
-                //City deleted
+                Log.e("onRemoveCity", "city removed");
             }
         });
     }
