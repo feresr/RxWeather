@@ -79,23 +79,27 @@ public class CitiesPresenter implements Presenter {
     @Override
     public void onCreate() {
 
-        Subscription subscription = getCitiesUseCase.execute().subscribe(new Subscriber<List<City>>() {
+        Subscription subscription = getCitiesUseCase.execute().flatMap(new Func1<List<City>, Observable<City>>() {
+            @Override
+            public Observable<City> call(List<City> cities) {
+                citiesView.addCities(cities);
+                return Observable.from(cities);
+            }
+        }).subscribe(new Subscriber<City>() {
             @Override
             public void onCompleted() {
+
             }
 
             @Override
             public void onError(Throwable e) {
-                Log.e("error", e.toString());
+                Log.e(this.getClass().getSimpleName(), e.toString());
             }
 
             @Override
-            public void onNext(final List<City> cities) {
-                citiesView.addCities(cities);
-                for (City city : cities) {
-                    getCityWeatherUseCase.setLatLon(city.getLat().toString(), city.getLon().toString(), city.getId());
-                    getCityWeather(city);
-                }
+            public void onNext(City city) {
+                getCityWeatherUseCase.setLatLon(city.getLat().toString(), city.getLon().toString(), city.getId());
+                getCityWeather(city);
             }
         });
 
