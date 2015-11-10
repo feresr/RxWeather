@@ -82,6 +82,11 @@ public class SearchPresenter implements Presenter, TextWatcher, RecyclerItemClic
     }
 
     @Override
+    public void onDestroy() {
+
+    }
+
+    @Override
     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
     }

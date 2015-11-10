@@ -63,7 +63,7 @@ public class SearchFragment extends BaseFragment implements SearchView {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        InputMethodManager mgr =      (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        InputMethodManager mgr = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         mgr.showSoftInput(searchEditText, InputMethodManager.SHOW_IMPLICIT);
     }
 
@@ -108,5 +108,11 @@ public class SearchFragment extends BaseFragment implements SearchView {
     @Override
     public void setCities(ArrayList<City> cities) {
         suggestionAdapter.setCities(cities);
+    }
+
+    @Override
+    public void onDestroy() {
+        presenter.onDestroy();
+        super.onDestroy();
     }
 }

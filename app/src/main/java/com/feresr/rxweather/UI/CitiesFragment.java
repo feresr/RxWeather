@@ -145,4 +145,10 @@ public class CitiesFragment extends BaseFragment implements CitiesView {
         super.onStop();
         presenter.onStop();
     }
+
+    @Override
+    public void onDestroy() {
+        presenter.onDestroy();
+        super.onDestroy();
+    }
 }

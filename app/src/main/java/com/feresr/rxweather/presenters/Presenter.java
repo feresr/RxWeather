@@ -20,4 +20,6 @@ public interface Presenter {
     void attachIncomingArg(Bundle intent);
 
     void onCreate();
+
+    void onDestroy();
 }

@@ -57,7 +57,7 @@ public class CitiesPresenter implements Presenter {
 
     @Override
     public void onStop() {
-        subscriptions.unsubscribe();
+
     }
 
     @Override
@@ -105,6 +105,11 @@ public class CitiesPresenter implements Presenter {
         });
 
         subscriptions.add(subscription);
+    }
+
+    @Override
+    public void onDestroy() {
+        subscriptions.unsubscribe();
     }
 
     public void addNewCity(final City city) {

@@ -73,4 +73,9 @@ public class ForecastFragment extends BaseFragment implements ForecastView {
         adapter.addForecast(s);
     }
 
+    @Override
+    public void onDestroy() {
+        presenter.onDestroy();
+        super.onDestroy();
+    }
 }

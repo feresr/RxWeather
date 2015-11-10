@@ -45,9 +45,6 @@ public class ForecastPresenter implements Presenter, GoogleApiClient.ConnectionC
 
     @Override
     public void onStop() {
-        if (forecastObservable != null && forecastObservable.isUnsubscribed()) {
-            forecastObservable.unsubscribe();
-        }
         mGoogleApiClient.disconnect();
     }
 
@@ -79,6 +76,13 @@ public class ForecastPresenter implements Presenter, GoogleApiClient.ConnectionC
                 .build();
 
         mGoogleApiClient.connect();
+    }
+
+    @Override
+    public void onDestroy() {
+        if (forecastObservable != null && forecastObservable.isUnsubscribed()) {
+            forecastObservable.unsubscribe();
+        }
     }
 
 
