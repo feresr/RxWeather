@@ -49,6 +49,10 @@ public class InfoDisplay extends RelativeLayout {
         ((TextView) findViewById(R.id.main)).setText(main);
     }
 
+    public void setSubValue(String sub) {
+        ((TextView) findViewById(R.id.sub)).setText(sub);
+    }
+
     private void parseAttr(Context context, AttributeSet attrs) {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.InfoDisplayWidget, 0, 0);
         main = typedArray.getString(R.styleable.InfoDisplayWidget_main);

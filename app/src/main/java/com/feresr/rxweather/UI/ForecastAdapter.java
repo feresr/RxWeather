@@ -22,6 +22,7 @@ import com.feresr.rxweather.models.Day;
 import com.feresr.rxweather.models.DisplayWeatherInfo;
 import com.feresr.rxweather.models.Hourly;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -125,16 +126,18 @@ public class ForecastAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 CurrentlyViewHolder currentlyViewHolder = (CurrentlyViewHolder) viewHolder;
                 Currently currently = (Currently) weatherInfo.get(position);
 
-//                    currentlyViewHolder.city.setText(String.format(context.getResources().getString(R.string.city_country_name),
-//                            today.getName(), today.getSys().getCountry()));
                 currentlyViewHolder.description.setText(currently.getSummary().toUpperCase());
-                currentlyViewHolder.temp.setText(Math.round(currently.getTemperature()) + "°");
-                currentlyViewHolder.humidity.setValue(currently.getHumidity() * 100 + "%");
-                currentlyViewHolder.wind.setValue(currently.getWindSpeed() + " m/s");
-                currentlyViewHolder.pressure.setValue(currently.getPressure() + " kPa");
-                currentlyViewHolder.clouds.setValue(currently.getCloudCover() * 100 + "%");
-                //currentlyViewHolder.sunrise.setValue(DateFormat.getTimeFormat(context).format(today.getSys().getSunrise()));
-                //currentlyViewHolder.sunset.setValue(DateFormat.getTimeFormat(context).format(today.getSys().getSunset()));
+                currentlyViewHolder.temp.setText(context.getString(R.string.degree, Math.round(currently.getTemperature())));
+                currentlyViewHolder.humidity.setValue(Math.round(currently.getHumidity() * 100) + "%");
+                currentlyViewHolder.wind.setValue(context.getString(R.string.km_h, Math.round(currently.getWindSpeed())));
+                currentlyViewHolder.wind.setSubValue(currently.getWindBearingString());
+
+                currentlyViewHolder.pressure.setValue(context.getString(R.string.hPa, Math.round(currently.getPressure())));
+                currentlyViewHolder.clouds.setValue(Math.round(currently.getCloudCover() * 100) + "%");
+                currentlyViewHolder.precipitation.setValue(Math.round(currently.getPrecipProbability() * 100) + "%");
+                currentlyViewHolder.precipitation.setSubValue(new DecimalFormat("#.##").format(currently.getPrecipIntensity() * 100) + "cm");
+
+                currentlyViewHolder.feelsLike.setValue(context.getString(R.string.degree, Math.round(currently.getApparentTemperature())));
                 currentlyViewHolder.icon.setText(currently.getIcon(context));
 
                 break;
@@ -251,28 +254,26 @@ public class ForecastAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     public class CurrentlyViewHolder extends RecyclerView.ViewHolder {
-        TextView city;
         TextView temp;
         TextView description;
         InfoDisplay humidity;
         InfoDisplay wind;
         InfoDisplay pressure;
         InfoDisplay clouds;
-        InfoDisplay sunrise;
-        InfoDisplay sunset;
+        InfoDisplay precipitation;
+        InfoDisplay feelsLike;
         TextView icon;
 
         public CurrentlyViewHolder(View itemView) {
             super(itemView);
-            city = (TextView) itemView.findViewById(R.id.city);
             temp = (TextView) itemView.findViewById(R.id.temp);
             description = (TextView) itemView.findViewById(R.id.description);
             humidity = (InfoDisplay) itemView.findViewById(R.id.humidity);
             wind = (InfoDisplay) itemView.findViewById(R.id.tempMax);
             pressure = (InfoDisplay) itemView.findViewById(R.id.tempMin);
             clouds = (InfoDisplay) itemView.findViewById(R.id.clouds);
-            sunrise = (InfoDisplay) itemView.findViewById(R.id.sunrise);
-            sunset = (InfoDisplay) itemView.findViewById(R.id.sunset);
+            precipitation = (InfoDisplay) itemView.findViewById(R.id.precipitation);
+            feelsLike = (InfoDisplay) itemView.findViewById(R.id.feels_like);
 
             Typeface font = Typeface.createFromAsset(context.getAssets(), "weathericons-regular-webfont.ttf");
             icon = (TextView) itemView.findViewById(R.id.main_icon);

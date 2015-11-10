@@ -192,6 +192,22 @@ public class Currently extends DisplayWeatherInfo implements Serializable {
         return windBearing;
     }
 
+    public String getWindBearingString() {
+        if (windBearing == null ) {
+            return "-";
+        }
+        if (windBearing <= 45 || windBearing > 315) {
+            return "SOUTH";
+        } else if (windBearing > 45 && windBearing <= 135) {
+            return "WEST";
+        } else if (windBearing > 135 && windBearing <= 225) {
+            return "NORTH";
+        } else if (windBearing > 225 && windBearing <= 315) {
+            return "EAST";
+        } else {
+            return "WIND";
+        }
+    }
     /**
      * @param windBearing The windBearing
      */

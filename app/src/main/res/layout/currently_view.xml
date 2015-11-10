@@ -15,10 +15,9 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/city"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Right Now"
+            android:text="RIGHT NOW"
             android:textColor="@color/normal_text"
             android:textSize="16dp"
             android:textStyle="bold" />
@@ -30,6 +29,15 @@
             android:layout_marginTop="10dp"
             android:orientation="horizontal">
 
+            <TextView
+                android:id="@+id/main_icon"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="IC"
+                android:textSize="100sp" />
+
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -37,12 +45,14 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/main_icon"
-                    android:layout_width="match_parent"
+                    android:id="@+id/temp"
                     android:layout_height="match_parent"
+                    android:layout_width="match_parent"
                     android:gravity="center"
-                    android:text="IC"
-                    android:textSize="100sp" />
+                    android:text="12°"
+                    android:textColor="@color/normal_text"
+                    android:textSize="86dp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/description"
@@ -52,18 +62,11 @@
                     android:text="LIGHT SNOW"
                     android:textColor="@color/light_text"
                     android:textSize="14dp" />
+
+
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/temp"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="12°"
-                android:textColor="@color/normal_text"
-                android:textSize="86dp"
-                android:textStyle="bold" />
+
         </LinearLayout>
 
 
@@ -116,20 +119,20 @@
                 app:sub="Cluds" />
 
             <com.feresr.rxweather.UI.views.InfoDisplay
-                android:id="@+id/sunrise"
+                android:id="@+id/precipitation"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                app:ic="&#xf051;"
-                app:sub="Rise" />
+                app:ic="&#xf084;"
+                app:sub="0.29 mm" />
 
             <com.feresr.rxweather.UI.views.InfoDisplay
-                android:id="@+id/sunset"
+                android:id="@+id/feels_like"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                app:ic="&#xf052;"
-                app:sub="Set." />
+                app:ic="&#xf055;"
+                app:sub="Feels like " />
         </LinearLayout>
     </LinearLayout>
 
