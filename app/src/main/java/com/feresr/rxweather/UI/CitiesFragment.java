@@ -5,7 +5,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -39,7 +38,7 @@ public class CitiesFragment extends BaseFragment implements CitiesView {
     private FloatingActionButton addCityFab;
     private GoogleApiClientProvider googleApiClientProvider;
 
-    private FragmentInteractionsListener placeSearchListener;
+    private FragmentInteractionsListener fragmentInteractionListener;
 
     public CitiesFragment() {
         // Required empty public constructor
@@ -55,13 +54,7 @@ public class CitiesFragment extends BaseFragment implements CitiesView {
         layoutManager = new LinearLayoutManager(getActivity());
         citiesRecyclerView.setLayoutManager(layoutManager);
         citiesRecyclerView.setAdapter(adapter);
-        citiesRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), new RecyclerItemClickListener.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                placeSearchListener.onCitySelected(adapter.getCities().get(position));
 
-            }
-        }));
         ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
@@ -78,16 +71,7 @@ public class CitiesFragment extends BaseFragment implements CitiesView {
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
         itemTouchHelper.attachToRecyclerView(citiesRecyclerView);
         addCityFab = (FloatingActionButton) view.findViewById(R.id.add_city_fab);
-        addCityFab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-                SearchFragment fragment = new SearchFragment();
-                ft.add(R.id.fragment, fragment, null);
-                ft.addToBackStack(null);
-                ft.commit();
-            }
-        });
+
 
         return view;
     }
@@ -96,7 +80,7 @@ public class CitiesFragment extends BaseFragment implements CitiesView {
     public void onAttach(Context context) {
         super.onAttach(context);
         try {
-            placeSearchListener = (FragmentInteractionsListener) context;
+            fragmentInteractionListener = (FragmentInteractionsListener) context;
             googleApiClientProvider = (GoogleApiClientProvider) context;
         } catch (ClassCastException e) {
             e.printStackTrace();
@@ -130,6 +114,10 @@ public class CitiesFragment extends BaseFragment implements CitiesView {
         if (getArguments() != null) {
             presenter.attachIncomingArg(getArguments());
         }
+        presenter.setAdapter(adapter);
+        presenter.setFragmentInteractionListener(fragmentInteractionListener);
+        addCityFab.setOnClickListener(presenter);
+        citiesRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), presenter));
         presenter.setGoogleApiClient(googleApiClientProvider.getApiClient());
         presenter.onCreate();
     }

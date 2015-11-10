@@ -3,6 +3,9 @@ package com.feresr.rxweather.presenters;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.feresr.rxweather.UI.CitiesAdapter;
+import com.feresr.rxweather.UI.FragmentInteractionsListener;
+import com.feresr.rxweather.UI.RecyclerItemClickListener;
 import com.feresr.rxweather.domain.GetCitiesUseCase;
 import com.feresr.rxweather.domain.GetCityForecastUseCase;
 import com.feresr.rxweather.domain.RemoveCityUseCase;
@@ -30,8 +33,9 @@ import rx.subscriptions.CompositeSubscription;
 /**
  * Created by Fernando on 6/11/2015.
  */
-public class CitiesPresenter implements Presenter {
+public class CitiesPresenter implements Presenter, android.view.View.OnClickListener, RecyclerItemClickListener.OnItemClickListener {
 
+    private CitiesAdapter citiesAdapter;
     private GetCityForecastUseCase getCityWeatherUseCase;
     private RemoveCityUseCase removeCityUseCase;
     private CitiesView citiesView;
@@ -39,6 +43,7 @@ public class CitiesPresenter implements Presenter {
     private GetCitiesUseCase getCitiesUseCase;
     private GoogleApiClient googleApiClient;
     private SaveCityUseCase saveCityUseCase;
+    private FragmentInteractionsListener fragmentInteractionListener;
 
     @Inject
     public CitiesPresenter(GetCitiesUseCase getCitiesUseCase, GetCityForecastUseCase getCityForecastUseCase, RemoveCityUseCase removeCityUseCase, SaveCityUseCase saveCityUseCase) {
@@ -75,6 +80,10 @@ public class CitiesPresenter implements Presenter {
 
     }
 
+
+    public void setAdapter(CitiesAdapter adapter) {
+        this.citiesAdapter = adapter;
+    }
 
     @Override
     public void onCreate() {
@@ -209,5 +218,19 @@ public class CitiesPresenter implements Presenter {
 
     public void setGoogleApiClient(GoogleApiClient googleApiClient) {
         this.googleApiClient = googleApiClient;
+    }
+
+    @Override
+    public void onClick(android.view.View v) {
+        fragmentInteractionListener.onAddCityButtonSelected();
+    }
+
+    public void setFragmentInteractionListener(FragmentInteractionsListener fragmentInteractionListener) {
+        this.fragmentInteractionListener = fragmentInteractionListener;
+    }
+
+    @Override
+    public void onItemClick(android.view.View view, int position) {
+        fragmentInteractionListener.onCitySelected(citiesAdapter.getCities().get(position));
     }
 }

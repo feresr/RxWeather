@@ -23,10 +23,10 @@ public class ForecastFragment extends BaseFragment implements ForecastView {
 
     @Inject
     ForecastPresenter presenter;
-    ForecastAdapter adapter;
-    RecyclerView recyclerView;
-    RecyclerView.LayoutManager layoutManager;
-
+    private ForecastAdapter adapter;
+    private RecyclerView recyclerView;
+    private RecyclerView.LayoutManager layoutManager;
+    public static final String ARG_CITY = "city";
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {

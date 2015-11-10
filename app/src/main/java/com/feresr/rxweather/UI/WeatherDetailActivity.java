@@ -12,31 +12,36 @@ import com.feresr.rxweather.injector.DaggerWeatherApiComponent;
 import com.feresr.rxweather.injector.HasComponent;
 import com.feresr.rxweather.injector.WeatherApiComponent;
 import com.feresr.rxweather.injector.modules.ActivityModule;
+import com.feresr.rxweather.models.City;
 
 public class WeatherDetailActivity extends AppCompatActivity implements HasComponent<WeatherApiComponent> {
 
     private WeatherApiComponent weatherApiComponent;
+    public static final String ARG_CITY = "city";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_weather_detail);
+        Intent intent = getIntent();
+        City city = (City) intent.getExtras().getSerializable(ARG_CITY);
+
         if (savedInstanceState == null) {
             FragmentTransaction ft = this.getSupportFragmentManager().beginTransaction();
             ForecastFragment fragment = new ForecastFragment();
-            Intent intent = getIntent();
 
             Bundle bundle = new Bundle();
-            bundle.putSerializable("city", intent.getExtras().getSerializable("city"));
-
+            bundle.putSerializable(ForecastFragment.ARG_CITY, city);
             fragment.setArguments(bundle);
             ft.add(R.id.container, fragment, null);
             ft.commit();
         }
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(city.getName());
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
         initializeDependencies();
     }
 

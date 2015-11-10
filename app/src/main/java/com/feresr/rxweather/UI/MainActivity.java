@@ -138,20 +138,29 @@ public class MainActivity extends AppCompatActivity implements HasComponent<Weat
         //if PHONE
         if (city != null && city.getCityWeather() != null) {
             Intent i = new Intent(this, WeatherDetailActivity.class);
-            i.putExtra("city", city);
+            i.putExtra(WeatherDetailActivity.ARG_CITY, city);
             startActivity(i);
         }
 
         //TODO: if TABLET
-/*                        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                        ForecastFragment fragment = new ForecastFragment();
-                        Bundle bundle = new Bundle();
-                        bundle.putDouble("lat", places.get(0).getLatLng().latitude);
-                        bundle.putDouble("lon", places.get(0).getLatLng().longitude);
+        /* FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ForecastFragment fragment = new ForecastFragment();
+        Bundle bundle = new Bundle();
+        bundle.putDouble("lat", places.get(0).getLatLng().latitude);
+        bundle.putDouble("lon", places.get(0).getLatLng().longitude);
 
-                        fragment.setArguments(bundle);
-                        ft.replace(R.id.fragment, fragment, null);
-                        ft.addToBackStack(null);
-                        ft.commit();*/
+        fragment.setArguments(bundle);
+        ft.replace(R.id.fragment, fragment, null);
+        ft.addToBackStack(null);
+        ft.commit();*/
+    }
+
+    @Override
+    public void onAddCityButtonSelected() {
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        SearchFragment fragment = new SearchFragment();
+        ft.add(R.id.fragment, fragment, null);
+        ft.addToBackStack(null);
+        ft.commit();
     }
 }

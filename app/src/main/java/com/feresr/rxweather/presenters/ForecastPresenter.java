@@ -4,9 +4,8 @@ import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.feresr.rxweather.domain.GetCityForecastUseCase;
+import com.feresr.rxweather.UI.ForecastFragment;
 import com.feresr.rxweather.models.City;
-import com.feresr.rxweather.models.CityWeather;
 import com.feresr.rxweather.presenters.views.ForecastView;
 import com.feresr.rxweather.presenters.views.View;
 import com.google.android.gms.common.ConnectionResult;
@@ -15,26 +14,17 @@ import com.google.android.gms.location.LocationServices;
 
 import javax.inject.Inject;
 
-import rx.Subscriber;
-import rx.Subscription;
-
 /**
  * Created by Fernando on 14/10/2015.
  */
 public class ForecastPresenter implements Presenter, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     private Context context;
-
-    private Double lat;
-    private Double lon;
-    private GetCityForecastUseCase forecastUseCase;
-    private Subscription forecastObservable;
     private ForecastView forecastView;
     private GoogleApiClient mGoogleApiClient;
 
     @Inject
-    public ForecastPresenter(GetCityForecastUseCase forecastUseCase, Context context) {
-        this.forecastUseCase = forecastUseCase;
+    public ForecastPresenter(Context context) {
         this.context = context;
     }
 
@@ -60,7 +50,7 @@ public class ForecastPresenter implements Presenter, GoogleApiClient.ConnectionC
 
     @Override
     public void attachIncomingArg(Bundle bundle) {
-        City city = (City) bundle.getSerializable("city");
+        City city = (City) bundle.getSerializable(ForecastFragment.ARG_CITY);
         if (city != null) {
             forecastView.addForecast(city.getCityWeather());
         }
@@ -80,9 +70,6 @@ public class ForecastPresenter implements Presenter, GoogleApiClient.ConnectionC
 
     @Override
     public void onDestroy() {
-        if (forecastObservable != null && forecastObservable.isUnsubscribed()) {
-            forecastObservable.unsubscribe();
-        }
     }
 
 
@@ -91,7 +78,7 @@ public class ForecastPresenter implements Presenter, GoogleApiClient.ConnectionC
 //        Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
 //                mGoogleApiClient);
 //        if (mLastLocation != null) {
-            //forecastUseCase.setLatLon(String.valueOf(mLastLocation.getLatitude()), String.valueOf(mLastLocation.getLongitude()));
+        //forecastUseCase.setLatLon(String.valueOf(mLastLocation.getLatitude()), String.valueOf(mLastLocation.getLongitude()));
 
         //}
     }
