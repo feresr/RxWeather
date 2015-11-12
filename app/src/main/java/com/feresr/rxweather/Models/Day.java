@@ -4,6 +4,7 @@ package com.feresr.rxweather.models;
 import android.content.Context;
 
 import com.feresr.rxweather.R;
+import com.feresr.rxweather.utils.IconManager;
 
 import java.io.Serializable;
 
@@ -80,11 +81,7 @@ public class Day extends DisplayWeatherInfo implements Serializable {
      *     The icon
      */
     public String getIcon(Context context) {
-        switch (icon) {
-            case "rain":
-                return context.getString(R.string.rain);
-        }
-        return context.getString(R.string.day_sunny);
+        return IconManager.getIconFromString(icon, context);
     }
 
     /**

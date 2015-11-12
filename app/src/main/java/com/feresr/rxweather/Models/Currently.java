@@ -3,6 +3,7 @@ package com.feresr.rxweather.models;
 import android.content.Context;
 
 import com.feresr.rxweather.R;
+import com.feresr.rxweather.utils.IconManager;
 
 import java.io.Serializable;
 
@@ -59,11 +60,7 @@ public class Currently extends DisplayWeatherInfo implements Serializable {
      * @return The icon
      */
     public String getIcon(Context context) {
-        switch (icon) {
-            case "rain":
-                return context.getString(R.string.rain);
-        }
-        return context.getString(R.string.day_sunny);
+        return IconManager.getIconFromString(icon, context);
     }
 
     /**
@@ -192,8 +189,15 @@ public class Currently extends DisplayWeatherInfo implements Serializable {
         return windBearing;
     }
 
+    /**
+     * @param windBearing The windBearing
+     */
+    public void setWindBearing(Double windBearing) {
+        this.windBearing = windBearing;
+    }
+
     public String getWindBearingString() {
-        if (windBearing == null ) {
+        if (windBearing == null) {
             return "-";
         }
         if (windBearing <= 45 || windBearing > 315) {
@@ -207,12 +211,6 @@ public class Currently extends DisplayWeatherInfo implements Serializable {
         } else {
             return "WIND";
         }
-    }
-    /**
-     * @param windBearing The windBearing
-     */
-    public void setWindBearing(Double windBearing) {
-        this.windBearing = windBearing;
     }
 
     /**

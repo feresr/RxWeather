@@ -25,7 +25,11 @@
     <string name="hurricane">&#xf073;</string>
     <string name="snowflake_cold">&#xf076;</string>
     <string name="hot">&#xf072;</string>
-    <string name="day_hail">&#xf004;</string>
+    <string name="night_cloudy">&#xf031;</string>
+    <string name="clear_night">&#xf02e;</string>
+    <string name="day_cloudy">&#xf002;</string>
+
+    <string name="day_hail">&#xf015;</string>
     <string name="strong_wind">&#xf050;</string>
     <string name="city_country_name">%1$s %2$s</string>
 
@@ -35,5 +39,6 @@
     <string name="degree">%1$d°</string>
     <string name="km_h">%1$d km/h</string>
     <string name="hPa">%1$d hPa</string>
+
 
 </resources>
