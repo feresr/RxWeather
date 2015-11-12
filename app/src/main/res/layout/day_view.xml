@@ -16,6 +16,7 @@
         android:layout_width="50dp"
         android:layout_height="match_parent"
         android:layout_marginRight="10dp"
+        android:textColor="@color/normal_text"
         android:gravity="center"
         android:text="IC"
         android:textSize="26dp" />
@@ -34,12 +35,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Main"
+                android:textColor="@color/normal_text"
                 android:textStyle="bold" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="right"
+
                 android:orientation="horizontal">
 
                 <TextView
@@ -63,7 +66,7 @@
             android:id="@+id/main"
             android:layout_width="match_parent"
             android:textSize="14sp"
-            android:textColor="#444"
+            android:textColor="@color/light_text"
             android:layout_height="wrap_content"
             android:text="Description" />
 

@@ -10,6 +10,8 @@ import android.os.Build;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
 
+import com.feresr.rxweather.R;
+
 /**
  * Created by Fernando on 3/11/2015.
  */
@@ -50,7 +52,9 @@ public class RoundedCardLayout extends LinearLayout {
     private RectF wholeRect;
     private void init() {
         paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        paint.setColor(Color.WHITE);
+
+
+        paint.setColor(getResources().getColor(R.color.storm_background, null));
         paint.setStrokeWidth(0);
     }
 

@@ -6,6 +6,7 @@
     android:layout_marginBottom="5dp"
     android:layout_marginLeft="10dp"
     android:layout_marginRight="10dp"
+    app:cardBackgroundColor="@color/storm_background"
     app:contentPadding="10dp"
     android:layout_marginTop="5dp">
 
