@@ -168,11 +168,11 @@ public class ForecastAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     holder.dayName.setText("TODAY");
 
                     holder.view.setLayoutParams(params);
-                    holder.view.setUpperRadius(10);
+                    holder.view.setUpperRadius(20);
                     holder.view.setLowerRadius(0);
                 }
                 else if (day == ((Daily) weatherInfo.get(2)).getDays().get(7)) {
-                    holder.view.setLowerRadius(10);
+                    holder.view.setLowerRadius(20);
                     holder.view.setUpperRadius(0);
                     holder.dayName.setText(new SimpleDateFormat("EEEE", new Locale("EN")).format(new Date(day.getTime() * 1000L)).toUpperCase());
                     LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
