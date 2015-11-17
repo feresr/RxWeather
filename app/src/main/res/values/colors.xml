@@ -5,7 +5,20 @@
     <color name="colorAccent">#ffc400</color>
     <color name="background_material_light">#222222</color>
     <color name="normal_text">#fff</color>
-    <color name="light_text">#bbb</color>
+    <color name="light_text">#bfff</color>
     <color name="storm_background">#31343d</color>
     <color name="background_material_dark">#eeeef4</color>
+    <color name="rain">#3C5C76</color>
+    <color name="clear_day">#decca541</color>
+    <color name="clear_night">#292929</color>
+    <color name="snow">#eee</color>
+    <color name="sleet">#ccc</color>
+    <color name="wind">#31343d</color>
+    <color name="fog">#7B915A</color>
+    <color name="cloudy">#525664</color>
+    <color name="partly_cloudy_day">#53009dff</color>
+    <color name="partly_cloudy_night">#bd222629</color>
+    <color name="hail">#3D3D3D</color>
+    <color name="thunderstorm">#78e926ff</color>
+    <color name="tornado">#94ff53a1</color>
 </resources>
