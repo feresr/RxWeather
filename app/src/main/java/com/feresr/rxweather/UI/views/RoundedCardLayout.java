@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.os.Build;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
 
@@ -50,11 +51,17 @@ public class RoundedCardLayout extends LinearLayout {
     private RectF upperRect;
     private RectF lowerRect;
     private RectF wholeRect;
+
+    @Override
+    public void setBackgroundColor(int color) {
+        paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paint.setColor(color);
+        paint.setStrokeWidth(0);
+        //super.setBackgroundColor(color);
+    }
+
     private void init() {
         paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-
-
-        paint.setColor(getResources().getColor(R.color.storm_background, null));
         paint.setStrokeWidth(0);
     }
 

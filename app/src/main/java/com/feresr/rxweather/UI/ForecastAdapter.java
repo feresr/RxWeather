@@ -2,7 +2,9 @@ package com.feresr.rxweather.UI;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.graphics.Typeface;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
@@ -126,6 +128,7 @@ public class ForecastAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 CurrentlyViewHolder currentlyViewHolder = (CurrentlyViewHolder) viewHolder;
                 Currently currently = (Currently) weatherInfo.get(position);
 
+                currentlyViewHolder.view.setCardBackgroundColor(currently.getColor(context));
                 currentlyViewHolder.description.setText(currently.getSummary().toUpperCase());
                 currentlyViewHolder.temp.setText(context.getString(R.string.degree, Math.round(currently.getTemperature())));
                 currentlyViewHolder.humidity.setValue(Math.round(currently.getHumidity() * 100) + "%");
@@ -159,6 +162,16 @@ public class ForecastAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 holder.tempMax.setText(day.getTemperatureMax() + "°");
                 holder.tempMin.setText(day.getTemperatureMin() + "°");
                 holder.icon.setText(day.getIcon(context));
+
+
+                if (position % 2 == 0) {
+                    float[] hsv = new float[3];
+                    Color.colorToHSV(day.getColor(context), hsv);
+                    hsv[2] *= 0.94f; // value component
+                    holder.view.setBackgroundColor(Color.HSVToColor(hsv));
+                } else {
+                    holder.view.setBackgroundColor(day.getColor(context));
+                }
 
 
                 //First
@@ -254,6 +267,7 @@ public class ForecastAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     public class CurrentlyViewHolder extends RecyclerView.ViewHolder {
+        CardView view;
         TextView temp;
         TextView description;
         InfoDisplay humidity;
@@ -266,6 +280,7 @@ public class ForecastAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         public CurrentlyViewHolder(View itemView) {
             super(itemView);
+            view = (CardView) itemView;
             temp = (TextView) itemView.findViewById(R.id.temp);
             description = (TextView) itemView.findViewById(R.id.description);
             humidity = (InfoDisplay) itemView.findViewById(R.id.humidity);

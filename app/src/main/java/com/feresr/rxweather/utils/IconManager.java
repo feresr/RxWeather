@@ -1,6 +1,7 @@
 package com.feresr.rxweather.utils;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 
 import com.feresr.rxweather.R;
 
@@ -8,7 +9,7 @@ import com.feresr.rxweather.R;
  * Created by Fernando on 12/11/2015.
  */
 public class IconManager {
-    public static String getIconFromString(String icon, Context context) {
+    public static String getIconResource(String icon, Context context) {
         switch (icon) {
             case "rain":
                 return context.getString(R.string.rain);
@@ -38,6 +39,39 @@ public class IconManager {
                 return context.getString(R.string.tornado);
             default:
                 return context.getString(R.string.day_sunny);
+        }
+    }
+
+    public static int getColorResource(String icon, Context context) {
+        switch (icon) {
+            case "rain":
+                return ContextCompat.getColor(context, R.color.rain);
+            case "clear-day":
+                return ContextCompat.getColor(context, R.color.clear_day);
+            case "clear-night":
+                return ContextCompat.getColor(context, R.color.clear_night);
+            case "snow":
+                return ContextCompat.getColor(context, R.color.snow);
+            case "sleet":
+                return ContextCompat.getColor(context, R.color.sleet);
+            case "wind":
+                return ContextCompat.getColor(context, R.color.wind);
+            case "fog":
+                return ContextCompat.getColor(context, R.color.fog);
+            case "cloudy":
+                return ContextCompat.getColor(context, R.color.cloudy);
+            case "partly-cloudy-day":
+                return ContextCompat.getColor(context, R.color.partly_cloudy_day);
+            case "partly-cloudy-night":
+                return ContextCompat.getColor(context, R.color.partly_cloudy_night);
+            case "hail":
+                return ContextCompat.getColor(context, R.color.hail);
+            case "thunderstorm":
+                return ContextCompat.getColor(context, R.color.thunderstorm);
+            case "tornado":
+                return ContextCompat.getColor(context, R.color.tornado);
+            default:
+                return ContextCompat.getColor(context, R.color.clear_day);
         }
     }
 }

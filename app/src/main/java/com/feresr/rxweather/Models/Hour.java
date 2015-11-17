@@ -3,7 +3,6 @@ package com.feresr.rxweather.models;
 
 import android.content.Context;
 
-import com.feresr.rxweather.R;
 import com.feresr.rxweather.utils.IconManager;
 
 import java.io.Serializable;
@@ -71,7 +70,7 @@ public class Hour implements Serializable {
      *     The icon
      */
     public String getIcon(Context context) {
-        return IconManager.getIconFromString(icon, context);
+        return IconManager.getIconResource(icon, context);
     }
 
     /**
