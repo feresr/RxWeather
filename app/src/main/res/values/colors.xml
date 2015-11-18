@@ -11,8 +11,8 @@
     <color name="rain">#3C5C76</color>
     <color name="clear_day">#d7a730</color>
     <color name="clear_night">#292929</color>
-    <color name="snow">#eee</color>
-    <color name="sleet">#ccc</color>
+    <color name="snow">#bfbfbf</color>
+    <color name="sleet">#9f9f9f</color>
     <color name="wind">#31343d</color>
     <color name="fog">#7B915A</color>
     <color name="cloudy">#4b5859</color>

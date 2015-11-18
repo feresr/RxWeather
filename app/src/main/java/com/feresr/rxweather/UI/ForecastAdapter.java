@@ -23,6 +23,7 @@ import com.feresr.rxweather.models.Daily;
 import com.feresr.rxweather.models.Day;
 import com.feresr.rxweather.models.DisplayWeatherInfo;
 import com.feresr.rxweather.models.Hourly;
+import com.feresr.rxweather.models.Warning;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -40,6 +41,7 @@ public class ForecastAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private static final int HOURLY = 1;
     private static final int DAILY = 2;
     private static final int DAY = 3;
+    private static final int WARNING = 4;
 
     private LayoutInflater inflater;
     private List<DisplayWeatherInfo> weatherInfo;
@@ -80,6 +82,8 @@ public class ForecastAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             return DAILY;
         } else if (weatherInfoObject instanceof Day) {
             return DAY;
+        } else if (weatherInfoObject instanceof Warning) {
+            return WARNING;
         }
         return -1;
     }
@@ -100,6 +104,9 @@ public class ForecastAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             case DAY:
                 view = this.inflater.inflate(R.layout.day_view, parent, false);
                 return new DayViewHolder(view);
+            case WARNING:
+                view = this.inflater.inflate(R.layout.warning_view, parent, false);
+                return new WarningViewHolder(view);
             default:
                 return null;
         }
@@ -113,8 +120,20 @@ public class ForecastAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         dayForecastAdapter.addHourForecast(cityWeather.getHourly().getData());
 
         weatherInfo.add(cityWeather.getDaily());
-        for (Day day : cityWeather.getDaily().getDays()) {
-            weatherInfo.add(day);
+        for (int i = 0; i < cityWeather.getDaily().getDays().size(); i++) {
+            if (i == 0) {
+                cityWeather.getDaily().getDays().get(i).setIsToday(true);
+            }
+
+            if (i == 1) {
+                cityWeather.getDaily().getDays().get(i).setIsTomorrow(true);
+            }
+
+            if (i == cityWeather.getDaily().getDays().size() - 1) {
+                cityWeather.getDaily().getDays().get(i).setIsLastDayOfWeek(true);
+            }
+
+            weatherInfo.add(cityWeather.getDaily().getDays().get(i));
         }
 
 
@@ -124,6 +143,18 @@ public class ForecastAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
         switch (viewHolder.getItemViewType()) {
+            case HOURLY:
+                HourlyViewHolder labelViewHolder = (HourlyViewHolder) viewHolder;
+                Hourly hourly = (Hourly) weatherInfo.get(position);
+                labelViewHolder.description.setText(hourly.getSummary());
+                break;
+            case WARNING:
+                WarningViewHolder warningViewHolder = (WarningViewHolder) viewHolder;
+                Warning warning = (Warning) weatherInfo.get(position);
+                warningViewHolder.title.setText(warning.getText());
+                warningViewHolder.explanation.setText(warning.getExplanation());
+                break;
+
             case CURRENTLY:
                 CurrentlyViewHolder currentlyViewHolder = (CurrentlyViewHolder) viewHolder;
                 Currently currently = (Currently) weatherInfo.get(position);
@@ -142,12 +173,6 @@ public class ForecastAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
                 currentlyViewHolder.feelsLike.setValue(context.getString(R.string.degree, Math.round(currently.getApparentTemperature())));
                 currentlyViewHolder.icon.setText(currently.getIcon(context));
-
-                break;
-            case HOURLY:
-                HourlyViewHolder labelViewHolder = (HourlyViewHolder) viewHolder;
-                Hourly hourly = (Hourly) weatherInfo.get(position);
-                labelViewHolder.description.setText(hourly.getSummary());
 
                 break;
             case DAILY:
@@ -175,7 +200,7 @@ public class ForecastAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
 
                 //First
-                if (day == ((Daily) weatherInfo.get(2)).getDays().get(0)) {
+                if (day.isToday()) {
                     LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                     params.setMargins(groupLeftRightMargin, groupTopBottomMargin, groupLeftRightMargin, 0);
                     holder.dayName.setText("TODAY");
@@ -183,8 +208,7 @@ public class ForecastAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     holder.view.setLayoutParams(params);
                     holder.view.setUpperRadius(20);
                     holder.view.setLowerRadius(0);
-                }
-                else if (day == ((Daily) weatherInfo.get(2)).getDays().get(7)) {
+                } else if (day.isLastDayOfWeek()) {
                     holder.view.setLowerRadius(20);
                     holder.view.setUpperRadius(0);
                     holder.dayName.setText(new SimpleDateFormat("EEEE", new Locale("EN")).format(new Date(day.getTime() * 1000L)).toUpperCase());
@@ -194,7 +218,7 @@ public class ForecastAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 } else {
                     holder.view.setUpperRadius(0);
                     holder.view.setLowerRadius(0);
-                    if (day == ((Daily) weatherInfo.get(2)).getDays().get(1)) {
+                    if (day.isTomorrow()) {
                         holder.dayName.setText("TOMORROW");
                     } else {
                         holder.dayName.setText(new SimpleDateFormat("EEEE", new Locale("EN")).format(new Date(day.getTime() * 1000L)).toUpperCase());
@@ -213,6 +237,19 @@ public class ForecastAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @Override
     public int getItemCount() {
         return weatherInfo.size();
+    }
+
+    public void showNoInternetWarning() {
+        Warning warning = new Warning("No internet", "Check your connection");
+        weatherInfo.add(0, warning);
+        notifyItemInserted(0);
+    }
+
+    public void hideNoInternetWarning() {
+        if (weatherInfo.get(0) instanceof Warning) {
+            weatherInfo.remove(0);
+            notifyItemRemoved(0);
+        }
     }
 
     public class DayViewHolder extends RecyclerView.ViewHolder {
@@ -240,6 +277,17 @@ public class ForecastAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
     }
 
+    public class WarningViewHolder extends RecyclerView.ViewHolder {
+
+        TextView title;
+        TextView explanation;
+
+        public WarningViewHolder(View itemView) {
+            super(itemView);
+            title = (TextView) itemView.findViewById(R.id.title);
+            explanation = (TextView) itemView.findViewById(R.id.explanation);
+        }
+    }
 
     public class DailyViewHolder extends RecyclerView.ViewHolder {
         TextView description;

@@ -7,6 +7,8 @@ import com.feresr.rxweather.utils.IconManager;
 
 import java.io.Serializable;
 
+import io.realm.annotations.Ignore;
+
 public class Day extends DisplayWeatherInfo implements Serializable {
 
     private Integer time;
@@ -35,6 +37,12 @@ public class Day extends DisplayWeatherInfo implements Serializable {
     private Double cloudCover;
     private Double pressure;
     private Double ozone;
+    @Ignore
+    private boolean isToday = false;
+    @Ignore
+    private boolean isTomorrow = false;
+    @Ignore
+    private boolean isLastDayOfWeek = false;
 
     /**
      * 
@@ -506,5 +514,29 @@ public class Day extends DisplayWeatherInfo implements Serializable {
 
     public int getColor(Context context) {
         return IconManager.getColorResource(icon, context);
+    }
+
+    public boolean isToday() {
+        return isToday;
+    }
+
+    public void setIsToday(boolean isToday) {
+        this.isToday = isToday;
+    }
+
+    public boolean isTomorrow() {
+        return isTomorrow;
+    }
+
+    public void setIsTomorrow(boolean isTomorrow) {
+        this.isTomorrow = isTomorrow;
+    }
+
+    public boolean isLastDayOfWeek() {
+        return isLastDayOfWeek;
+    }
+
+    public void setIsLastDayOfWeek(boolean isLastDayOfWeek) {
+        this.isLastDayOfWeek = isLastDayOfWeek;
     }
 }
