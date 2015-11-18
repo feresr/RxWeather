@@ -17,7 +17,7 @@ public class Hourly extends DisplayWeatherInfo implements Serializable {
     private List<Hour> hours = new ArrayList<Hour>();
 
     /**
-     * 
+     *
      * @return
      *     The summary
      */
@@ -26,7 +26,7 @@ public class Hourly extends DisplayWeatherInfo implements Serializable {
     }
 
     /**
-     * 
+     *
      * @param summary
      *     The summary
      */
@@ -35,7 +35,7 @@ public class Hourly extends DisplayWeatherInfo implements Serializable {
     }
 
     /**
-     * 
+     *
      * @return
      *     The icon
      */
@@ -44,7 +44,7 @@ public class Hourly extends DisplayWeatherInfo implements Serializable {
     }
 
     /**
-     * 
+     *
      * @param icon
      *     The icon
      */
@@ -53,7 +53,7 @@ public class Hourly extends DisplayWeatherInfo implements Serializable {
     }
 
     /**
-     * 
+     *
      * @return
      *     The data
      */
@@ -62,7 +62,7 @@ public class Hourly extends DisplayWeatherInfo implements Serializable {
     }
 
     /**
-     * 
+     *
      * @param data
      *     The data
      */

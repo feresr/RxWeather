@@ -1,7 +1,6 @@
 package com.feresr.rxweather.storage;
 
 import android.content.Context;
-import android.os.SystemClock;
 
 import com.feresr.rxweather.models.City;
 import com.feresr.rxweather.models.CityWeather;
@@ -40,7 +39,7 @@ public class SimpleCache implements DataCache {
             return true;
         }
 
-        return (SystemClock.uptimeMillis() - weathers.get(cityId).getFetchTime() > EXPIRATION_TIME);
+        return (System.currentTimeMillis() - weathers.get(cityId).getFetchTime() > EXPIRATION_TIME);
     }
 
     @Override
@@ -138,7 +137,7 @@ public class SimpleCache implements DataCache {
 
     @Override
     public void putForecast(String cityId, CityWeather cityWeather) {
-        cityWeather.setFetchTime(SystemClock.uptimeMillis());
+        cityWeather.setFetchTime(System.currentTimeMillis());
         weathers.put(cityId, cityWeather);
     }
 

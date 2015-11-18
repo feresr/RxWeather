@@ -42,6 +42,7 @@ public class ForecastAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private static final int DAILY = 2;
     private static final int DAY = 3;
     private static final int WARNING = 4;
+    private static final int UPDATED_AT = 5;
 
     private LayoutInflater inflater;
     private List<DisplayWeatherInfo> weatherInfo;
@@ -49,6 +50,8 @@ public class ForecastAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private DayForecastAdapter dayForecastAdapter;
     private int groupTopBottomMargin;
     private int groupLeftRightMargin;
+
+    private long fetchTime;
 
     public ForecastAdapter(Context context) {
         super();
@@ -72,6 +75,9 @@ public class ForecastAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     @Override
     public int getItemViewType(int position) {
+        if (position == weatherInfo.size()) {
+            return UPDATED_AT;
+        }
         DisplayWeatherInfo weatherInfoObject = weatherInfo.get(position);
 
         if (weatherInfoObject instanceof Currently) {
@@ -107,6 +113,9 @@ public class ForecastAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             case WARNING:
                 view = this.inflater.inflate(R.layout.warning_view, parent, false);
                 return new WarningViewHolder(view);
+            case UPDATED_AT:
+                view = this.inflater.inflate(R.layout.updated_at, parent, false);
+                return new UpdatedAtViewHolder(view);
             default:
                 return null;
         }
@@ -118,6 +127,8 @@ public class ForecastAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         weatherInfo.add(cityWeather.getHourly());
 
         dayForecastAdapter.addHourForecast(cityWeather.getHourly().getData());
+
+        fetchTime = cityWeather.getFetchTime();
 
         weatherInfo.add(cityWeather.getDaily());
         for (int i = 0; i < cityWeather.getDaily().getDays().size(); i++) {
@@ -180,6 +191,10 @@ public class ForecastAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 Daily daily = (Daily) weatherInfo.get(position);
                 dailyViewHolder.description.setText(daily.getSummary());
                 break;
+            case UPDATED_AT:
+                UpdatedAtViewHolder updatedAtViewHolder = (UpdatedAtViewHolder) viewHolder;
+                updatedAtViewHolder.updatedAt.setText("Updated at " + new SimpleDateFormat("hh:mm", Locale.getDefault()).format(new Date(fetchTime)).toUpperCase());
+                break;
             case DAY:
                 Day day = (Day) weatherInfo.get(position);
                 DayViewHolder holder = (DayViewHolder) viewHolder;
@@ -236,7 +251,7 @@ public class ForecastAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     @Override
     public int getItemCount() {
-        return weatherInfo.size();
+        return weatherInfo.size() + 1;
     }
 
     public void showNoInternetWarning() {
@@ -295,6 +310,15 @@ public class ForecastAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         public DailyViewHolder(View itemView) {
             super(itemView);
             description = (TextView) itemView.findViewById(R.id.description);
+        }
+    }
+
+    public class UpdatedAtViewHolder extends RecyclerView.ViewHolder {
+        TextView updatedAt;
+
+        public UpdatedAtViewHolder(View itemView) {
+            super(itemView);
+            updatedAt = (TextView) itemView.findViewById(R.id.updated_at);
         }
     }
 
