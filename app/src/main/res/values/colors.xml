@@ -9,16 +9,16 @@
     <color name="storm_background">#31343d</color>
     <color name="background_material_dark">#eeeef4</color>
     <color name="rain">#3C5C76</color>
-    <color name="clear_day">#decca541</color>
+    <color name="clear_day">#d7a730</color>
     <color name="clear_night">#292929</color>
     <color name="snow">#eee</color>
     <color name="sleet">#ccc</color>
     <color name="wind">#31343d</color>
     <color name="fog">#7B915A</color>
-    <color name="cloudy">#525664</color>
-    <color name="partly_cloudy_day">#53009dff</color>
-    <color name="partly_cloudy_night">#bd222629</color>
+    <color name="cloudy">#4b5859</color>
+    <color name="partly_cloudy_day">#b68f31</color>
+    <color name="partly_cloudy_night">#333f48</color>
     <color name="hail">#3D3D3D</color>
-    <color name="thunderstorm">#78e926ff</color>
-    <color name="tornado">#94ff53a1</color>
+    <color name="thunderstorm">#6a486e</color>
+    <color name="tornado">#995574</color>
 </resources>
