@@ -240,7 +240,7 @@ public class ForecastAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     public void showNoInternetWarning() {
-        Warning warning = new Warning("No internet", "Check your connection");
+        Warning warning = new Warning(context.getString(R.string.no_internet_title), context.getString(R.string.no_internet_description));
         weatherInfo.add(0, warning);
         notifyItemInserted(0);
     }
