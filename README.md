@@ -11,6 +11,10 @@ ButterKnife <i>To implement</i><br>
 Retrofit2 <i>Implemented</i> ✓ <br>
 Data Binding <i>To implement</i><br>
 Realm io <i>Implemented</i> ✓ <br>
+Mosby http://hannesdorfmann.com/mosby/ to Implement
+
 
 The architecture for this applciation is loosely based on the following repository:
 https://github.com/tehmou/rx-android-architecture
+and
+https://github.com/android10/Android-CleanArchitecture/
