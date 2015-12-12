@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.widget.TextView;
 
 import com.feresr.rxweather.R;
 import com.feresr.rxweather.RxWeatherApplication;
@@ -16,8 +17,8 @@ import com.feresr.rxweather.models.City;
 
 public class WeatherDetailActivity extends AppCompatActivity implements HasComponent<WeatherApiComponent> {
 
-    private WeatherApiComponent weatherApiComponent;
     public static final String ARG_CITY = "city";
+    private WeatherApiComponent weatherApiComponent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +42,8 @@ public class WeatherDetailActivity extends AppCompatActivity implements HasCompo
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(city.getName());
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setElevation(0);
+
         }
         initializeDependencies();
     }
