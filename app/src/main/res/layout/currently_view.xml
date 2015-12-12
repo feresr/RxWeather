@@ -1,134 +1,141 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="5dp"
-    android:layout_marginLeft="10dp"
-    android:layout_marginRight="10dp"
-    android:layout_marginTop="5dp"
-    app:cardCornerRadius="4dp"
-    app:cardBackgroundColor="@color/storm_background"
-    app:contentPadding="14dp">
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:elevation="5dp"
+        android:background="#ffd500"
+        android:id="@+id/main_info"
+        android:layout_height="220dp">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/city_bw"
+            android:alpha=".20"
+            android:scaleType="centerCrop"
+            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="30dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_marginTop="32dp"
+                android:layout_marginBottom="32dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/main_icon"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="IC"
+                    android:textColor="#fff"
+                    android:textSize="42sp" />
+
+                <TextView
+                    android:id="@+id/description"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:layout_weight="1"
+                    android:textStyle="bold"
+                    android:text="LIGHT SNOW"
+                    android:textColor="#fff"
+                    android:textSize="14dp" />
+
+
+                <TextView
+                    android:id="@+id/temp"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:fontFamily="sans-serif-light"
+                    android:gravity="center"
+                    android:text="12°"
+                    android:textColor="#fff"
+                    android:textSize="42dp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </LinearLayout>
+    </FrameLayout>
+
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp"
+        android:paddingTop="25dp"
+        android:paddingBottom="15dp">
 
-        <TextView
-            android:layout_width="wrap_content"
+
+        <com.feresr.rxweather.UI.views.InfoDisplay
+            android:id="@+id/humidity"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="RIGHT NOW"
-            android:textColor="@color/normal_text"
-            android:textSize="16dp"
-            android:textStyle="bold" />
+            android:layout_weight="1"
+            app:ic="&#xf07a;"
+            app:sub="Humid." />
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <com.feresr.rxweather.UI.views.InfoDisplay
+            android:id="@+id/tempMax"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="26dp"
-            android:orientation="horizontal">
+            android:layout_weight="1"
+            app:ic="&#xf050;"
+            app:sub="East" />
 
-            <TextView
-                android:id="@+id/main_icon"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="IC"
-                android:textSize="80sp" />
-
-            <TextView
-                android:id="@+id/temp"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:fontFamily="sans-serif-light"
-                android:gravity="center"
-                android:text="12°"
-                android:textColor="@color/normal_text"
-                android:textSize="80dp" />
-
-        </LinearLayout>
-
-
-        <TextView
-            android:id="@+id/description"
-            android:layout_width="match_parent"
+        <com.feresr.rxweather.UI.views.InfoDisplay
+            android:id="@+id/tempMin"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="15dp"
-            android:text="LIGHT SNOW"
-            android:textColor="@color/light_text"
-            android:textSize="14dp" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingLeft="20dp"
-
-            android:paddingRight="20dp"
-            android:paddingTop="20dp">
-
-
-            <com.feresr.rxweather.UI.views.InfoDisplay
-                android:id="@+id/humidity"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                app:ic="&#xf07a;"
-                app:sub="Humid." />
-
-            <com.feresr.rxweather.UI.views.InfoDisplay
-                android:id="@+id/tempMax"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                app:ic="&#xf050;"
-                app:sub="East" />
-
-            <com.feresr.rxweather.UI.views.InfoDisplay
-                android:id="@+id/tempMin"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                app:ic="&#xf079;"
-                app:sub="Press." />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="20dp">
-
-            <com.feresr.rxweather.UI.views.InfoDisplay
-                android:id="@+id/clouds"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                app:ic="&#xf013;"
-                app:sub="Cluds" />
-
-            <com.feresr.rxweather.UI.views.InfoDisplay
-                android:id="@+id/precipitation"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                app:ic="&#xf084;"
-                app:sub="0.29 mm" />
-
-            <com.feresr.rxweather.UI.views.InfoDisplay
-                android:id="@+id/feels_like"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                app:ic="&#xf055;"
-                app:sub="Feels like " />
-        </LinearLayout>
+            android:layout_weight="1"
+            app:ic="&#xf079;"
+            app:sub="Press." />
     </LinearLayout>
 
-</android.support.v7.widget.CardView>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp"
+        android:paddingTop="15dp"
+        android:paddingBottom="25dp">
+
+        <com.feresr.rxweather.UI.views.InfoDisplay
+            android:id="@+id/clouds"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:ic="&#xf013;"
+            app:sub="Cluds" />
+
+        <com.feresr.rxweather.UI.views.InfoDisplay
+            android:id="@+id/precipitation"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:ic="&#xf084;"
+            app:sub="0.29 mm" />
+
+        <com.feresr.rxweather.UI.views.InfoDisplay
+            android:id="@+id/feels_like"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:ic="&#xf055;"
+            app:sub="Feels like " />
+    </LinearLayout>
+
+</LinearLayout>

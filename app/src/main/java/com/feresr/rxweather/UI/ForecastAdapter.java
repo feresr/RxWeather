@@ -11,6 +11,7 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -68,7 +69,7 @@ public class ForecastAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         );
         groupLeftRightMargin = (int) TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP,
-                10,
+                0,
                 r.getDisplayMetrics()
         );
     }
@@ -170,7 +171,7 @@ public class ForecastAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 CurrentlyViewHolder currentlyViewHolder = (CurrentlyViewHolder) viewHolder;
                 Currently currently = (Currently) weatherInfo.get(position);
 
-                currentlyViewHolder.view.setCardBackgroundColor(currently.getColor(context));
+                currentlyViewHolder.main.setBackgroundColor(currently.getColor(context));
                 currentlyViewHolder.description.setText(currently.getSummary().toUpperCase());
                 currentlyViewHolder.temp.setText(context.getString(R.string.degree, Math.round(currently.getTemperature())));
                 currentlyViewHolder.humidity.setValue(Math.round(currently.getHumidity() * 100) + "%");
@@ -339,7 +340,7 @@ public class ForecastAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     public class CurrentlyViewHolder extends RecyclerView.ViewHolder {
-        CardView view;
+        FrameLayout main;
         TextView temp;
         TextView description;
         InfoDisplay humidity;
@@ -352,7 +353,7 @@ public class ForecastAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         public CurrentlyViewHolder(View itemView) {
             super(itemView);
-            view = (CardView) itemView;
+            main = (FrameLayout) itemView.findViewById(R.id.main_info);
             temp = (TextView) itemView.findViewById(R.id.temp);
             description = (TextView) itemView.findViewById(R.id.description);
             humidity = (InfoDisplay) itemView.findViewById(R.id.humidity);

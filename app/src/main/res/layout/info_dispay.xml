@@ -10,7 +10,8 @@
         android:layout_centerVertical="true"
         android:layout_height="wrap_content"
         android:layout_marginRight="12dp"
-        android:textSize="20sp"
+        android:textSize="16sp"
+        android:textColor="#444"
         android:text="IC" />
 
     <TextView
@@ -20,8 +21,8 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/icon"
         android:text="17 km/H"
-        android:textSize="12sp"
-        android:textColor="@color/normal_text" />
+        android:textSize="10sp"
+        android:textColor="#444" />
 
     <TextView
         android:id="@+id/sub"
@@ -30,6 +31,6 @@
         android:layout_below="@+id/main"
         android:layout_toRightOf="@id/icon"
         android:text="East"
-        android:textColor="@color/light_text"
-        android:textSize="12sp" />
+        android:textColor="#666"
+        android:textSize="10sp" />
 </merge>

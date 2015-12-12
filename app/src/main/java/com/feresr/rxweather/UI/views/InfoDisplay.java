@@ -16,7 +16,6 @@ import com.feresr.rxweather.R;
  */
 public class InfoDisplay extends RelativeLayout {
 
-    private boolean hasValue;
     private String main;
     private String sub;
     private String ic;

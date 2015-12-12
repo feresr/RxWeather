@@ -53,7 +53,7 @@ public class ForecastFragment extends BaseFragment implements ForecastView {
         recyclerView.setLayoutManager(layoutManager);
         adapter = new ForecastAdapter(getActivity());
         recyclerView.setAdapter(adapter);
-        adapter.showNoInternetWarning();
+        //adapter.showNoInternetWarning();
         return view;
     }
 
