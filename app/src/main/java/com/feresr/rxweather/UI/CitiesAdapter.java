@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.feresr.rxweather.R;
@@ -64,12 +65,14 @@ public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
-        holder.cityName.setText(cities.get(position).getName());
+        City city = cities.get(position);
+        holder.cityName.setText(city.getName());
         if (cities.get(position).getCityWeather() != null) {
-            holder.view.setCardBackgroundColor(cities.get(position).getCityWeather().getCurrently().getColor(context));
-            holder.temp.setText(cities.get(position).getCityWeather().getCurrently().getTemperature().toString() + "°");
+            holder.view.setBackgroundColor(city.getCityWeather().getCurrently().getColor(context));
+            holder.temp.setText(city.getCityWeather().getCurrently().getTemperature().toString() + "°");
+            holder.summary.setText(city.getCityWeather().getCurrently().getSummary());
         } else {
-            holder.view.setCardBackgroundColor(Color.GRAY);
+            holder.view.setBackgroundColor(Color.GRAY);
             holder.temp.setText("");
         }
     }
@@ -87,13 +90,15 @@ public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.ViewHolder
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView cityName;
         TextView temp;
-        CardView view;
+        LinearLayout view;
+        TextView summary;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            this.view = (CardView) itemView;
+            this.view = (LinearLayout) itemView.findViewById(R.id.container);
             cityName = (TextView) itemView.findViewById(R.id.city_name);
             temp = (TextView) itemView.findViewById(R.id.temp);
+            summary = (TextView) itemView.findViewById(R.id.summary);
         }
     }
 }
