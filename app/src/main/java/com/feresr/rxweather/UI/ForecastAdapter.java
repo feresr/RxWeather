@@ -49,8 +49,6 @@ public class ForecastAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private List<DisplayWeatherInfo> weatherInfo;
     private Context context;
     private DayForecastAdapter dayForecastAdapter;
-    private int groupTopBottomMargin;
-    private int groupLeftRightMargin;
 
     private long fetchTime;
 
@@ -60,18 +58,6 @@ public class ForecastAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         dayForecastAdapter = new DayForecastAdapter(context);
         this.weatherInfo = new ArrayList<>();
-
-        Resources r = context.getResources();
-        groupTopBottomMargin = (int) TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP,
-                5,
-                r.getDisplayMetrics()
-        );
-        groupLeftRightMargin = (int) TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP,
-                0,
-                r.getDisplayMetrics()
-        );
     }
 
     @Override
@@ -218,29 +204,20 @@ public class ForecastAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 //First
                 if (day.isToday()) {
                     LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                    params.setMargins(groupLeftRightMargin, groupTopBottomMargin, groupLeftRightMargin, 0);
                     holder.dayName.setText("TODAY");
 
                     holder.view.setLayoutParams(params);
-                    holder.view.setUpperRadius(20);
-                    holder.view.setLowerRadius(0);
                 } else if (day.isLastDayOfWeek()) {
-                    holder.view.setLowerRadius(20);
-                    holder.view.setUpperRadius(0);
                     holder.dayName.setText(new SimpleDateFormat("EEEE", new Locale("EN")).format(new Date(day.getTime() * 1000L)).toUpperCase());
                     LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                    params.setMargins(groupLeftRightMargin, 0, groupLeftRightMargin, groupTopBottomMargin);
                     holder.view.setLayoutParams(params);
                 } else {
-                    holder.view.setUpperRadius(0);
-                    holder.view.setLowerRadius(0);
                     if (day.isTomorrow()) {
                         holder.dayName.setText("TOMORROW");
                     } else {
                         holder.dayName.setText(new SimpleDateFormat("EEEE", new Locale("EN")).format(new Date(day.getTime() * 1000L)).toUpperCase());
                     }
                     LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                    params.setMargins(groupLeftRightMargin, 0, groupLeftRightMargin, 0);
                     holder.view.setLayoutParams(params);
 
                     if (position % 3 == 0) {
@@ -275,11 +252,11 @@ public class ForecastAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         TextView tempMax;
         TextView icon;
         TextView tempMin;
-        RoundedCardLayout view;
+        LinearLayout view;
 
         public DayViewHolder(View itemView) {
             super(itemView);
-            view = (RoundedCardLayout) itemView;
+            view = (LinearLayout) itemView;
             dayName = (TextView) itemView.findViewById(R.id.day);
             main = (TextView) itemView.findViewById(R.id.main);
             temp = (TextView) itemView.findViewById(R.id.temp);

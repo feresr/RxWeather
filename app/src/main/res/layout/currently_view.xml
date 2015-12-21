@@ -10,7 +10,7 @@
         android:elevation="5dp"
         android:background="#ffd500"
         android:id="@+id/main_info"
-        android:layout_height="220dp">
+        android:layout_height="250dp">
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -21,7 +21,10 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="30dp"
+            android:paddingRight="30dp"
+            android:paddingBottom="30dp"
+            android:paddingLeft="30dp"
+            android:paddingTop="60dp"
             android:orientation="vertical">
 
             <LinearLayout

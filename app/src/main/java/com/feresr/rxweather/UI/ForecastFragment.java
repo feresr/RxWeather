@@ -1,5 +1,6 @@
 package com.feresr.rxweather.UI;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -21,17 +22,19 @@ import javax.inject.Inject;
  */
 public class ForecastFragment extends BaseFragment implements ForecastView {
 
+    private int mScrolledY = 0;
+
+    public static final String ARG_CITY = "city";
     @Inject
     ForecastPresenter presenter;
     private ForecastAdapter adapter;
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
-    public static final String ARG_CITY = "city";
+    private RecyclerViewScrollListener listener;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
         initialize();
     }
 
@@ -49,10 +52,24 @@ public class ForecastFragment extends BaseFragment implements ForecastView {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerview);
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                mScrolledY += dy;
+                listener.onScrolled(mScrolledY);
+            }
+
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+        });
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         adapter = new ForecastAdapter(getActivity());
         recyclerView.setAdapter(adapter);
+        recyclerView.getLayoutManager().scrollToPosition(0);
         //adapter.showNoInternetWarning();
         return view;
     }
@@ -78,5 +95,19 @@ public class ForecastFragment extends BaseFragment implements ForecastView {
     public void onDestroy() {
         presenter.onDestroy();
         super.onDestroy();
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            listener = (RecyclerViewScrollListener) context;
+        } catch (ClassCastException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public interface RecyclerViewScrollListener {
+        void onScrolled(int scrolled);
     }
 }
