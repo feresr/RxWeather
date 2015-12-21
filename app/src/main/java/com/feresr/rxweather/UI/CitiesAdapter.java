@@ -2,6 +2,7 @@ package com.feresr.rxweather.UI;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 
 import com.feresr.rxweather.R;
 import com.feresr.rxweather.models.City;
+import com.feresr.rxweather.utils.IconManager;
 
 import java.util.ArrayList;
 
@@ -20,11 +22,13 @@ public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.ViewHolder
 
     private ArrayList<City> cities;
     private LayoutInflater inflater;
+    private Context context;
 
     public CitiesAdapter(Context context) {
         super();
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         cities = new ArrayList<>();
+        this.context = context;
     }
 
     public ArrayList<City> getCities() {
@@ -62,10 +66,10 @@ public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.ViewHolder
     public void onBindViewHolder(ViewHolder holder, final int position) {
         holder.cityName.setText(cities.get(position).getName());
         if (cities.get(position).getCityWeather() != null) {
-            holder.view.setBackgroundColor(Color.DKGRAY);
+            holder.view.setCardBackgroundColor(cities.get(position).getCityWeather().getCurrently().getColor(context));
             holder.temp.setText(cities.get(position).getCityWeather().getCurrently().getTemperature().toString() + "°");
         } else {
-            holder.view.setBackgroundColor(Color.GRAY);
+            holder.view.setCardBackgroundColor(Color.GRAY);
             holder.temp.setText("");
         }
     }
@@ -83,11 +87,11 @@ public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.ViewHolder
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView cityName;
         TextView temp;
-        View view;
+        CardView view;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            this.view = itemView;
+            this.view = (CardView) itemView;
             cityName = (TextView) itemView.findViewById(R.id.city_name);
             temp = (TextView) itemView.findViewById(R.id.temp);
         }
