@@ -2,6 +2,7 @@ package com.feresr.rxweather.presenters;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ViewAnimationUtils;
 
 import com.feresr.rxweather.UI.CitiesAdapter;
 import com.feresr.rxweather.UI.FragmentInteractionsListener;

@@ -73,12 +73,13 @@ public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.ViewHolder
             holder.temp.setText(city.getCityWeather().getCurrently().getTemperature().toString() + "°");
             holder.progressBar.setVisibility(View.GONE);
             holder.temp.setVisibility(View.VISIBLE);
+            holder.summary.setVisibility(View.VISIBLE);
             holder.summary.setText(city.getCityWeather().getCurrently().getSummary());
         } else {
             holder.view.setBackgroundColor(Color.GRAY);
             holder.progressBar.setVisibility(View.VISIBLE);
             holder.temp.setVisibility(View.GONE);
-            holder.temp.setText("");
+            holder.summary.setVisibility(View.INVISIBLE);
         }
     }
 

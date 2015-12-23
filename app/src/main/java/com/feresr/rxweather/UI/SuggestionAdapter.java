@@ -37,7 +37,7 @@ public class SuggestionAdapter extends RecyclerView.Adapter<SuggestionAdapter.Vi
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = inflater.inflate(R.layout.city_view, parent, false);
+        View view = inflater.inflate(R.layout.city_search_view, parent, false);
         return new ViewHolder(view);
     }
 
