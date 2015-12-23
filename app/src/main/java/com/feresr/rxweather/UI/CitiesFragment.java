@@ -11,6 +11,7 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.feresr.rxweather.R;
 import com.feresr.rxweather.injector.WeatherApiComponent;
@@ -37,6 +38,7 @@ public class CitiesFragment extends BaseFragment implements CitiesView {
     private RecyclerView.LayoutManager layoutManager;
     private FloatingActionButton addCityFab;
     private GoogleApiClientProvider googleApiClientProvider;
+    private LinearLayout emptyView;
 
     private FragmentInteractionsListener fragmentInteractionListener;
 
@@ -65,13 +67,17 @@ public class CitiesFragment extends BaseFragment implements CitiesView {
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 presenter.onRemoveCity(adapter.getCities().get(viewHolder.getAdapterPosition()));
                 adapter.onItemDismiss(viewHolder.getAdapterPosition());
+                if (adapter.getCities().isEmpty()) {
+                    citiesRecyclerView.setVisibility(View.GONE);
+                    emptyView.setVisibility(View.VISIBLE);
+                }
             }
         };
 
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
         itemTouchHelper.attachToRecyclerView(citiesRecyclerView);
         addCityFab = (FloatingActionButton) view.findViewById(R.id.add_city_fab);
-
+        emptyView = (LinearLayout) view.findViewById(R.id.empty_view);
 
         return view;
     }
@@ -90,11 +96,17 @@ public class CitiesFragment extends BaseFragment implements CitiesView {
     @Override
     public void addCity(City city) {
         adapter.addCity(city);
+        citiesRecyclerView.setVisibility(View.VISIBLE);
+        emptyView.setVisibility(View.GONE);
     }
 
     @Override
     public void addCities(List<City> cities) {
         adapter.setCities((ArrayList) cities);
+        if (cities != null && !cities.isEmpty()) {
+        citiesRecyclerView.setVisibility(View.VISIBLE);
+        emptyView.setVisibility(View.GONE);
+        }
     }
 
     @Override

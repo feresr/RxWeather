@@ -7,24 +7,25 @@
     <!-- TODO: Update blank fragment layout -->
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerview"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
     <LinearLayout
         android:id="@+id/empty_view"
-        android:visibility="gone"
         android:layout_width="match_parent"
         android:gravity="center"
         android:orientation="vertical"
         android:layout_height="match_parent">
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="130dp"
+        android:layout_margin="10dp"
+        android:layout_height="130dp"
         android:src="@drawable/ic_no_cities"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="#666"
-            android:text="Where do you live?"/>
+            android:text="@string/cities_empty_message"/>
     </LinearLayout>
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/add_city_fab"
