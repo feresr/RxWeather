@@ -41,7 +41,7 @@
     <string name="hPa">%1$d hPa</string>
     <string name="no_internet_title">No internet</string>
     <string name="no_internet_description">Check your connection</string>
-    <string name="cities_empty_message">I\'m a bit confused about your whereabouts…</string>
+    <string name="cities_empty_message">I\'m a bit confused about your whereabouts…\nPlease add your city manually.</string>
 
 
 </resources>

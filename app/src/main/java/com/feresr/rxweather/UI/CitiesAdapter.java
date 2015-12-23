@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.feresr.rxweather.R;
@@ -70,9 +71,13 @@ public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.ViewHolder
         if (cities.get(position).getCityWeather() != null) {
             holder.view.setBackgroundColor(city.getCityWeather().getCurrently().getColor(context));
             holder.temp.setText(city.getCityWeather().getCurrently().getTemperature().toString() + "°");
+            holder.progressBar.setVisibility(View.GONE);
+            holder.temp.setVisibility(View.VISIBLE);
             holder.summary.setText(city.getCityWeather().getCurrently().getSummary());
         } else {
             holder.view.setBackgroundColor(Color.GRAY);
+            holder.progressBar.setVisibility(View.VISIBLE);
+            holder.temp.setVisibility(View.GONE);
             holder.temp.setText("");
         }
     }
@@ -92,6 +97,7 @@ public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.ViewHolder
         TextView temp;
         LinearLayout view;
         TextView summary;
+        ProgressBar progressBar;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -99,6 +105,7 @@ public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.ViewHolder
             cityName = (TextView) itemView.findViewById(R.id.city_name);
             temp = (TextView) itemView.findViewById(R.id.temp);
             summary = (TextView) itemView.findViewById(R.id.summary);
+            progressBar = (ProgressBar) itemView.findViewById(R.id.progress_bar);
         }
     }
 }
