@@ -8,6 +8,7 @@ import com.feresr.rxweather.storage.DataCache;
 import java.util.List;
 
 import rx.Observable;
+import rx.functions.Func1;
 
 
 /**
@@ -21,8 +22,14 @@ public class DiskDataSource implements DataSource {
     }
 
     @Override
-    public Observable<CityWeather> getForecast(String cityId, String lat, String lon) {
-        return cache.getForecast(cityId);
+    public Observable<City> getForecast(final City city) {
+        return cache.getForecast(city.getId()).map(new Func1<CityWeather, City>() {
+            @Override
+            public City call(CityWeather cityWeather) {
+                city.setCityWeather(cityWeather);
+                return city;
+            }
+        });
     }
 
     @Override
@@ -30,8 +37,8 @@ public class DiskDataSource implements DataSource {
         return cache.getCities();
     }
 
-    public Observable<City> saveCity(String id, String name, Double lat, Double lon) {
-        return cache.putCity(id, name, lat, lon);
+    public Observable<City> saveCity(City city) {
+        return cache.putCity(city);
     }
 
     public Observable<City> removeCity(City city) {

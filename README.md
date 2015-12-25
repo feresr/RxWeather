@@ -4,6 +4,7 @@ Personal pet project aimed to illustrate the use of the following android specif
 <B>Current state</B><br>
 AndroidRx / JavaRx <i>Implemented</i> ✓ <br>
 Dagger2 <i>Implemented</i> ✓ <br>
+Guava <i>Implemented</i> ✓ <br>
 UnitTesting <i>To implement</i><br>
 Mockito <i>To implement</i><br>
 RetroLambda <i>To implement</i><br>

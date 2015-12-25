@@ -16,27 +16,21 @@ public class SaveCityUseCase implements UseCase<City> {
 
 
     Repository repository;
-    private String id;
-    private String name;
-    private Double lat;
-    private Double lon;
+        private City city;
 
     @Inject
     SaveCityUseCase(Repository repository) {
         this.repository = repository;
     }
 
-    public void setParameters(String id, String name, Double lat, Double lon) {
-        this.id = id;
-        this.name = name;
-        this.lat = lat;
-        this.lon = lon;
+    public void setCity(City city) {
+        this.city = city;
     }
 
     @Override
     public Observable<City> execute() {
-        return repository.saveCity(id, name, lat, lon)
-                .subscribeOn(Schedulers.newThread())
+        return repository.saveCity(city)
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
 }

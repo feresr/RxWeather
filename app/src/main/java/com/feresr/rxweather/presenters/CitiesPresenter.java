@@ -2,7 +2,6 @@ package com.feresr.rxweather.presenters;
 
 import android.os.Bundle;
 import android.util.Log;
-import android.view.ViewAnimationUtils;
 
 import com.feresr.rxweather.UI.CitiesAdapter;
 import com.feresr.rxweather.UI.FragmentInteractionsListener;
@@ -12,7 +11,6 @@ import com.feresr.rxweather.domain.GetCityForecastUseCase;
 import com.feresr.rxweather.domain.RemoveCityUseCase;
 import com.feresr.rxweather.domain.SaveCityUseCase;
 import com.feresr.rxweather.models.City;
-import com.feresr.rxweather.models.CityWeather;
 import com.feresr.rxweather.presenters.views.View;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
@@ -28,6 +26,7 @@ import javax.inject.Inject;
 import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
+import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.subscriptions.CompositeSubscription;
 
@@ -81,7 +80,6 @@ public class CitiesPresenter implements Presenter, android.view.View.OnClickList
 
     }
 
-
     public void setAdapter(CitiesAdapter adapter) {
         this.citiesAdapter = adapter;
     }
@@ -89,28 +87,37 @@ public class CitiesPresenter implements Presenter, android.view.View.OnClickList
     @Override
     public void onCreate() {
 
-        Subscription subscription = getCitiesUseCase.execute().flatMap(new Func1<List<City>, Observable<City>>() {
+        Subscription subscription = getCitiesUseCase.execute().doOnNext(new Action1<List<City>>() {
             @Override
-            public Observable<City> call(List<City> cities) {
+            public void call(List<City> cities) {
+                //Add all cities to view
                 citiesView.addCities(cities);
-                return Observable.from(cities);
+            }
+        }).flatMapIterable(new Func1<List<City>, Iterable<City>>() {
+            @Override
+            public Iterable<City> call(List<City> cities) {
+                return cities;
+            }
+        }).flatMap(new Func1<City, Observable<City>>() {
+            @Override
+            public Observable<City> call(City city) {
+                getCityWeatherUseCase.setCity(city);
+                return getCityWeatherUseCase.execute();
             }
         }).subscribe(new Subscriber<City>() {
             @Override
             public void onCompleted() {
-                subscriptions.remove(this);
-                this.unsubscribe();
+
             }
 
             @Override
             public void onError(Throwable e) {
-                Log.e(this.getClass().getSimpleName(), e.toString());
+
             }
 
             @Override
             public void onNext(City city) {
-                getCityWeatherUseCase.setLatLon(city.getLat().toString(), city.getLon().toString(), city.getId());
-                getCityWeather(city);
+                citiesView.updateCity(city);
             }
         });
 
@@ -123,9 +130,10 @@ public class CitiesPresenter implements Presenter, android.view.View.OnClickList
     }
 
     public void addNewCity(final City city) {
-        citiesView.addCity(city);
         if (city.getLat() == null || city.getLon() == null) {
             if (googleApiClient.isConnected()) {
+
+                citiesView.addCity(city);
 
                 Places.GeoDataApi.getPlaceById(googleApiClient, city.getId()).setResultCallback(new ResultCallback<PlaceBuffer>() {
                     @Override
@@ -133,16 +141,18 @@ public class CitiesPresenter implements Presenter, android.view.View.OnClickList
                         if (places != null && places.get(0) != null) {
 
                             Place place = places.get(0);
-                            saveCityUseCase.setParameters(place.getId(), place.getName().toString(), place.getLatLng().latitude, place.getLatLng().longitude);
+                            city.setLat(place.getLatLng().latitude);
+                            city.setLon(place.getLatLng().longitude);
+                            saveCityUseCase.setCity(city);
 
                             //Touches UI, we unsubscribe when completed, but also on conf changes (subscription.unsubscribe)
-                            subscriptions.add(saveCityUseCase.execute().flatMap(new Func1<City, Observable<CityWeather>>() {
+                            subscriptions.add(saveCityUseCase.execute().flatMap(new Func1<City, Observable<City>>() {
                                 @Override
-                                public Observable<CityWeather> call(City city) {
-                                    getCityWeatherUseCase.setLatLon(city.getLat().toString(), city.getLon().toString(), city.getId());
+                                public Observable<City> call(City city) {
+                                    getCityWeatherUseCase.setCity(city);
                                     return getCityWeatherUseCase.execute();
                                 }
-                            }).subscribe(new Subscriber<CityWeather>() {
+                            }).subscribe(new Subscriber<City>() {
                                 @Override
                                 public void onCompleted() {
                                     subscriptions.remove(this);
@@ -151,18 +161,16 @@ public class CitiesPresenter implements Presenter, android.view.View.OnClickList
 
                                 @Override
                                 public void onError(Throwable e) {
-
+                                    Log.e(this.getClass().getSimpleName(), e.toString());
                                 }
 
                                 @Override
-                                public void onNext(CityWeather cityWeather) {
-                                    city.setCityWeather(cityWeather);
+                                public void onNext(City city) {
                                     citiesView.updateCity(city);
                                 }
                             }));
 
                             DataBufferUtils.freezeAndClose(places);
-
                         }
 
                     }
@@ -171,28 +179,6 @@ public class CitiesPresenter implements Presenter, android.view.View.OnClickList
                 Log.e(this.getClass().getSimpleName(), "GoogleApiClient not connected");
             }
         }
-    }
-
-    private void getCityWeather(final City city) {
-        //Touches UI, we unsubscribe when completed, but also on conf changes (subscription.unsubscribe)
-        subscriptions.add(getCityWeatherUseCase.execute().subscribe(new Subscriber<CityWeather>() {
-            @Override
-            public void onCompleted() {
-                subscriptions.remove(this);
-                this.unsubscribe();
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                Log.e("error", e.toString());
-            }
-
-            @Override
-            public void onNext(CityWeather cityWeather) {
-                city.setCityWeather(cityWeather);
-                citiesView.updateCity(city);
-            }
-        }));
     }
 
     public void onRemoveCity(City city) {

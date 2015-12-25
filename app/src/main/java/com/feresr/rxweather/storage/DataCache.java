@@ -31,7 +31,7 @@ public interface DataCache {
 
     Observable<List<City>> getCities();
 
-    Observable<City> putCity(String id, String name, Double lat, Double lon);
+    Observable<City> putCity(City city);
 
     Observable removeCity(City city);
 }

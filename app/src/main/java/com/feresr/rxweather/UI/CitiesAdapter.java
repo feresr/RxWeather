@@ -20,7 +20,7 @@ import java.util.ArrayList;
 /**
  * Created by Fernando on 4/11/2015.
  */
-public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.ViewHolder> {
+    public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.ViewHolder> {
 
     private ArrayList<City> cities;
     private LayoutInflater inflater;
@@ -49,13 +49,7 @@ public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.ViewHolder
     }
 
     public void updateCity(City city) {
-        for (int i = 0; i < cities.size(); i++) {
-            if (cities.get(i).getId().equals(city.getId())) {
-                cities.get(i).setCityWeather(city.getCityWeather());
-                notifyItemChanged(i);
-                return;
-            }
-        }
+        notifyItemChanged(cities.indexOf(city));
     }
 
     @Override

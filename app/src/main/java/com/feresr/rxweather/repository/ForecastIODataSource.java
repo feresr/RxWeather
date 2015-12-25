@@ -11,6 +11,7 @@ import javax.inject.Inject;
 
 import rx.Observable;
 import rx.functions.Action1;
+import rx.functions.Func1;
 
 /**
  * Created by Fernando on 4/11/2015.
@@ -27,13 +28,20 @@ public class ForecastIODataSource implements DataSource {
         this.cache = cache;
     }
 
+
     @Override
-    public Observable<CityWeather> getForecast(final String cityId, String lat, String lon) {
-        String latlong = String.format("%s,%s", lat, lon);
+    public Observable<City> getForecast(final City city) {
+        String latlong = String.format("%s,%s", city.getLat(), city.getLon());
         return endpoints.getForecast(latlong, API_KEY, "ca").doOnNext(new Action1<CityWeather>() {
             @Override
             public void call(CityWeather cityWeather) {
-                cache.putForecast(cityId, cityWeather);
+                cache.putForecast(city.getId(), cityWeather);
+            }
+        }).map(new Func1<CityWeather, City>() {
+            @Override
+            public City call(CityWeather cityWeather) {
+                city.setCityWeather(cityWeather);
+                return city;
             }
         });
     }

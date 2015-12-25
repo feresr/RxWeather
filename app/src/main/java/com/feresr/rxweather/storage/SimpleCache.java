@@ -83,24 +83,17 @@ public class SimpleCache implements DataCache {
     }
 
     @Override
-    public Observable<City> putCity(final String id, final String name, final Double lat, final Double lon) {
+    public Observable<City> putCity(final City city) {
         return Observable.create(new Observable.OnSubscribe<City>() {
             @Override
             public void call(Subscriber<? super City> subscriber) {
                 try {
                     Realm realm = Realm.getInstance(context);
                     realm.beginTransaction();
-                    City city = realm.createObject(City.class);
-                    city.setName(name);
-                    city.setId(id);
-                    city.setLat(lat);
-                    city.setLon(lon);
-
-                    City city1 = copyCity(city);
-
+                    realm.copyToRealmOrUpdate(city);
                     realm.commitTransaction();
                     realm.close();
-                    subscriber.onNext(city1);
+                    subscriber.onNext(city);
                 } catch (Exception e) {
                     subscriber.onError(e);
                 }
@@ -142,6 +135,7 @@ public class SimpleCache implements DataCache {
     }
 
     private City copyCity(City city) {
+        //Cannot use realm object directly. FIX: IllegalStateException: Realm access from incorrect thread. Realm objects can only be accessed on the thread they were created.
         City city1 = new City();
         city1.setName(city.getName());
         city1.setId(city.getId());

@@ -11,9 +11,9 @@ import rx.Observable;
  * Created by Fernando on 14/10/2015.
  */
 public interface Repository {
-    Observable<CityWeather> getForecast(String lat, String lon, String cityId);
+    Observable<City> getForecast(City city);
     Observable<List<City>> getCities();
-    Observable<City> saveCity(String id, String name, Double lat, Double lon);
+    Observable<City> saveCity(City city);
 
     Observable<City> removeCity(City city);
 }

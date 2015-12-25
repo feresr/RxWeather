@@ -22,9 +22,10 @@ public class RepositoryImp implements Repository {
     }
 
 
-    public Observable<CityWeather> getForecast(String lat, String lon, String cityId) {
-        final DataSource dataSource = this.dataStorageFactory.create(cityId);
-        return dataSource.getForecast(cityId, lat, lon);
+    @Override
+    public Observable<City> getForecast(City city) {
+        final DataSource dataSource = this.dataStorageFactory.create(city.getId());
+        return dataSource.getForecast(city);
     }
 
     @Override
@@ -34,9 +35,9 @@ public class RepositoryImp implements Repository {
     }
 
     @Override
-    public Observable<City> saveCity(String id, String name, Double lat, Double lon) {
+    public Observable<City> saveCity(City city) {
         DiskDataSource diskDataSource = dataStorageFactory.getDiskDataSource();
-        return diskDataSource.saveCity(id, name, lat, lon);
+        return diskDataSource.saveCity(city);
     }
 
     @Override
