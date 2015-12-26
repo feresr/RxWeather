@@ -37,6 +37,11 @@ public class ForecastIODataSource implements DataSource {
             public void call(CityWeather cityWeather) {
                 cache.putForecast(city.getId(), cityWeather);
             }
+        }).onErrorReturn(new Func1<Throwable, CityWeather>() {
+            @Override
+            public CityWeather call(Throwable throwable) {
+                return null;
+            }
         }).map(new Func1<CityWeather, City>() {
             @Override
             public City call(CityWeather cityWeather) {

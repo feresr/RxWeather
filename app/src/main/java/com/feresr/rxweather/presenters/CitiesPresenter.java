@@ -1,8 +1,13 @@
 package com.feresr.rxweather.presenters;
 
+import android.content.Context;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.feresr.rxweather.NetworkListener;
+import com.feresr.rxweather.NetworkReceiver;
 import com.feresr.rxweather.UI.CitiesAdapter;
 import com.feresr.rxweather.UI.FragmentInteractionsListener;
 import com.feresr.rxweather.UI.RecyclerItemClickListener;
@@ -33,7 +38,7 @@ import rx.subscriptions.CompositeSubscription;
 /**
  * Created by Fernando on 6/11/2015.
  */
-public class CitiesPresenter implements Presenter, android.view.View.OnClickListener, RecyclerItemClickListener.OnItemClickListener {
+public class CitiesPresenter implements Presenter, NetworkListener, android.view.View.OnClickListener, RecyclerItemClickListener.OnItemClickListener {
 
     private CitiesAdapter citiesAdapter;
     private GetCityForecastUseCase getCityWeatherUseCase;
@@ -44,20 +49,27 @@ public class CitiesPresenter implements Presenter, android.view.View.OnClickList
     private GoogleApiClient googleApiClient;
     private SaveCityUseCase saveCityUseCase;
     private FragmentInteractionsListener fragmentInteractionListener;
+    private NetworkReceiver networkReceiver;
+    private Context context;
 
     @Inject
-    public CitiesPresenter(GetCitiesUseCase getCitiesUseCase, GetCityForecastUseCase getCityForecastUseCase, RemoveCityUseCase removeCityUseCase, SaveCityUseCase saveCityUseCase) {
+    public CitiesPresenter(Context context, GetCitiesUseCase getCitiesUseCase, GetCityForecastUseCase getCityForecastUseCase, RemoveCityUseCase removeCityUseCase, SaveCityUseCase saveCityUseCase) {
         super();
         this.getCityWeatherUseCase = getCityForecastUseCase;
         this.saveCityUseCase = saveCityUseCase;
         this.getCitiesUseCase = getCitiesUseCase;
         this.removeCityUseCase = removeCityUseCase;
         this.subscriptions = new CompositeSubscription();
+        networkReceiver = new NetworkReceiver();
+        IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        context.registerReceiver(networkReceiver, intentFilter);
+        networkReceiver.setListener(this);
+        this.context = context;
+
     }
 
     @Override
     public void onStart() {
-
     }
 
     @Override
@@ -86,7 +98,10 @@ public class CitiesPresenter implements Presenter, android.view.View.OnClickList
 
     @Override
     public void onCreate() {
+        reloadCities();
+    }
 
+    private void reloadCities() {
         Subscription subscription = getCitiesUseCase.execute().doOnNext(new Action1<List<City>>() {
             @Override
             public void call(List<City> cities) {
@@ -112,11 +127,13 @@ public class CitiesPresenter implements Presenter, android.view.View.OnClickList
 
             @Override
             public void onError(Throwable e) {
-
+                //Could not fetch weather
+                Log.e(this.getClass().getSimpleName(), e.toString());
             }
 
             @Override
             public void onNext(City city) {
+                city.setState(City.STATE_DONE);
                 citiesView.updateCity(city);
             }
         });
@@ -126,19 +143,21 @@ public class CitiesPresenter implements Presenter, android.view.View.OnClickList
 
     @Override
     public void onDestroy() {
+        networkReceiver.setListener(null);
+        context.unregisterReceiver(networkReceiver);
         subscriptions.unsubscribe();
     }
 
     public void addNewCity(final City city) {
         if (city.getLat() == null || city.getLon() == null) {
             if (googleApiClient.isConnected()) {
-
+                city.setState(City.STATE_FETCHING);
                 citiesView.addCity(city);
 
                 Places.GeoDataApi.getPlaceById(googleApiClient, city.getId()).setResultCallback(new ResultCallback<PlaceBuffer>() {
                     @Override
                     public void onResult(PlaceBuffer places) {
-                        if (places != null && places.get(0) != null) {
+                        if (places != null && places.getCount() >= 1 && places.get(0) != null) {
 
                             Place place = places.get(0);
                             city.setLat(place.getLatLng().latitude);
@@ -166,6 +185,7 @@ public class CitiesPresenter implements Presenter, android.view.View.OnClickList
 
                                 @Override
                                 public void onNext(City city) {
+                                    city.setState(City.STATE_DONE);
                                     citiesView.updateCity(city);
                                 }
                             }));
@@ -219,5 +239,12 @@ public class CitiesPresenter implements Presenter, android.view.View.OnClickList
     @Override
     public void onItemClick(android.view.View view, int position) {
         fragmentInteractionListener.onCitySelected(citiesAdapter.getCities().get(position));
+    }
+
+    @Override
+    public void onNetworkStateChanged(boolean online) {
+        if (online) {
+            reloadCities();
+        }
     }
 }

@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.feresr.rxweather.R;
 import com.feresr.rxweather.models.City;
+import com.feresr.rxweather.models.Warning;
 import com.feresr.rxweather.utils.IconManager;
 
 import java.util.ArrayList;
@@ -61,19 +62,24 @@ import java.util.ArrayList;
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
         City city = cities.get(position);
+
         holder.cityName.setText(city.getName());
         if (cities.get(position).getCityWeather() != null) {
             holder.view.setBackgroundColor(city.getCityWeather().getCurrently().getColor(context));
             holder.temp.setText(city.getCityWeather().getCurrently().getTemperature().toString() + "°");
-            holder.progressBar.setVisibility(View.GONE);
             holder.temp.setVisibility(View.VISIBLE);
             holder.summary.setVisibility(View.VISIBLE);
             holder.summary.setText(city.getCityWeather().getCurrently().getSummary());
         } else {
             holder.view.setBackgroundColor(Color.GRAY);
-            holder.progressBar.setVisibility(View.VISIBLE);
             holder.temp.setVisibility(View.GONE);
             holder.summary.setVisibility(View.INVISIBLE);
+        }
+
+        if (city.getState() == City.STATE_FETCHING) {
+            holder.progressBar.setVisibility(View.VISIBLE);
+        } else {
+            holder.progressBar.setVisibility(View.GONE);
         }
     }
 

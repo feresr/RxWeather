@@ -13,7 +13,6 @@ public class City extends RealmObject implements Serializable {
 
     public static final int STATE_DONE = 0;
     public static final int STATE_FETCHING = 1;
-    public static final int STATE_NO_INTERNET = 2;
 
     @PrimaryKey
     private String id;
