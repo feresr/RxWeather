@@ -149,16 +149,17 @@ public class CitiesPresenter implements Presenter, NetworkListener, android.view
     }
 
     public void addNewCity(final City city) {
+        //TODO check internet connection (cannot add city to db without lat and lon)
         if (city.getLat() == null || city.getLon() == null) {
             if (googleApiClient.isConnected()) {
-                city.setState(City.STATE_FETCHING);
-                citiesView.addCity(city);
+
 
                 Places.GeoDataApi.getPlaceById(googleApiClient, city.getId()).setResultCallback(new ResultCallback<PlaceBuffer>() {
                     @Override
                     public void onResult(PlaceBuffer places) {
                         if (places != null && places.getCount() >= 1 && places.get(0) != null) {
-
+                            city.setState(City.STATE_FETCHING);
+                            citiesView.addCity(city);
                             Place place = places.get(0);
                             city.setLat(place.getLatLng().latitude);
                             city.setLon(place.getLatLng().longitude);
