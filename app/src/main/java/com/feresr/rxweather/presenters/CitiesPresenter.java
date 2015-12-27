@@ -62,8 +62,8 @@ public class CitiesPresenter implements Presenter, NetworkListener, android.view
         this.subscriptions = new CompositeSubscription();
         networkReceiver = new NetworkReceiver();
         IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
-        context.registerReceiver(networkReceiver, intentFilter);
         networkReceiver.setListener(this);
+        context.registerReceiver(networkReceiver, intentFilter);
         this.context = context;
 
     }
@@ -98,7 +98,7 @@ public class CitiesPresenter implements Presenter, NetworkListener, android.view
 
     @Override
     public void onCreate() {
-        reloadCities();
+
     }
 
     private void reloadCities() {

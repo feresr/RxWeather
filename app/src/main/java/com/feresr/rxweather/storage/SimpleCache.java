@@ -1,6 +1,8 @@
 package com.feresr.rxweather.storage;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 
 import com.feresr.rxweather.models.City;
 import com.feresr.rxweather.models.CityWeather;
@@ -12,8 +14,6 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import io.realm.Realm;
-import io.realm.RealmResults;
 import rx.Observable;
 import rx.Subscriber;
 
@@ -63,16 +63,22 @@ public class SimpleCache implements DataCache {
         return Observable.create(new Observable.OnSubscribe<List<City>>() {
             @Override
             public void call(Subscriber<? super List<City>> subscriber) {
+                ArrayList<City> cities = new ArrayList<>();
+
                 try {
-                    ArrayList<City> cities = new ArrayList<>();
-                    Realm realm = Realm.getInstance(context);
-                    RealmResults<City> query = realm.where(City.class)
-                            .findAll();
-                    for (City city : query) {
-                        cities.add(copyCity(city));
+                    Cursor cursor = context.getContentResolver().query(WeatherContract.CityEntry.CONTENT_URI, null, null, null, null);
+                    if (cursor != null) {
+                        while (cursor.moveToNext()) {
+                            City city = new City();
+                            city.setId(cursor.getString(0));
+                            city.setName(cursor.getString(1));
+                            city.setLat(cursor.getDouble(2));
+                            city.setLon(cursor.getDouble(3));
+                            cities.add(city);
+                        }
+                        cursor.close();
                     }
                     subscriber.onNext(cities);
-                    realm.close();
                 } catch (Exception e) {
                     subscriber.onError(e);
                 }
@@ -88,11 +94,14 @@ public class SimpleCache implements DataCache {
             @Override
             public void call(Subscriber<? super City> subscriber) {
                 try {
-                    Realm realm = Realm.getInstance(context);
-                    realm.beginTransaction();
-                    realm.copyToRealmOrUpdate(city);
-                    realm.commitTransaction();
-                    realm.close();
+                    ContentValues cityValues = new ContentValues();
+                    cityValues.put(WeatherContract.CityEntry._ID, city.getId());
+                    cityValues.put(WeatherContract.CityEntry.COLUMN_NAME_CITY_NAME, city.getName());
+                    cityValues.put(WeatherContract.CityEntry.COLUMN_NAME_LAT, city.getLat());
+                    cityValues.put(WeatherContract.CityEntry.COLUMN_NAME_LON, city.getLon());
+
+                    context.getContentResolver().insert(WeatherContract.CityEntry.CONTENT_URI, cityValues);
+
                     subscriber.onNext(city);
                 } catch (Exception e) {
                     subscriber.onError(e);
@@ -108,11 +117,8 @@ public class SimpleCache implements DataCache {
             @Override
             public void call(Subscriber<? super City> subscriber) {
                 try {
-                    Realm realm = Realm.getInstance(context);
-                    realm.beginTransaction();
-                    realm.where(City.class).contains("id", city.getId()).findFirst().removeFromRealm();
-                    realm.commitTransaction();
-                    realm.close();
+                    String[] params = {city.getId()};
+                    context.getContentResolver().delete(WeatherContract.CityEntry.CONTENT_URI, WeatherContract.CityEntry._ID + " == ?", params);
                     subscriber.onNext(city);
                 } catch (Exception e) {
                     subscriber.onError(e);
@@ -132,15 +138,5 @@ public class SimpleCache implements DataCache {
     public void putForecast(String cityId, CityWeather cityWeather) {
         cityWeather.setFetchTime(System.currentTimeMillis());
         weathers.put(cityId, cityWeather);
-    }
-
-    private City copyCity(City city) {
-        //Cannot use realm object directly. FIX: IllegalStateException: Realm access from incorrect thread. Realm objects can only be accessed on the thread they were created.
-        City city1 = new City();
-        city1.setName(city.getName());
-        city1.setId(city.getId());
-        city1.setLat(city.getLat());
-        city1.setLon(city.getLon());
-        return city1;
     }
 }

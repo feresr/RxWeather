@@ -38,6 +38,9 @@
                 android:value=".UI.MainActivity" />
 
         </activity>
+        <provider
+            android:authorities="com.feresr.rxweather.app"
+            android:name=".storage.WeatherProvider"/>
     </application>
 
 </manifest>

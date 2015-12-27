@@ -1,13 +1,10 @@
 package com.feresr.rxweather.UI;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +14,6 @@ import android.widget.TextView;
 
 import com.feresr.rxweather.R;
 import com.feresr.rxweather.UI.views.InfoDisplay;
-import com.feresr.rxweather.UI.views.RoundedCardLayout;
 import com.feresr.rxweather.models.CityWeather;
 import com.feresr.rxweather.models.Currently;
 import com.feresr.rxweather.models.Daily;

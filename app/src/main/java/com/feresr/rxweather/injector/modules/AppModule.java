@@ -1,6 +1,7 @@
 package com.feresr.rxweather.injector.modules;
 
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 
 import com.feresr.rxweather.RxWeatherApplication;
 import com.feresr.rxweather.storage.DataCache;
