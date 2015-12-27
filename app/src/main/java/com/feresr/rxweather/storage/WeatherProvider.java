@@ -71,7 +71,7 @@ public class WeatherProvider extends ContentProvider {
 
         switch (match) {
             case WEATHER: {
-                long _id = db.insert(WeatherContract.CityEntry.TABLE_NAME, null, values);
+                long _id = db.insertWithOnConflict(WeatherContract.CityEntry.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_IGNORE);
                 if (_id > 0)
                     returnUri = WeatherContract.CityEntry.buildWeatherUri(_id);
                 else

@@ -159,7 +159,6 @@ public class CitiesPresenter implements Presenter, NetworkListener, android.view
                     public void onResult(PlaceBuffer places) {
                         if (places != null && places.getCount() >= 1 && places.get(0) != null) {
                             city.setState(City.STATE_FETCHING);
-                            citiesView.addCity(city);
                             Place place = places.get(0);
                             city.setLat(place.getLatLng().latitude);
                             city.setLon(place.getLatLng().longitude);
@@ -169,6 +168,7 @@ public class CitiesPresenter implements Presenter, NetworkListener, android.view
                             subscriptions.add(saveCityUseCase.execute().flatMap(new Func1<City, Observable<City>>() {
                                 @Override
                                 public Observable<City> call(City city) {
+                                    citiesView.addCity(city);
                                     getCityWeatherUseCase.setCity(city);
                                     return getCityWeatherUseCase.execute();
                                 }
