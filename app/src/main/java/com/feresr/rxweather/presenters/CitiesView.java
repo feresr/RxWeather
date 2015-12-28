@@ -2,7 +2,6 @@ package com.feresr.rxweather.presenters;
 
 import com.feresr.rxweather.models.City;
 import com.feresr.rxweather.presenters.views.View;
-import com.google.android.gms.common.api.GoogleApiClient;
 
 import java.util.List;
 

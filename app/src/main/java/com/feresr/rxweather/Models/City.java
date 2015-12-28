@@ -2,26 +2,20 @@ package com.feresr.rxweather.models;
 
 import java.io.Serializable;
 
-import io.realm.RealmObject;
-import io.realm.annotations.Ignore;
-import io.realm.annotations.PrimaryKey;
-
 /**
  * Created by Fernando on 5/11/2015.
  */
-public class City extends RealmObject implements Serializable {
+public class City implements Serializable {
 
     public static final int STATE_DONE = 0;
     public static final int STATE_FETCHING = 1;
-
-    @PrimaryKey
     private String id;
     private String name;
     private Double lat;
     private Double lon;
-    @Ignore
+
     private int state = STATE_FETCHING;
-    @Ignore
+
     private CityWeather cityWeather;
 
     public String getId() {
