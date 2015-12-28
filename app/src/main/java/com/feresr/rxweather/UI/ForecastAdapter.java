@@ -21,6 +21,7 @@ import com.feresr.rxweather.models.Day;
 import com.feresr.rxweather.models.DisplayWeatherInfo;
 import com.feresr.rxweather.models.Hourly;
 import com.feresr.rxweather.models.Warning;
+import com.feresr.rxweather.utils.IconManager;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -166,7 +167,7 @@ public class ForecastAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 currentlyViewHolder.precipitation.setSubValue(new DecimalFormat("#.##").format(currently.getPrecipIntensity() * 100) + "cm");
 
                 currentlyViewHolder.feelsLike.setValue(context.getString(R.string.degree, Math.round(currently.getApparentTemperature())));
-                currentlyViewHolder.icon.setText(currently.getIcon(context));
+                currentlyViewHolder.icon.setText(IconManager.getIconResource(currently.getIcon(), context));
 
                 break;
             case DAILY:

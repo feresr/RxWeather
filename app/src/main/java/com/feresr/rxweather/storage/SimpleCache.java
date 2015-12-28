@@ -6,9 +6,9 @@ import android.database.Cursor;
 
 import com.feresr.rxweather.models.City;
 import com.feresr.rxweather.models.CityWeather;
+import com.feresr.rxweather.models.Currently;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -24,31 +24,30 @@ import rx.Subscriber;
 public class SimpleCache implements DataCache {
 
     private static final long EXPIRATION_TIME = 30 * 60 * 1000;
-    HashMap<String, CityWeather> weathers;
     private Context context;
 
     @Inject
     public SimpleCache(Context context) {
         this.context = context;
-        weathers = new HashMap<>();
     }
 
     @Override
-    public boolean isExpired(String cityId) {
-        if (weathers.get(cityId) == null) {
+    public boolean isExpired(City city) {
+        CityWeather cityWeather = getCityWeatherFromCityId(city.getId());
+        if (cityWeather == null) {
             return true;
         }
 
-        return (System.currentTimeMillis() - weathers.get(cityId).getFetchTime() > EXPIRATION_TIME);
+        return (System.currentTimeMillis() - cityWeather.getFetchTime() > EXPIRATION_TIME);
     }
 
     @Override
-    public rx.Observable<CityWeather> getForecast(final String citiId) {
+    public rx.Observable<CityWeather> getForecast(final String cityId) {
         return Observable.create(new Observable.OnSubscribe<CityWeather>() {
             @Override
             public void call(Subscriber<? super CityWeather> subscriber) {
                 try {
-                    subscriber.onNext(weathers.get(citiId));
+                    subscriber.onNext(getCityWeatherFromCityId(cityId));
                 } catch (Exception e) {
                     subscriber.onError(e);
                 } finally {
@@ -56,6 +55,46 @@ public class SimpleCache implements DataCache {
                 }
             }
         });
+    }
+
+    private CityWeather getCityWeatherFromCityId(String cityId) {
+        String[] params = {cityId};
+        CityWeather cityWeather = null;
+
+        Cursor cursor = context.getContentResolver().query(WeatherContract.WeatherEntry.CONTENT_URI, null, WeatherContract.WeatherEntry._ID + " = ?", params, null);
+        if (cursor != null) {
+            if (cursor.getCount() > 0) {
+                cursor.moveToFirst();
+
+                cityWeather = new CityWeather();
+                //0 is id
+                cityWeather.setTimezone(cursor.getString(1));
+                cityWeather.setOffset(cursor.getDouble(2));
+                cityWeather.setFetchTime(cursor.getLong(3));
+
+                Currently currently = new Currently();
+                currently.setTime(cursor.getInt(4));
+                currently.setSummary(cursor.getString(5));
+                currently.setIcon(cursor.getString(6));
+                currently.setPrecipIntensity(cursor.getDouble(7));
+                currently.setPrecipProbability(cursor.getDouble(8));
+                currently.setPrecipType(cursor.getString(9));
+                currently.setTemperature(cursor.getDouble(10));
+                currently.setApparentTemperature(cursor.getDouble(11));
+                currently.setDewPoint(cursor.getDouble(12));
+                currently.setHumidity(cursor.getDouble(13));
+                currently.setWindSpeed(cursor.getDouble(14));
+                currently.setWindBearing(cursor.getDouble(15));
+                currently.setCloudCover(cursor.getDouble(16));
+                currently.setPressure(cursor.getDouble(17));
+                currently.setOzone(cursor.getDouble(18));
+
+                cityWeather.setCurrently(currently);
+            }
+            cursor.close();
+        }
+
+        return cityWeather;
     }
 
     @Override
@@ -118,7 +157,7 @@ public class SimpleCache implements DataCache {
             public void call(Subscriber<? super City> subscriber) {
                 try {
                     String[] params = {city.getId()};
-                    context.getContentResolver().delete(WeatherContract.CityEntry.CONTENT_URI, WeatherContract.CityEntry._ID + " == ?", params);
+                    context.getContentResolver().delete(WeatherContract.CityEntry.CONTENT_URI, WeatherContract.CityEntry._ID + " = ?", params);
                     subscriber.onNext(city);
                 } catch (Exception e) {
                     subscriber.onError(e);
@@ -131,12 +170,34 @@ public class SimpleCache implements DataCache {
 
     @Override
     public void evictAll() {
-        weathers.clear();
+        //weathers.clear();
     }
 
     @Override
     public void putForecast(String cityId, CityWeather cityWeather) {
-        cityWeather.setFetchTime(System.currentTimeMillis());
-        weathers.put(cityId, cityWeather);
+
+        ContentValues weatherValues = new ContentValues();
+        weatherValues.put(WeatherContract.WeatherEntry._ID, cityId);
+        weatherValues.put(WeatherContract.WeatherEntry.COLUMN_TIME_ZONE, cityWeather.getTimezone());
+        weatherValues.put(WeatherContract.WeatherEntry.COLUMN_OFFSET, cityWeather.getOffset());
+        weatherValues.put(WeatherContract.WeatherEntry.COLUMN_FETCH_TIME, System.currentTimeMillis());
+        weatherValues.put(WeatherContract.WeatherEntry.COLUMN_TIME, cityWeather.getCurrently().getTime());
+        weatherValues.put(WeatherContract.WeatherEntry.COLUMN_SUMMARY, cityWeather.getCurrently().getSummary());
+        weatherValues.put(WeatherContract.WeatherEntry.COLUMN_ICON, cityWeather.getCurrently().getIcon());
+        weatherValues.put(WeatherContract.WeatherEntry.COLUMN_PRECIP_INTENSITY, cityWeather.getCurrently().getPrecipIntensity());
+        weatherValues.put(WeatherContract.WeatherEntry.COLUMN_PRECIP_PROBABILITY, cityWeather.getCurrently().getPrecipProbability());
+        weatherValues.put(WeatherContract.WeatherEntry.COLUMN_PRECIP_TYPE, cityWeather.getCurrently().getPrecipType());
+        weatherValues.put(WeatherContract.WeatherEntry.COLUMN_TEMP, cityWeather.getCurrently().getTemperature());
+        weatherValues.put(WeatherContract.WeatherEntry.COLUMN_APPARENT_TEMP, cityWeather.getCurrently().getApparentTemperature());
+        weatherValues.put(WeatherContract.WeatherEntry.COLUMN_DEW_POINT, cityWeather.getCurrently().getDewPoint());
+        weatherValues.put(WeatherContract.WeatherEntry.COLUMN_HUMIDITY, cityWeather.getCurrently().getHumidity());
+        weatherValues.put(WeatherContract.WeatherEntry.COLUMN_WIND_SPEED, cityWeather.getCurrently().getWindSpeed());
+        weatherValues.put(WeatherContract.WeatherEntry.COLUMN_WIND_BEARING, cityWeather.getCurrently().getWindBearing());
+        weatherValues.put(WeatherContract.WeatherEntry.COLUMN_CLOUD_COVER, cityWeather.getCurrently().getCloudCover());
+        weatherValues.put(WeatherContract.WeatherEntry.COLUMN_PRESSURE, cityWeather.getCurrently().getPressure());
+        weatherValues.put(WeatherContract.WeatherEntry.COLUMN_OZONE, cityWeather.getCurrently().getOzone());
+
+        context.getContentResolver().insert(WeatherContract.WeatherEntry.CONTENT_URI, weatherValues);
+
     }
 }

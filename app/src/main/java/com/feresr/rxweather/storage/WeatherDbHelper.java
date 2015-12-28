@@ -17,16 +17,39 @@ public class WeatherDbHelper extends android.database.sqlite.SQLiteOpenHelper {
     }
 
     // Database creation sql statement
-    private static final String DATABASE_CREATE = "CREATE TABLE " +
+    private static final String CITY_TABLE_CREATE = "CREATE TABLE " +
             WeatherContract.CityEntry.TABLE_NAME + "(" +
             WeatherContract.CityEntry._ID + " TEXT PRIMARY KEY, " +
             WeatherContract.CityEntry.COLUMN_NAME_CITY_NAME + " TEXT NOT NULL, " +
             WeatherContract.CityEntry.COLUMN_NAME_LAT + " REAL, " +
             WeatherContract.CityEntry.COLUMN_NAME_LON + " REAL);";
 
+    private static final String WEATHER_TABLE_CREATE = "CREATE TABLE " +
+            WeatherContract.WeatherEntry.TABLE_NAME + "(" +
+            WeatherContract.WeatherEntry._ID + " TEXT PRIMARY KEY, " +
+            WeatherContract.WeatherEntry.COLUMN_TIME_ZONE + " TEXT, " +
+            WeatherContract.WeatherEntry.COLUMN_OFFSET + " REAL, " +
+            WeatherContract.WeatherEntry.COLUMN_FETCH_TIME + " REAL, " +
+            WeatherContract.WeatherEntry.COLUMN_TIME + " NUMBER, " +
+            WeatherContract.WeatherEntry.COLUMN_SUMMARY + " TEXT , " +
+            WeatherContract.WeatherEntry.COLUMN_ICON + " TEXT NOT NULL, " +
+            WeatherContract.WeatherEntry.COLUMN_PRECIP_INTENSITY + " REAL, " +
+            WeatherContract.WeatherEntry.COLUMN_PRECIP_PROBABILITY + " REAL, " +
+            WeatherContract.WeatherEntry.COLUMN_PRECIP_TYPE + " TEXT, " +
+            WeatherContract.WeatherEntry.COLUMN_TEMP + " REAL, " +
+            WeatherContract.WeatherEntry.COLUMN_APPARENT_TEMP + " REAL, " +
+            WeatherContract.WeatherEntry.COLUMN_DEW_POINT + " REAL, " +
+            WeatherContract.WeatherEntry.COLUMN_HUMIDITY + " REAL, " +
+            WeatherContract.WeatherEntry.COLUMN_WIND_SPEED + " REAL, " +
+            WeatherContract.WeatherEntry.COLUMN_WIND_BEARING + " REAL, " +
+            WeatherContract.WeatherEntry.COLUMN_CLOUD_COVER + " REAL, " +
+            WeatherContract.WeatherEntry.COLUMN_PRESSURE + " REAL, " +
+            WeatherContract.WeatherEntry.COLUMN_OZONE + " REAL);";
+
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(DATABASE_CREATE);
+        db.execSQL(CITY_TABLE_CREATE);
+        db.execSQL(WEATHER_TABLE_CREATE);
     }
 
     @Override

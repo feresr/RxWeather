@@ -24,7 +24,7 @@ public class RepositoryImp implements Repository {
 
     @Override
     public Observable<City> getForecast(City city) {
-        final DataSource dataSource = this.dataStorageFactory.create(city.getId());
+        final DataSource dataSource = this.dataStorageFactory.create(city);
         return dataSource.getForecast(city);
     }
 

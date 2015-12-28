@@ -98,7 +98,7 @@ public class CitiesPresenter implements Presenter, NetworkListener, android.view
 
     @Override
     public void onCreate() {
-
+        reloadCities();
     }
 
     private void reloadCities() {
@@ -245,7 +245,33 @@ public class CitiesPresenter implements Presenter, NetworkListener, android.view
     @Override
     public void onNetworkStateChanged(boolean online) {
         if (online) {
-            reloadCities();
+            subscriptions.add(Observable.from(citiesAdapter.getCities()).flatMap(new Func1<City, Observable<City>>() {
+                @Override
+                public Observable<City> call(City city) {
+                    if (city.getCityWeather() == null) {
+                        getCityWeatherUseCase.setCity(city);
+                        return getCityWeatherUseCase.execute();
+                    }
+                    return null;
+                }
+            }).subscribe(new Subscriber<City>() {
+                @Override
+                public void onCompleted() {
+                    subscriptions.remove(this);
+                    this.unsubscribe();
+                }
+
+                @Override
+                public void onError(Throwable e) {
+                    Log.e(this.getClass().getSimpleName(), e.toString());
+                }
+
+                @Override
+                public void onNext(City city) {
+                    city.setState(City.STATE_DONE);
+                    citiesView.updateCity(city);
+                }
+            }));
         }
     }
 }

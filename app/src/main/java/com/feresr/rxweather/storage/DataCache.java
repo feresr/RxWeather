@@ -18,7 +18,7 @@ public interface DataCache {
      *
      * @return true, the cache is expired, otherwise false.
      */
-    boolean isExpired(String cityId);
+    boolean isExpired(City city);
 
     /**
      * Evict all elements of the cache.

@@ -14,6 +14,8 @@ import android.support.annotation.NonNull;
 public class WeatherProvider extends ContentProvider {
 
     static final int WEATHER = 100;
+    static final int CITY = 110;
+
     private static final UriMatcher sUriMatcher = buildUriMatcher();
     private WeatherDbHelper mOpenHelper;
 
@@ -21,8 +23,8 @@ public class WeatherProvider extends ContentProvider {
     static UriMatcher buildUriMatcher() {
         final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
         final String authority = WeatherContract.CONTENT_AUTHORITY;
-        matcher.addURI(authority, WeatherContract.PATH_CITY, WEATHER);
-
+        matcher.addURI(authority, WeatherContract.PATH_CITY, CITY);
+        matcher.addURI(authority, WeatherContract.PATH_WEATHER, WEATHER);
         return matcher;
     }
 
@@ -38,6 +40,8 @@ public class WeatherProvider extends ContentProvider {
 
         switch (match) {
             case WEATHER:
+                return WeatherContract.WeatherEntry.CONTENT_TYPE;
+            case CITY:
                 return WeatherContract.CityEntry.CONTENT_TYPE;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
@@ -50,12 +54,14 @@ public class WeatherProvider extends ContentProvider {
         Cursor retCursor;
         switch (sUriMatcher.match(uri)) {
             // "weather"
-            case WEATHER: {
+            case CITY:
                 retCursor = mOpenHelper.getReadableDatabase().query(WeatherContract.CityEntry.TABLE_NAME,
                         projection, selection, selectionArgs, null, null, null);
                 break;
-            }
-
+            case WEATHER:
+                retCursor = mOpenHelper.getReadableDatabase().query(WeatherContract.WeatherEntry.TABLE_NAME,
+                        projection, selection, selectionArgs, null, null, null);
+                break;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -68,16 +74,22 @@ public class WeatherProvider extends ContentProvider {
         final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
         final int match = sUriMatcher.match(uri);
         Uri returnUri;
-
+        long _id;
         switch (match) {
-            case WEATHER: {
-                long _id = db.insertWithOnConflict(WeatherContract.CityEntry.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_IGNORE);
+            case CITY:
+                _id = db.insertWithOnConflict(WeatherContract.CityEntry.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_IGNORE);
                 if (_id > 0)
                     returnUri = WeatherContract.CityEntry.buildWeatherUri(_id);
                 else
                     throw new android.database.SQLException("Failed to insert row into " + uri);
                 break;
-            }
+            case WEATHER:
+                _id = db.insertWithOnConflict(WeatherContract.WeatherEntry.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_REPLACE);
+                if (_id > 0)
+                    returnUri = WeatherContract.CityEntry.buildWeatherUri(_id);
+                else
+                    throw new android.database.SQLException("Failed to insert row into " + uri);
+                break;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -94,9 +106,11 @@ public class WeatherProvider extends ContentProvider {
             selection = "1";
         }
         switch (i) {
-            case WEATHER:
+            case CITY:
                 rowsDeleted = db.delete(WeatherContract.CityEntry.TABLE_NAME, selection, selectionArgs);
                 break;
+            case WEATHER:
+                rowsDeleted = db.delete(WeatherContract.WeatherEntry.TABLE_NAME, selection, selectionArgs);
             default:
                 throw new UnsupportedOperationException();
         }
@@ -112,8 +126,11 @@ public class WeatherProvider extends ContentProvider {
         int rowsUpdated = 0;
         final int i = sUriMatcher.match(uri);
         switch (i) {
-            case WEATHER:
+            case CITY:
                 rowsUpdated = db.update(WeatherContract.CityEntry.TABLE_NAME, values, selection, selectionArgs);
+                break;
+            case WEATHER:
+                rowsUpdated = db.update(WeatherContract.WeatherEntry.TABLE_NAME, values, selection, selectionArgs);
                 break;
             default:
                 throw new UnsupportedOperationException();

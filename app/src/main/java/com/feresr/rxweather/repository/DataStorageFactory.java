@@ -1,5 +1,6 @@
 package com.feresr.rxweather.repository;
 
+import com.feresr.rxweather.models.City;
 import com.feresr.rxweather.storage.DataCache;
 
 import javax.inject.Inject;
@@ -20,9 +21,9 @@ public class DataStorageFactory {
         this.cache = cache;
     }
 
-    public DataSource create(String cityId) {
+    public DataSource create(City city) {
         DataSource dataSource;
-        if (this.cache.isExpired(cityId)) {
+        if (this.cache.isExpired(city)) {
             dataSource = lazyDataSource.get();
         } else {
             dataSource = new DiskDataSource(this.cache);
