@@ -33,12 +33,12 @@ public class SimpleCache implements DataCache {
 
     @Override
     public boolean isExpired(City city) {
-        CityWeather cityWeather = getCityWeatherFromCityId(city.getId());
-        if (cityWeather == null) {
+
+        if (city.getCityWeather() == null) {
             return true;
         }
 
-        return (System.currentTimeMillis() - cityWeather.getFetchTime() > EXPIRATION_TIME);
+        return (System.currentTimeMillis() - city.getCityWeather().getFetchTime() > EXPIRATION_TIME);
     }
 
     @Override
@@ -113,6 +113,8 @@ public class SimpleCache implements DataCache {
                             city.setName(cursor.getString(1));
                             city.setLat(cursor.getDouble(2));
                             city.setLon(cursor.getDouble(3));
+
+                            city.setCityWeather(getCityWeatherFromCityId(city.getId()));
                             cities.add(city);
                         }
                         cursor.close();
