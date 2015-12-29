@@ -98,7 +98,7 @@ public class WeatherProvider extends ContentProvider {
     }
 
     @Override
-    public int delete(Uri uri, String selection, String[] selectionArgs) {
+    public int delete(@NonNull Uri uri, String selection, String[] selectionArgs) {
         final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
         int rowsDeleted = 0;
         final int i = sUriMatcher.match(uri);
@@ -111,6 +111,7 @@ public class WeatherProvider extends ContentProvider {
                 break;
             case WEATHER:
                 rowsDeleted = db.delete(WeatherContract.WeatherEntry.TABLE_NAME, selection, selectionArgs);
+                break;
             default:
                 throw new UnsupportedOperationException();
         }
@@ -121,7 +122,7 @@ public class WeatherProvider extends ContentProvider {
     }
 
     @Override
-    public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
+    public int update(@NonNull Uri uri, ContentValues values, String selection, String[] selectionArgs) {
         final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
         int rowsUpdated = 0;
         final int i = sUriMatcher.match(uri);

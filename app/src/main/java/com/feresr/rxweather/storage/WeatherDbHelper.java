@@ -26,7 +26,7 @@ public class WeatherDbHelper extends android.database.sqlite.SQLiteOpenHelper {
 
     private static final String WEATHER_TABLE_CREATE = "CREATE TABLE " +
             WeatherContract.WeatherEntry.TABLE_NAME + "(" +
-            WeatherContract.WeatherEntry._ID + " TEXT PRIMARY KEY, " +
+            WeatherContract.WeatherEntry._ID + " TEXT PRIMARY KEY REFERENCES "+ WeatherContract.CityEntry.TABLE_NAME + "(" + WeatherContract.CityEntry._ID + "), " +
             WeatherContract.WeatherEntry.COLUMN_TIME_ZONE + " TEXT, " +
             WeatherContract.WeatherEntry.COLUMN_OFFSET + " REAL, " +
             WeatherContract.WeatherEntry.COLUMN_FETCH_TIME + " REAL, " +
@@ -44,7 +44,11 @@ public class WeatherDbHelper extends android.database.sqlite.SQLiteOpenHelper {
             WeatherContract.WeatherEntry.COLUMN_WIND_BEARING + " REAL, " +
             WeatherContract.WeatherEntry.COLUMN_CLOUD_COVER + " REAL, " +
             WeatherContract.WeatherEntry.COLUMN_PRESSURE + " REAL, " +
-            WeatherContract.WeatherEntry.COLUMN_OZONE + " REAL);";
+            WeatherContract.WeatherEntry.COLUMN_OZONE + " REAL, " +
+            WeatherContract.WeatherEntry.COLUMN_DAILY_SUMMARY + " TEXT, " +
+            WeatherContract.WeatherEntry.COLUMN_DAILY_ICON + " TEXT, " +
+            WeatherContract.WeatherEntry.COLUMN_HOURLY_SUMMARY + " TEXT, " +
+            WeatherContract.WeatherEntry.COLUMN_HOURLY_ICON + " TEXT);";
 
     @Override
     public void onCreate(SQLiteDatabase db) {

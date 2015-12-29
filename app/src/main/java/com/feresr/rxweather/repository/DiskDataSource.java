@@ -23,13 +23,7 @@ public class DiskDataSource implements DataSource {
 
     @Override
     public Observable<City> getForecast(final City city) {
-        return cache.getForecast(city.getId()).map(new Func1<CityWeather, City>() {
-            @Override
-            public City call(CityWeather cityWeather) {
-                city.setCityWeather(cityWeather);
-                return city;
-            }
-        });
+        return Observable.just(city);
     }
 
     @Override

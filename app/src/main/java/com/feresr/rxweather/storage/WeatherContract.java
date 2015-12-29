@@ -59,6 +59,9 @@ public final class WeatherContract {
         public static final String COLUMN_CLOUD_COVER = "cloud_cover";
         public static final String COLUMN_PRESSURE = "pressure";
         public static final String COLUMN_OZONE = "ozone";
-
+        public static final String COLUMN_HOURLY_SUMMARY = "hourly_summary";
+        public static final String COLUMN_HOURLY_ICON = "hourly_icon";
+        public static final String COLUMN_DAILY_SUMMARY = "daily_summary";
+        public static final String COLUMN_DAILY_ICON = "daily_icon";
     }
 }

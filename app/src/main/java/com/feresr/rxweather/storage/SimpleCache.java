@@ -7,6 +7,8 @@ import android.database.Cursor;
 import com.feresr.rxweather.models.City;
 import com.feresr.rxweather.models.CityWeather;
 import com.feresr.rxweather.models.Currently;
+import com.feresr.rxweather.models.Daily;
+import com.feresr.rxweather.models.Hourly;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +35,6 @@ public class SimpleCache implements DataCache {
 
     @Override
     public boolean isExpired(City city) {
-
         if (city.getCityWeather() == null) {
             return true;
         }
@@ -41,6 +42,7 @@ public class SimpleCache implements DataCache {
         return (System.currentTimeMillis() - city.getCityWeather().getFetchTime() > EXPIRATION_TIME);
     }
 
+    //Not in use, we fetch the forecast from the db when querying from the city
     @Override
     public rx.Observable<CityWeather> getForecast(final String cityId) {
         return Observable.create(new Observable.OnSubscribe<CityWeather>() {
@@ -89,7 +91,18 @@ public class SimpleCache implements DataCache {
                 currently.setPressure(cursor.getDouble(17));
                 currently.setOzone(cursor.getDouble(18));
 
+                Daily daily = new Daily();
+                daily.setSummary(cursor.getString(19));
+                daily.setIcon(cursor.getString(20));
+                cityWeather.setDaily(daily);
+
+                Hourly hourly = new Hourly();
+                hourly.setSummary(cursor.getString(21));
+                hourly.setIcon(cursor.getString(22));
+                cityWeather.setHourly(hourly);
+
                 cityWeather.setCurrently(currently);
+
             }
             cursor.close();
         }
@@ -160,6 +173,7 @@ public class SimpleCache implements DataCache {
                 try {
                     String[] params = {city.getId()};
                     context.getContentResolver().delete(WeatherContract.CityEntry.CONTENT_URI, WeatherContract.CityEntry._ID + " = ?", params);
+                    context.getContentResolver().delete(WeatherContract.WeatherEntry.CONTENT_URI, WeatherContract.WeatherEntry._ID + " = ?", params);
                     subscriber.onNext(city);
                 } catch (Exception e) {
                     subscriber.onError(e);
@@ -198,6 +212,10 @@ public class SimpleCache implements DataCache {
         weatherValues.put(WeatherContract.WeatherEntry.COLUMN_CLOUD_COVER, cityWeather.getCurrently().getCloudCover());
         weatherValues.put(WeatherContract.WeatherEntry.COLUMN_PRESSURE, cityWeather.getCurrently().getPressure());
         weatherValues.put(WeatherContract.WeatherEntry.COLUMN_OZONE, cityWeather.getCurrently().getOzone());
+        weatherValues.put(WeatherContract.WeatherEntry.COLUMN_DAILY_SUMMARY, cityWeather.getDaily().getSummary());
+        weatherValues.put(WeatherContract.WeatherEntry.COLUMN_DAILY_ICON, cityWeather.getDaily().getIcon());
+        weatherValues.put(WeatherContract.WeatherEntry.COLUMN_HOURLY_SUMMARY, cityWeather.getHourly().getSummary());
+        weatherValues.put(WeatherContract.WeatherEntry.COLUMN_HOURLY_ICON, cityWeather.getHourly().getIcon());
 
         context.getContentResolver().insert(WeatherContract.WeatherEntry.CONTENT_URI, weatherValues);
 
