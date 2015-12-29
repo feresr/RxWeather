@@ -14,6 +14,7 @@ public final class WeatherContract {
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
     public static final String PATH_CITY = "city";
     public static final String PATH_WEATHER = "weather";
+    public static final String PATH_HOUR = "hour";
 
     public WeatherContract() {}
 
@@ -63,5 +64,29 @@ public final class WeatherContract {
         public static final String COLUMN_HOURLY_ICON = "hourly_icon";
         public static final String COLUMN_DAILY_SUMMARY = "daily_summary";
         public static final String COLUMN_DAILY_ICON = "daily_icon";
+    }
+
+    public static abstract class HourEntry implements BaseColumns {
+        public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_HOUR).build();
+        public static final String CONTENT_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_HOUR;
+        public static final String CONTENT_ITEM_TYPE = ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_HOUR;
+
+        public static final String TABLE_NAME = "hours";
+        public static final String COLUMN_TIME = "time";
+        public static final String COLUMN_SUMMARY = "summary";
+        public static final String COLUMN_ICON = "icon";
+        public static final String COLUMN_PRECIP_INTENSITY = "precip_intencity";
+        public static final String COLUMN_PRECIP_PROBABILITY = "precip_probability";
+        public static final String COLUMN_PRECIP_TYPE = "precip_type";
+        public static final String COLUMN_TEMP = "temperature";
+        public static final String COLUMN_APPARENT_TEMP = "apparent_temperature";
+        public static final String COLUMN_DEW_POINT = "dew_point";
+        public static final String COLUMN_HUMIDITY = "humidity";
+        public static final String COLUMN_WIND_SPEED = "wind_speed";
+        public static final String COLUMN_WIND_BEARING = "wind_bearing";
+        public static final String COLUMN_CLOUD_COVER = "cloud_cover";
+        public static final String COLUMN_PRESSURE = "pressure";
+        public static final String COLUMN_OZONE = "ozone";
+        public static final String CITY_ID = "city_id";
     }
 }

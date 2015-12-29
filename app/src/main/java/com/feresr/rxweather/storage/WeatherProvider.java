@@ -4,6 +4,7 @@ import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.annotation.NonNull;
@@ -15,6 +16,7 @@ public class WeatherProvider extends ContentProvider {
 
     static final int WEATHER = 100;
     static final int CITY = 110;
+    static final int HOUR = 120;
 
     private static final UriMatcher sUriMatcher = buildUriMatcher();
     private WeatherDbHelper mOpenHelper;
@@ -25,6 +27,7 @@ public class WeatherProvider extends ContentProvider {
         final String authority = WeatherContract.CONTENT_AUTHORITY;
         matcher.addURI(authority, WeatherContract.PATH_CITY, CITY);
         matcher.addURI(authority, WeatherContract.PATH_WEATHER, WEATHER);
+        matcher.addURI(authority, WeatherContract.PATH_HOUR, HOUR);
         return matcher;
     }
 
@@ -43,6 +46,8 @@ public class WeatherProvider extends ContentProvider {
                 return WeatherContract.WeatherEntry.CONTENT_TYPE;
             case CITY:
                 return WeatherContract.CityEntry.CONTENT_TYPE;
+            case HOUR:
+                return WeatherContract.HourEntry.CONTENT_TYPE;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -60,6 +65,10 @@ public class WeatherProvider extends ContentProvider {
                 break;
             case WEATHER:
                 retCursor = mOpenHelper.getReadableDatabase().query(WeatherContract.WeatherEntry.TABLE_NAME,
+                        projection, selection, selectionArgs, null, null, null);
+                break;
+            case HOUR:
+                retCursor = mOpenHelper.getReadableDatabase().query(WeatherContract.HourEntry.TABLE_NAME,
                         projection, selection, selectionArgs, null, null, null);
                 break;
             default:
@@ -112,6 +121,9 @@ public class WeatherProvider extends ContentProvider {
             case WEATHER:
                 rowsDeleted = db.delete(WeatherContract.WeatherEntry.TABLE_NAME, selection, selectionArgs);
                 break;
+            case HOUR:
+                rowsDeleted = db.delete(WeatherContract.HourEntry.TABLE_NAME, selection, selectionArgs);
+                break;
             default:
                 throw new UnsupportedOperationException();
         }
@@ -133,6 +145,9 @@ public class WeatherProvider extends ContentProvider {
             case WEATHER:
                 rowsUpdated = db.update(WeatherContract.WeatherEntry.TABLE_NAME, values, selection, selectionArgs);
                 break;
+            case HOUR:
+                rowsUpdated = db.update(WeatherContract.HourEntry.TABLE_NAME, values, selection, selectionArgs);
+                break;
             default:
                 throw new UnsupportedOperationException();
         }
@@ -141,5 +156,39 @@ public class WeatherProvider extends ContentProvider {
             getContext().getContentResolver().notifyChange(uri, null);
         }
         return rowsUpdated;
+    }
+
+    @Override
+    public int bulkInsert(Uri uri, ContentValues[] values) {
+        int numInserted = 0;
+        String table;
+
+        int uriType = sUriMatcher.match(uri);
+
+        switch (uriType) {
+            case HOUR:
+                table = WeatherContract.HourEntry.TABLE_NAME;
+                break;
+            default:
+                return -1;
+        }
+
+        SQLiteDatabase sqlDB = mOpenHelper.getWritableDatabase();
+        sqlDB.beginTransaction();
+
+        try {
+            for (ContentValues cv : values) {
+                long newID = sqlDB.insertOrThrow(table, null, cv);
+                if (newID <= 0) {
+                    throw new SQLException("Failed to insert row into " + uri);
+                }
+            }
+            sqlDB.setTransactionSuccessful();
+            getContext().getContentResolver().notifyChange(uri, null);
+            numInserted = values.length;
+        } finally {
+            sqlDB.endTransaction();
+        }
+        return numInserted;
     }
 }

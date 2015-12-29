@@ -18,15 +18,15 @@ public class WeatherDbHelper extends android.database.sqlite.SQLiteOpenHelper {
 
     // Database creation sql statement
     private static final String CITY_TABLE_CREATE = "CREATE TABLE " +
-            WeatherContract.CityEntry.TABLE_NAME + "(" +
+            WeatherContract.CityEntry.TABLE_NAME + " (" +
             WeatherContract.CityEntry._ID + " TEXT PRIMARY KEY, " +
             WeatherContract.CityEntry.COLUMN_NAME_CITY_NAME + " TEXT NOT NULL, " +
             WeatherContract.CityEntry.COLUMN_NAME_LAT + " REAL, " +
             WeatherContract.CityEntry.COLUMN_NAME_LON + " REAL);";
 
     private static final String WEATHER_TABLE_CREATE = "CREATE TABLE " +
-            WeatherContract.WeatherEntry.TABLE_NAME + "(" +
-            WeatherContract.WeatherEntry._ID + " TEXT PRIMARY KEY REFERENCES "+ WeatherContract.CityEntry.TABLE_NAME + "(" + WeatherContract.CityEntry._ID + "), " +
+            WeatherContract.WeatherEntry.TABLE_NAME + " (" +
+            WeatherContract.WeatherEntry._ID + " TEXT PRIMARY KEY REFERENCES " + WeatherContract.CityEntry.TABLE_NAME + "(" + WeatherContract.CityEntry._ID + "), " +
             WeatherContract.WeatherEntry.COLUMN_TIME_ZONE + " TEXT, " +
             WeatherContract.WeatherEntry.COLUMN_OFFSET + " REAL, " +
             WeatherContract.WeatherEntry.COLUMN_FETCH_TIME + " REAL, " +
@@ -50,10 +50,31 @@ public class WeatherDbHelper extends android.database.sqlite.SQLiteOpenHelper {
             WeatherContract.WeatherEntry.COLUMN_HOURLY_SUMMARY + " TEXT, " +
             WeatherContract.WeatherEntry.COLUMN_HOURLY_ICON + " TEXT);";
 
+    private static final String HOURLY_TABLE_CREATE = "CREATE TABLE " +
+            WeatherContract.HourEntry.TABLE_NAME + " (" +
+            WeatherContract.HourEntry._ID + " INTEGER PRIMARY KEY, " +
+            WeatherContract.HourEntry.COLUMN_TIME + " NUMBER, " +
+            WeatherContract.HourEntry.COLUMN_SUMMARY + " TEXT, " +
+            WeatherContract.HourEntry.COLUMN_ICON + " TEXT, " +
+            WeatherContract.HourEntry.COLUMN_PRECIP_INTENSITY + " REAL, " +
+            WeatherContract.HourEntry.COLUMN_PRECIP_PROBABILITY + " REAL, " +
+            WeatherContract.HourEntry.COLUMN_PRECIP_TYPE + " TEXT, " +
+            WeatherContract.HourEntry.COLUMN_TEMP + " REAL, " +
+            WeatherContract.HourEntry.COLUMN_APPARENT_TEMP + " REAL, " +
+            WeatherContract.HourEntry.COLUMN_DEW_POINT + " REAL, " +
+            WeatherContract.HourEntry.COLUMN_HUMIDITY + " REAL, " +
+            WeatherContract.HourEntry.COLUMN_WIND_SPEED + " REAL, " +
+            WeatherContract.HourEntry.COLUMN_WIND_BEARING + " REAL, " +
+            WeatherContract.HourEntry.COLUMN_CLOUD_COVER + " REAL, " +
+            WeatherContract.HourEntry.COLUMN_PRESSURE + " REAL, " +
+            WeatherContract.HourEntry.COLUMN_OZONE + " REAL, " +
+            WeatherContract.HourEntry.CITY_ID + " TEXT REFERENCES " + WeatherContract.CityEntry.TABLE_NAME + " ( " + WeatherContract.CityEntry._ID + " ));";
+
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CITY_TABLE_CREATE);
         db.execSQL(WEATHER_TABLE_CREATE);
+        db.execSQL(HOURLY_TABLE_CREATE);
     }
 
     @Override

@@ -8,6 +8,7 @@ import com.feresr.rxweather.models.City;
 import com.feresr.rxweather.models.CityWeather;
 import com.feresr.rxweather.models.Currently;
 import com.feresr.rxweather.models.Daily;
+import com.feresr.rxweather.models.Hour;
 import com.feresr.rxweather.models.Hourly;
 
 import java.util.ArrayList;
@@ -107,7 +108,49 @@ public class SimpleCache implements DataCache {
             cursor.close();
         }
 
+        if (cityWeather != null) {
+            cityWeather.getHourly().setData(getHourlyFromCityId(cityId));
+        }
+
         return cityWeather;
+    }
+
+    private List<Hour> getHourlyFromCityId(String cityId) {
+        ArrayList<Hour> hours = null;
+        String[] params = {cityId};
+        Cursor cursor = context.getContentResolver().query(WeatherContract.HourEntry.CONTENT_URI, null, WeatherContract.HourEntry.CITY_ID + " = ?", params, null);
+
+        if (cursor != null) {
+            try {
+                hours = new ArrayList<>();
+                while (cursor.moveToNext()) {
+                    Hour hour = new Hour();
+                    //0 is id
+                    hour.setTime(cursor.getInt(1));
+                    hour.setSummary(cursor.getString(2));
+                    hour.setIcon(cursor.getString(3));
+                    hour.setPrecipIntensity(cursor.getDouble(4));
+                    hour.setPrecipProbability(cursor.getDouble(5));
+                    hour.setPrecipType(cursor.getString(6));
+                    hour.setTemperature(cursor.getDouble(7));
+                    hour.setApparentTemperature(cursor.getDouble(8));
+                    hour.setDewPoint(cursor.getDouble(9));
+                    hour.setHumidity(cursor.getDouble(10));
+                    hour.setWindSpeed(cursor.getDouble(11));
+                    hour.setWindBearing(cursor.getInt(12));
+                    hour.setCloudCover(cursor.getDouble(13));
+                    hour.setPressure(cursor.getDouble(14));
+                    hour.setOzone(cursor.getDouble(15));
+                    hours.add(hour);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                cursor.close();
+            }
+
+        }
+        return hours;
     }
 
     @Override
@@ -174,6 +217,7 @@ public class SimpleCache implements DataCache {
                     String[] params = {city.getId()};
                     context.getContentResolver().delete(WeatherContract.CityEntry.CONTENT_URI, WeatherContract.CityEntry._ID + " = ?", params);
                     context.getContentResolver().delete(WeatherContract.WeatherEntry.CONTENT_URI, WeatherContract.WeatherEntry._ID + " = ?", params);
+                    context.getContentResolver().delete(WeatherContract.HourEntry.CONTENT_URI, WeatherContract.HourEntry.CITY_ID + " = ?", params);
                     subscriber.onNext(city);
                 } catch (Exception e) {
                     subscriber.onError(e);
@@ -217,7 +261,31 @@ public class SimpleCache implements DataCache {
         weatherValues.put(WeatherContract.WeatherEntry.COLUMN_HOURLY_SUMMARY, cityWeather.getHourly().getSummary());
         weatherValues.put(WeatherContract.WeatherEntry.COLUMN_HOURLY_ICON, cityWeather.getHourly().getIcon());
 
+        ContentValues[] hourlyValues = new ContentValues[cityWeather.getHourly().getData().size()];
+        int i = 0;
+        for (Hour hour: cityWeather.getHourly().getData()) {
+            hourlyValues[i] = new ContentValues();
+            hourlyValues[i].put(WeatherContract.HourEntry.COLUMN_TIME, hour.getTime());
+            hourlyValues[i].put(WeatherContract.HourEntry.COLUMN_SUMMARY, hour.getSummary());
+            hourlyValues[i].put(WeatherContract.HourEntry.COLUMN_ICON, hour.getIcon());
+            hourlyValues[i].put(WeatherContract.HourEntry.COLUMN_PRECIP_INTENSITY, hour.getPrecipIntensity());
+            hourlyValues[i].put(WeatherContract.HourEntry.COLUMN_PRECIP_PROBABILITY, hour.getPrecipProbability());
+            hourlyValues[i].put(WeatherContract.HourEntry.COLUMN_PRECIP_TYPE, hour.getPrecipProbability());
+            hourlyValues[i].put(WeatherContract.HourEntry.COLUMN_TEMP, hour.getTemperature());
+            hourlyValues[i].put(WeatherContract.HourEntry.COLUMN_APPARENT_TEMP, hour.getApparentTemperature());
+            hourlyValues[i].put(WeatherContract.HourEntry.COLUMN_DEW_POINT, hour.getDewPoint());
+            hourlyValues[i].put(WeatherContract.HourEntry.COLUMN_HUMIDITY, hour.getHumidity());
+            hourlyValues[i].put(WeatherContract.HourEntry.COLUMN_WIND_SPEED, hour.getWindSpeed());
+            hourlyValues[i].put(WeatherContract.HourEntry.COLUMN_WIND_BEARING, hour.getWindBearing());
+            hourlyValues[i].put(WeatherContract.HourEntry.COLUMN_CLOUD_COVER, hour.getCloudCover());
+            hourlyValues[i].put(WeatherContract.HourEntry.COLUMN_PRESSURE, hour.getPressure());
+            hourlyValues[i].put(WeatherContract.HourEntry.COLUMN_OZONE, hour.getOzone());
+            hourlyValues[i].put(WeatherContract.HourEntry.CITY_ID, cityId);
+            i++;
+        }
+
         context.getContentResolver().insert(WeatherContract.WeatherEntry.CONTENT_URI, weatherValues);
+        context.getContentResolver().bulkInsert(WeatherContract.HourEntry.CONTENT_URI, hourlyValues);
 
     }
 }

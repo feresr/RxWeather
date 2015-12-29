@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.feresr.rxweather.R;
 import com.feresr.rxweather.models.Hour;
+import com.feresr.rxweather.utils.IconManager;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -48,7 +49,7 @@ public class DayForecastAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         HourlyForecastViewHolder hourlyForecastViewHolder = ((HourlyForecastViewHolder) holder);
         hourlyForecastViewHolder.hour.setText(DateFormat.getTimeFormat(context).format(new Date(hours.get(position).getTime() * 1000L)));
         hourlyForecastViewHolder.temp.setText(hours.get(position).getTemperature() + "°");
-        hourlyForecastViewHolder.icon.setText(hours.get(position).getIcon(context));
+        hourlyForecastViewHolder.icon.setText(IconManager.getIconResource(hours.get(position).getIcon(), context));
 
         //Adjust margins according to their positions
         Resources r = context.getResources();
