@@ -73,8 +73,8 @@ public class Day extends DisplayWeatherInfo implements Serializable {
     /**
      * @return The icon
      */
-    public String getIcon(Context context) {
-        return IconManager.getIconResource(icon, context);
+    public String getIcon() {
+        return icon;
     }
 
     /**

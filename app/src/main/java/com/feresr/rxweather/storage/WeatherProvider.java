@@ -17,6 +17,7 @@ public class WeatherProvider extends ContentProvider {
     static final int WEATHER = 100;
     static final int CITY = 110;
     static final int HOUR = 120;
+    static final int DAY = 130;
 
     private static final UriMatcher sUriMatcher = buildUriMatcher();
     private WeatherDbHelper mOpenHelper;
@@ -28,6 +29,7 @@ public class WeatherProvider extends ContentProvider {
         matcher.addURI(authority, WeatherContract.PATH_CITY, CITY);
         matcher.addURI(authority, WeatherContract.PATH_WEATHER, WEATHER);
         matcher.addURI(authority, WeatherContract.PATH_HOUR, HOUR);
+        matcher.addURI(authority, WeatherContract.PATH_DAY, DAY);
         return matcher;
     }
 
@@ -38,7 +40,7 @@ public class WeatherProvider extends ContentProvider {
     }
 
     @Override
-    public String getType(Uri uri) {
+    public String getType(@NonNull Uri uri) {
         final int match = sUriMatcher.match(uri);
 
         switch (match) {
@@ -48,6 +50,8 @@ public class WeatherProvider extends ContentProvider {
                 return WeatherContract.CityEntry.CONTENT_TYPE;
             case HOUR:
                 return WeatherContract.HourEntry.CONTENT_TYPE;
+            case DAY:
+                return WeatherContract.DayEntry.CONTENT_TYPE;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -69,6 +73,10 @@ public class WeatherProvider extends ContentProvider {
                 break;
             case HOUR:
                 retCursor = mOpenHelper.getReadableDatabase().query(WeatherContract.HourEntry.TABLE_NAME,
+                        projection, selection, selectionArgs, null, null, null);
+                break;
+            case DAY:
+                retCursor = mOpenHelper.getReadableDatabase().query(WeatherContract.DayEntry.TABLE_NAME,
                         projection, selection, selectionArgs, null, null, null);
                 break;
             default:
@@ -99,6 +107,13 @@ public class WeatherProvider extends ContentProvider {
                 else
                     throw new android.database.SQLException("Failed to insert row into " + uri);
                 break;
+            case DAY:
+                _id = db.insertWithOnConflict(WeatherContract.DayEntry.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_REPLACE);
+                if (_id > 0)
+                    returnUri = WeatherContract.CityEntry.buildWeatherUri(_id);
+                else
+                    throw new android.database.SQLException("Failed to insert row into " + uri);
+                break;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -124,6 +139,9 @@ public class WeatherProvider extends ContentProvider {
             case HOUR:
                 rowsDeleted = db.delete(WeatherContract.HourEntry.TABLE_NAME, selection, selectionArgs);
                 break;
+            case DAY:
+                rowsDeleted = db.delete(WeatherContract.DayEntry.TABLE_NAME, selection, selectionArgs);
+                break;
             default:
                 throw new UnsupportedOperationException();
         }
@@ -148,6 +166,9 @@ public class WeatherProvider extends ContentProvider {
             case HOUR:
                 rowsUpdated = db.update(WeatherContract.HourEntry.TABLE_NAME, values, selection, selectionArgs);
                 break;
+            case DAY:
+                rowsUpdated = db.update(WeatherContract.DayEntry.TABLE_NAME, values, selection, selectionArgs);
+                break;
             default:
                 throw new UnsupportedOperationException();
         }
@@ -168,6 +189,9 @@ public class WeatherProvider extends ContentProvider {
         switch (uriType) {
             case HOUR:
                 table = WeatherContract.HourEntry.TABLE_NAME;
+                break;
+            case DAY:
+                table = WeatherContract.DayEntry.TABLE_NAME;
                 break;
             default:
                 return -1;

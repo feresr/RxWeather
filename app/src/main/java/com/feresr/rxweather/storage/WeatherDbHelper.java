@@ -70,11 +70,44 @@ public class WeatherDbHelper extends android.database.sqlite.SQLiteOpenHelper {
             WeatherContract.HourEntry.COLUMN_OZONE + " REAL, " +
             WeatherContract.HourEntry.CITY_ID + " TEXT REFERENCES " + WeatherContract.CityEntry.TABLE_NAME + " ( " + WeatherContract.CityEntry._ID + " ));";
 
+    private static final String DAYLY_TABLE_CREATE = "CREATE TABLE " +
+            WeatherContract.DayEntry.TABLE_NAME + " (" +
+            WeatherContract.DayEntry._ID + " INTEGER PRIMARY KEY, " +
+            WeatherContract.DayEntry.COLUMN_TIME + " NUMBER, " +
+            WeatherContract.DayEntry.COLUMN_SUMMARY + " TEXT, " +
+            WeatherContract.DayEntry.COLUMN_ICON + " TEXT, " +
+            WeatherContract.DayEntry.COLUMN_SUNRISE_TIME + " INTEGER, " +
+            WeatherContract.DayEntry.COLUMN_SUNSET_TIME + " INTEGER, " +
+            WeatherContract.DayEntry.COLUMN_MOON_PHASE + " REAL, " +
+            WeatherContract.DayEntry.COLUMN_PRECIP_INTENSITY + " REAL, " +
+            WeatherContract.DayEntry.COLUMN_PRECIP_INTENSITY_MAX + " REAL, " +
+            WeatherContract.DayEntry.COLUMN_PRECIP_INTENSITY_MAX_TIME + " REAL, " +
+            WeatherContract.DayEntry.COLUMN_PRECIP_PROBABILITY + " REAL, " +
+            WeatherContract.DayEntry.COLUMN_PRECIP_TYPE + " TEXT, " +
+            WeatherContract.DayEntry.COLUMN_TEMPERATURE_MAX + " REAL, " +
+            WeatherContract.DayEntry.COLUMN_TEMPERATURE_MAX_TIME + " INTEGER, " +
+            WeatherContract.DayEntry.COLUMN_TEMPERATURE_MIN + " REAL, " +
+            WeatherContract.DayEntry.COLUMN_TEMPERATURE_MIN_TIME + " INTEGER, " +
+            WeatherContract.DayEntry.COLUMN_APPARENT_TEMPERATURE_MAX + " REAL, " +
+            WeatherContract.DayEntry.COLUMN_APPARENT_TEMPERATURE_MAX_TIME + " INTEGER, " +
+            WeatherContract.DayEntry.COLUMN_APPARENT_TEMPERATURE_MIN + " REAL, " +
+            WeatherContract.DayEntry.COLUMN_APPARENT_TEMPERATURE_MIN_TIME + " INTEGER, " +
+            WeatherContract.DayEntry.COLUMN_DEW_POINT + " REAL, " +
+            WeatherContract.DayEntry.COLUMN_HUMIDITY + " REAL, " +
+            WeatherContract.DayEntry.COLUMN_WIND_SPEED + " REAL, " +
+            WeatherContract.DayEntry.COLUMN_WIND_BEARING + " REAL, " +
+            WeatherContract.DayEntry.COLUMN_CLOUD_COVER + " REAL, " +
+            WeatherContract.DayEntry.COLUMN_PRESSURE + " REAL, " +
+            WeatherContract.DayEntry.COLUMN_OZONE + " REAL, " +
+            WeatherContract.DayEntry.CITY_ID + " TEXT REFERENCES " + WeatherContract.CityEntry.TABLE_NAME + " ( " + WeatherContract.CityEntry._ID + " ));";
+
+
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CITY_TABLE_CREATE);
         db.execSQL(WEATHER_TABLE_CREATE);
         db.execSQL(HOURLY_TABLE_CREATE);
+        db.execSQL(DAYLY_TABLE_CREATE);
     }
 
     @Override

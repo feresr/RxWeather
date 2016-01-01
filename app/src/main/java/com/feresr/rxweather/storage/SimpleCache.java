@@ -8,6 +8,7 @@ import com.feresr.rxweather.models.City;
 import com.feresr.rxweather.models.CityWeather;
 import com.feresr.rxweather.models.Currently;
 import com.feresr.rxweather.models.Daily;
+import com.feresr.rxweather.models.Day;
 import com.feresr.rxweather.models.Hour;
 import com.feresr.rxweather.models.Hourly;
 
@@ -110,9 +111,59 @@ public class SimpleCache implements DataCache {
 
         if (cityWeather != null) {
             cityWeather.getHourly().setData(getHourlyFromCityId(cityId));
+            cityWeather.getDaily().setDays(getDaysFromCityId(cityId));
         }
 
         return cityWeather;
+    }
+
+    private List<Day> getDaysFromCityId(String cityId) {
+        ArrayList<Day> days = null;
+        String[] params = {cityId};
+        Cursor cursor = context.getContentResolver().query(WeatherContract.DayEntry.CONTENT_URI, null, WeatherContract.DayEntry.CITY_ID + " = ?", params, null);
+
+        if (cursor != null) {
+            try {
+                days = new ArrayList<>();
+                while (cursor.moveToNext()) {
+                    Day day = new Day();
+                    //0 is id
+                    day.setTime(cursor.getInt(1));
+                    day.setSummary(cursor.getString(2));
+                    day.setIcon(cursor.getString(3));
+                    day.setSunriseTime(cursor.getInt(4));
+                    day.setSunsetTime(cursor.getInt(5));
+                    day.setMoonPhase(cursor.getDouble(6));
+                    day.setPrecipIntensity(cursor.getDouble(7));
+                    day.setPrecipIntensityMax(cursor.getDouble(8));
+                    day.setPrecipIntensityMaxTime(cursor.getDouble(9));
+                    day.setPrecipProbability(cursor.getDouble(10));
+                    day.setPrecipType(cursor.getString(11));
+                    day.setTemperatureMax(cursor.getDouble(12));
+                    day.setTemperatureMaxTime(cursor.getInt(13));
+                    day.setTemperatureMin(cursor.getDouble(14));
+                    day.setTemperatureMinTime(cursor.getInt(15));
+                    day.setApparentTemperatureMax(cursor.getDouble(16));
+                    day.setApparentTemperatureMaxTime(cursor.getInt(17));
+                    day.setApparentTemperatureMin(cursor.getDouble(18));
+                    day.setApparentTemperatureMinTime(cursor.getInt(19));
+                    day.setDewPoint(cursor.getDouble(20));
+                    day.setHumidity(cursor.getDouble(21));
+                    day.setWindSpeed(cursor.getDouble(22));
+                    day.setWindBearing(cursor.getInt(23));
+                    day.setCloudCover(cursor.getDouble(24));
+                    day.setPressure(cursor.getDouble(25));
+                    day.setOzone(cursor.getDouble(26));
+                    days.add(day);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                cursor.close();
+            }
+
+        }
+        return days;
     }
 
     private List<Hour> getHourlyFromCityId(String cityId) {
@@ -284,8 +335,44 @@ public class SimpleCache implements DataCache {
             i++;
         }
 
+        ContentValues[] dailyValues = new ContentValues[cityWeather.getDaily().getDays().size()];
+        i = 0;
+        for (Day day : cityWeather.getDaily().getDays()) {
+            dailyValues[i] = new ContentValues();
+            dailyValues[i].put(WeatherContract.DayEntry.COLUMN_TIME, day.getTime());
+            dailyValues[i].put(WeatherContract.DayEntry.COLUMN_SUMMARY, day.getSummary());
+            dailyValues[i].put(WeatherContract.DayEntry.COLUMN_ICON, day.getIcon());
+            dailyValues[i].put(WeatherContract.DayEntry.COLUMN_SUNRISE_TIME, day.getSunriseTime());
+            dailyValues[i].put(WeatherContract.DayEntry.COLUMN_SUNSET_TIME, day.getSunsetTime());
+            dailyValues[i].put(WeatherContract.DayEntry.COLUMN_MOON_PHASE, day.getMoonPhase());
+            dailyValues[i].put(WeatherContract.DayEntry.COLUMN_PRECIP_INTENSITY, day.getPrecipIntensity());
+            dailyValues[i].put(WeatherContract.DayEntry.COLUMN_PRECIP_INTENSITY_MAX, day.getPrecipIntensityMax());
+            dailyValues[i].put(WeatherContract.DayEntry.COLUMN_PRECIP_INTENSITY_MAX_TIME, day.getPrecipIntensityMaxTime());
+            dailyValues[i].put(WeatherContract.DayEntry.COLUMN_PRECIP_PROBABILITY, day.getPrecipProbability());
+            dailyValues[i].put(WeatherContract.DayEntry.COLUMN_PRECIP_TYPE, day.getPrecipProbability());
+            dailyValues[i].put(WeatherContract.DayEntry.COLUMN_TEMPERATURE_MAX, day.getTemperatureMax());
+            dailyValues[i].put(WeatherContract.DayEntry.COLUMN_TEMPERATURE_MAX_TIME, day.getTemperatureMaxTime());
+            dailyValues[i].put(WeatherContract.DayEntry.COLUMN_TEMPERATURE_MIN, day.getTemperatureMin());
+            dailyValues[i].put(WeatherContract.DayEntry.COLUMN_TEMPERATURE_MIN_TIME, day.getTemperatureMinTime());
+            dailyValues[i].put(WeatherContract.DayEntry.COLUMN_APPARENT_TEMPERATURE_MAX, day.getApparentTemperatureMax());
+            dailyValues[i].put(WeatherContract.DayEntry.COLUMN_APPARENT_TEMPERATURE_MAX_TIME, day.getApparentTemperatureMaxTime());
+            dailyValues[i].put(WeatherContract.DayEntry.COLUMN_APPARENT_TEMPERATURE_MIN, day.getApparentTemperatureMin());
+            dailyValues[i].put(WeatherContract.DayEntry.COLUMN_APPARENT_TEMPERATURE_MIN_TIME, day.getApparentTemperatureMinTime());
+            dailyValues[i].put(WeatherContract.DayEntry.COLUMN_DEW_POINT, day.getDewPoint());
+            dailyValues[i].put(WeatherContract.DayEntry.COLUMN_HUMIDITY, day.getHumidity());
+            dailyValues[i].put(WeatherContract.DayEntry.COLUMN_WIND_SPEED, day.getWindSpeed());
+            dailyValues[i].put(WeatherContract.DayEntry.COLUMN_WIND_BEARING, day.getWindBearing());
+            dailyValues[i].put(WeatherContract.DayEntry.COLUMN_CLOUD_COVER, day.getCloudCover());
+            dailyValues[i].put(WeatherContract.DayEntry.COLUMN_PRESSURE, day.getPressure());
+            dailyValues[i].put(WeatherContract.DayEntry.COLUMN_OZONE, day.getOzone());
+            dailyValues[i].put(WeatherContract.DayEntry.CITY_ID, cityId);
+            i++;
+        }
+
+
         context.getContentResolver().insert(WeatherContract.WeatherEntry.CONTENT_URI, weatherValues);
         context.getContentResolver().bulkInsert(WeatherContract.HourEntry.CONTENT_URI, hourlyValues);
+        context.getContentResolver().bulkInsert(WeatherContract.DayEntry.CONTENT_URI, dailyValues);
 
     }
 }

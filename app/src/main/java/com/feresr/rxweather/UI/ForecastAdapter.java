@@ -185,7 +185,7 @@ public class ForecastAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 holder.main.setText(day.getSummary());
                 holder.tempMax.setText(day.getTemperatureMax() + "°");
                 holder.tempMin.setText(day.getTemperatureMin() + "°");
-                holder.icon.setText(day.getIcon(context));
+                holder.icon.setText(IconManager.getIconResource(day.getIcon(), context));
 
 
                 if (position % 2 == 0) {
