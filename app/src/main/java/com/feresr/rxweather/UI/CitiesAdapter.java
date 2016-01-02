@@ -1,8 +1,9 @@
 package com.feresr.rxweather.UI;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.support.v7.widget.CardView;
+import android.preference.PreferenceManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,9 +14,6 @@ import android.widget.TextView;
 
 import com.feresr.rxweather.R;
 import com.feresr.rxweather.models.City;
-import com.feresr.rxweather.models.Warning;
-import com.feresr.rxweather.utils.IconManager;
-
 import java.util.ArrayList;
 
 /**
@@ -26,12 +24,22 @@ import java.util.ArrayList;
     private ArrayList<City> cities;
     private LayoutInflater inflater;
     private Context context;
+    //Weather it should show temperature in celsius or not
+    private boolean celsius = true;
 
     public CitiesAdapter(Context context) {
         super();
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         cities = new ArrayList<>();
         this.context = context;
+
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+        String syncConnPref = sharedPref.getString(SettingsActivity.PREF_UNIT, "celsius");
+        if (syncConnPref.equals("celsius")) {
+            showTemperaturesInCelsius();
+        } else {
+            showTemperaturesInFahrenheit();
+        }
     }
 
     public ArrayList<City> getCities() {
@@ -43,6 +51,15 @@ import java.util.ArrayList;
         notifyDataSetChanged();
     }
 
+    public void showTemperaturesInCelsius() {
+        celsius = true;
+        notifyDataSetChanged();
+    }
+
+    public void showTemperaturesInFahrenheit() {
+        celsius = false;
+        notifyDataSetChanged();
+    }
 
     public void addCity(City city) {
         cities.add(city);
@@ -66,7 +83,13 @@ import java.util.ArrayList;
         holder.cityName.setText(city.getName());
         if (cities.get(position).getCityWeather() != null) {
             holder.view.setBackgroundColor(city.getCityWeather().getCurrently().getColor(context));
-            holder.temp.setText(city.getCityWeather().getCurrently().getTemperature().toString() + "°");
+            double temperature = city.getCityWeather().getCurrently().getTemperature();
+            if (!celsius) {
+                temperature = temperature * 1.8 + 32;
+            }
+            temperature = Math.round(temperature * 100.0) / 100.0;
+
+            holder.temp.setText(temperature + "°");
             holder.temp.setVisibility(View.VISIBLE);
             holder.summary.setVisibility(View.VISIBLE);
             holder.summary.setText(city.getCityWeather().getCurrently().getSummary());

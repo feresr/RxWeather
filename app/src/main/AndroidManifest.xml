@@ -36,11 +36,20 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".UI.MainActivity" />
-
         </activity>
+
         <provider
-            android:authorities="com.feresr.rxweather.app"
-            android:name=".storage.WeatherProvider"/>
+            android:name=".storage.WeatherProvider"
+            android:authorities="com.feresr.rxweather.app" />
+
+        <activity
+            android:name=".UI.SettingsActivity"
+            android:label="@string/title_activity_settings"
+            android:parentActivityName=".UI.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.feresr.rxweather.UI.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

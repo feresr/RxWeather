@@ -122,6 +122,16 @@ public class CitiesFragment extends BaseFragment implements CitiesView {
     }
 
     @Override
+    public void showTemperatureInCelsius() {
+        adapter.showTemperaturesInCelsius();
+    }
+
+    @Override
+    public void showTemperatureInFahrenheit() {
+        adapter.showTemperaturesInFahrenheit();
+    }
+
+    @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         initialize();

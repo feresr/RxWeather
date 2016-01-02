@@ -2,8 +2,10 @@ package com.feresr.rxweather.presenters;
 
 import android.content.Context;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.feresr.rxweather.NetworkListener;
@@ -11,6 +13,7 @@ import com.feresr.rxweather.NetworkReceiver;
 import com.feresr.rxweather.UI.CitiesAdapter;
 import com.feresr.rxweather.UI.FragmentInteractionsListener;
 import com.feresr.rxweather.UI.RecyclerItemClickListener;
+import com.feresr.rxweather.UI.SettingsActivity;
 import com.feresr.rxweather.domain.GetCitiesUseCase;
 import com.feresr.rxweather.domain.GetCityForecastUseCase;
 import com.feresr.rxweather.domain.RemoveCityUseCase;
@@ -38,7 +41,7 @@ import rx.subscriptions.CompositeSubscription;
 /**
  * Created by Fernando on 6/11/2015.
  */
-public class CitiesPresenter implements Presenter, NetworkListener, android.view.View.OnClickListener, RecyclerItemClickListener.OnItemClickListener {
+public class CitiesPresenter implements Presenter, NetworkListener, android.view.View.OnClickListener, RecyclerItemClickListener.OnItemClickListener, SharedPreferences.OnSharedPreferenceChangeListener {
 
     private CitiesAdapter citiesAdapter;
     private GetCityForecastUseCase getCityWeatherUseCase;
@@ -51,6 +54,7 @@ public class CitiesPresenter implements Presenter, NetworkListener, android.view
     private FragmentInteractionsListener fragmentInteractionListener;
     private NetworkReceiver networkReceiver;
     private Context context;
+
 
     @Inject
     public CitiesPresenter(Context context, GetCitiesUseCase getCitiesUseCase, GetCityForecastUseCase getCityForecastUseCase, RemoveCityUseCase removeCityUseCase, SaveCityUseCase saveCityUseCase) {
@@ -65,7 +69,7 @@ public class CitiesPresenter implements Presenter, NetworkListener, android.view
         networkReceiver.setListener(this);
         context.registerReceiver(networkReceiver, intentFilter);
         this.context = context;
-
+        PreferenceManager.getDefaultSharedPreferences(context).registerOnSharedPreferenceChangeListener(this);
     }
 
     @Override
@@ -74,7 +78,6 @@ public class CitiesPresenter implements Presenter, NetworkListener, android.view
 
     @Override
     public void onStop() {
-
     }
 
     @Override
@@ -144,6 +147,7 @@ public class CitiesPresenter implements Presenter, NetworkListener, android.view
     @Override
     public void onDestroy() {
         networkReceiver.setListener(null);
+        PreferenceManager.getDefaultSharedPreferences(context).unregisterOnSharedPreferenceChangeListener(this);
         context.unregisterReceiver(networkReceiver);
         subscriptions.unsubscribe();
     }
@@ -272,6 +276,16 @@ public class CitiesPresenter implements Presenter, NetworkListener, android.view
                     citiesView.updateCity(city);
                 }
             }));
+        }
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+
+        if (key.equals(SettingsActivity.PREF_UNIT   ) && sharedPreferences.getString(key, "celsius").equals("celsius")) {
+            citiesView.showTemperatureInCelsius();
+        } else {
+            citiesView.showTemperatureInFahrenheit();
         }
     }
 }

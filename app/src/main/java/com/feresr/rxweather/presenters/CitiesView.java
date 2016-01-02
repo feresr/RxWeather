@@ -12,4 +12,6 @@ public interface CitiesView extends View {
     void addCity(City city);
     void addCities(List<City> city);
     void updateCity(City city);
+    void showTemperatureInCelsius();
+    void showTemperatureInFahrenheit();
 }

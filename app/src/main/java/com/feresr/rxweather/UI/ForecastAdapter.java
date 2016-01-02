@@ -1,8 +1,10 @@
 package com.feresr.rxweather.UI;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.preference.PreferenceManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -46,6 +48,7 @@ public class ForecastAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private List<DisplayWeatherInfo> weatherInfo;
     private Context context;
     private DayForecastAdapter dayForecastAdapter;
+    private boolean celsius = true;
 
     private long fetchTime;
 
@@ -55,6 +58,13 @@ public class ForecastAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         dayForecastAdapter = new DayForecastAdapter(context);
         this.weatherInfo = new ArrayList<>();
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+        String syncConnPref = sharedPref.getString(SettingsActivity.PREF_UNIT, "celsius");
+        if (syncConnPref.equals("celsius")) {
+            celsius = true;
+        } else {
+            celsius = false;
+        }
     }
 
     @Override
@@ -157,7 +167,13 @@ public class ForecastAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
                 currentlyViewHolder.main.setBackgroundColor(currently.getColor(context));
                 currentlyViewHolder.description.setText(currently.getSummary().toUpperCase());
-                currentlyViewHolder.temp.setText(context.getString(R.string.degree, Math.round(currently.getTemperature())));
+                if (celsius) {
+                    currentlyViewHolder.feelsLike.setValue(context.getString(R.string.degree, Math.round(currently.getApparentTemperature())));
+                    currentlyViewHolder.temp.setText(context.getString(R.string.degree, Math.round(currently.getTemperature())));
+                } else {
+                    currentlyViewHolder.feelsLike.setValue(context.getString(R.string.degree, Math.round(currently.getApparentTemperature() * 1.8 + 32)));
+                    currentlyViewHolder.temp.setText(context.getString(R.string.degree, Math.round(currently.getTemperature() * 1.8 + 32)));
+                }
                 currentlyViewHolder.humidity.setValue(Math.round(currently.getHumidity() * 100) + "%");
                 currentlyViewHolder.wind.setValue(context.getString(R.string.km_h, Math.round(currently.getWindSpeed())));
                 currentlyViewHolder.wind.setSubValue(currently.getWindBearingString());
@@ -167,7 +183,6 @@ public class ForecastAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 currentlyViewHolder.precipitation.setValue(Math.round(currently.getPrecipProbability() * 100) + "%");
                 currentlyViewHolder.precipitation.setSubValue(new DecimalFormat("#.##").format(currently.getPrecipIntensity() * 100) + "cm");
 
-                currentlyViewHolder.feelsLike.setValue(context.getString(R.string.degree, Math.round(currently.getApparentTemperature())));
                 currentlyViewHolder.icon.setText(IconManager.getIconResource(currently.getIcon(), context));
 
                 break;
@@ -184,8 +199,13 @@ public class ForecastAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 Day day = (Day) weatherInfo.get(position);
                 DayViewHolder holder = (DayViewHolder) viewHolder;
                 holder.main.setText(day.getSummary());
-                holder.tempMax.setText(day.getTemperatureMax() + "°");
-                holder.tempMin.setText(day.getTemperatureMin() + "°");
+                if (celsius) {
+                    holder.tempMax.setText(day.getTemperatureMax() + "°");
+                    holder.tempMin.setText(day.getTemperatureMin() + "°");
+                } else {
+                    holder.tempMax.setText((Math.round(day.getTemperatureMax() * 1.8 + 32) * 100.0) / 100.0 + "°");
+                    holder.tempMin.setText((Math.round(day.getTemperatureMin() * 1.8 + 32) * 100.0) / 100.0 + "°");
+                }
                 holder.icon.setText(IconManager.getIconResource(day.getIcon(), context));
 
 

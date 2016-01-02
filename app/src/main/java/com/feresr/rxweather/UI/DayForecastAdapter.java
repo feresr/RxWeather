@@ -1,8 +1,10 @@
 package com.feresr.rxweather.UI;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Typeface;
+import android.preference.PreferenceManager;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateFormat;
@@ -28,6 +30,7 @@ public class DayForecastAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private LayoutInflater inflater;
     private ArrayList<Hour> hours;
     private Context context;
+    private boolean celsius = true;
 
     public DayForecastAdapter(Context context) {
 
@@ -35,6 +38,13 @@ public class DayForecastAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         this.context = context;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         hours = new ArrayList<>();
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+        String syncConnPref = sharedPref.getString(SettingsActivity.PREF_UNIT, "celsius");
+        if (syncConnPref.equals("celsius")) {
+            celsius = true;
+        } else {
+            celsius = false;
+        }
 
     }
 
@@ -48,7 +58,12 @@ public class DayForecastAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         HourlyForecastViewHolder hourlyForecastViewHolder = ((HourlyForecastViewHolder) holder);
         hourlyForecastViewHolder.hour.setText(DateFormat.getTimeFormat(context).format(new Date(hours.get(position).getTime() * 1000L)));
-        hourlyForecastViewHolder.temp.setText(hours.get(position).getTemperature() + "°");
+
+        if (celsius) {
+            hourlyForecastViewHolder.temp.setText(hours.get(position).getTemperature() + "°");
+        } else {
+            hourlyForecastViewHolder.temp.setText(Math.round((hours.get(position).getTemperature() * 1.8 + 32) * 100.0) / 100.0 + "°");
+        }
         hourlyForecastViewHolder.icon.setText(IconManager.getIconResource(hours.get(position).getIcon(), context));
 
         //Adjust margins according to their positions
