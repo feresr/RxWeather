@@ -45,7 +45,9 @@ public class ForecastIODataSource implements DataSource {
         }).map(new Func1<CityWeather, City>() {
             @Override
             public City call(CityWeather cityWeather) {
-                city.setCityWeather(cityWeather);
+                if (cityWeather != null) {
+                    city.setCityWeather(cityWeather);
+                }
                 return city;
             }
         });

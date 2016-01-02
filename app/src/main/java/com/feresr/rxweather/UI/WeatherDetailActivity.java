@@ -65,14 +65,10 @@ public class WeatherDetailActivity extends AppCompatActivity implements HasCompo
 
     @Override
     public void onScrolled(int scrolled) {
-        Log.e("Original", String.valueOf(scrolled));
-
         scrolled /= 2;
         if (scrolled > 255) {
             scrolled = 255;
         }
-        Log.e("Scrolled", String.valueOf(scrolled));
-
         toolbar.setBackgroundColor(Color.argb(scrolled,5,5,5));
     }
 }

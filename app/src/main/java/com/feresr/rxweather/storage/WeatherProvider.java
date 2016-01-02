@@ -202,7 +202,7 @@ public class WeatherProvider extends ContentProvider {
 
         try {
             for (ContentValues cv : values) {
-                long newID = sqlDB.insertOrThrow(table, null, cv);
+                long newID = sqlDB.insertWithOnConflict(table, null, cv, SQLiteDatabase.CONFLICT_REPLACE);
                 if (newID <= 0) {
                     throw new SQLException("Failed to insert row into " + uri);
                 }

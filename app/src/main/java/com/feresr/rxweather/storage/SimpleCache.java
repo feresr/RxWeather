@@ -269,6 +269,7 @@ public class SimpleCache implements DataCache {
                     context.getContentResolver().delete(WeatherContract.CityEntry.CONTENT_URI, WeatherContract.CityEntry._ID + " = ?", params);
                     context.getContentResolver().delete(WeatherContract.WeatherEntry.CONTENT_URI, WeatherContract.WeatherEntry._ID + " = ?", params);
                     context.getContentResolver().delete(WeatherContract.HourEntry.CONTENT_URI, WeatherContract.HourEntry.CITY_ID + " = ?", params);
+                    context.getContentResolver().delete(WeatherContract.DayEntry.CONTENT_URI, WeatherContract.DayEntry.CITY_ID + " = ?", params);
                     subscriber.onNext(city);
                 } catch (Exception e) {
                     subscriber.onError(e);
@@ -371,6 +372,12 @@ public class SimpleCache implements DataCache {
 
 
         context.getContentResolver().insert(WeatherContract.WeatherEntry.CONTENT_URI, weatherValues);
+
+        //Remove previous hourly and daily data
+        String[] params = {cityId};
+        context.getContentResolver().delete(WeatherContract.HourEntry.CONTENT_URI, WeatherContract.HourEntry.CITY_ID + " = ?", params);
+        context.getContentResolver().delete(WeatherContract.DayEntry.CONTENT_URI, WeatherContract.DayEntry.CITY_ID + " = ?", params);
+
         context.getContentResolver().bulkInsert(WeatherContract.HourEntry.CONTENT_URI, hourlyValues);
         context.getContentResolver().bulkInsert(WeatherContract.DayEntry.CONTENT_URI, dailyValues);
 
