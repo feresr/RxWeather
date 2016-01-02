@@ -32,12 +32,7 @@ public class ForecastIODataSource implements DataSource {
     @Override
     public Observable<City> getForecast(final City city) {
         String latlong = String.format("%s,%s", city.getLat(), city.getLon());
-        return endpoints.getForecast(latlong, API_KEY, "ca").doOnNext(new Action1<CityWeather>() {
-            @Override
-            public void call(CityWeather cityWeather) {
-                cache.putForecast(city.getId(), cityWeather);
-            }
-        }).onErrorReturn(new Func1<Throwable, CityWeather>() {
+        return endpoints.getForecast(latlong, API_KEY, "ca").onErrorReturn(new Func1<Throwable, CityWeather>() {
             @Override
             public CityWeather call(Throwable throwable) {
                 return null;
@@ -46,6 +41,8 @@ public class ForecastIODataSource implements DataSource {
             @Override
             public City call(CityWeather cityWeather) {
                 if (cityWeather != null) {
+                    cache.putForecast(city.getId(), cityWeather);
+                    cityWeather.setFetchTime(System.currentTimeMillis());
                     city.setCityWeather(cityWeather);
                 }
                 return city;

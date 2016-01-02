@@ -8,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:text="Next 7 Days"
-        android:textColor="#222"
+        android:textColor="@color/text_white"
         android:textSize="14sp"
         />
     <TextView
@@ -16,7 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:text="Light rain today through Tuesday, with temperatures rising to 33 on Monday."
-        android:textColor="#555"
+        android:textColor="@color/light_text_white"
         android:textSize="14sp"
         />
 </LinearLayout>

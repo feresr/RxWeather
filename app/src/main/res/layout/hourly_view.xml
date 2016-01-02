@@ -16,13 +16,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="bold"
-            android:textColor="#fff"
+            android:textColor="@color/normal_text"
             android:text="Next 48 Hours" />
 
         <TextView
             android:id="@+id/description"
             android:text="Weather description"
-            android:textColor="#ccc"
+            android:textColor="@color/normal_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 

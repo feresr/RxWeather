@@ -142,6 +142,7 @@ public class ForecastAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 HourlyViewHolder labelViewHolder = (HourlyViewHolder) viewHolder;
                 Hourly hourly = (Hourly) weatherInfo.get(position);
                 labelViewHolder.description.setText(hourly.getSummary());
+                labelViewHolder.view.setBackgroundColor(IconManager.getColorResource(hourly.getIcon(), context));
                 break;
             case WARNING:
                 WarningViewHolder warningViewHolder = (WarningViewHolder) viewHolder;
@@ -300,9 +301,11 @@ public class ForecastAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public class HourlyViewHolder extends RecyclerView.ViewHolder {
         TextView description;
         RecyclerView recyclerView;
+        LinearLayout view;
 
         public HourlyViewHolder(View itemView) {
             super(itemView);
+            view = (LinearLayout) itemView;
             description = (TextView) itemView.findViewById(R.id.description);
             recyclerView = (RecyclerView) itemView.findViewById(R.id.nextHoursRecyclerview);
 

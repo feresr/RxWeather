@@ -13,6 +13,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:textColor="@color/normal_text"
+        android:textSize="12dp"
+        android:textColor="@color/text_white"
         android:text="Updated at 14:22"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textColor="@color/light_text_white"
+        android:textStyle="bold"
+        android:text="@string/powered_by"/>
 </LinearLayout>

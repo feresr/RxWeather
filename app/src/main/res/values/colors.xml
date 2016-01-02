@@ -2,14 +2,15 @@
 <resources>
     <color name="colorPrimary">#222222</color>
     <color name="colorPrimaryDark">#000000</color>
-    <color name="colorAccent">#ECAD2A</color>
-    <color name="background_material_light">#222222</color>
+    <color name="colorAccent">#ecad2a</color>
     <color name="normal_text">#fff</color>
     <color name="light_text">#efff</color>
+    <color name="light_text_white">#ddd</color>
+    <color name="text_white">#999</color>
     <color name="storm_background">#31343d</color>
     <color name="background_material_dark">#eeeef4</color>
     <color name="rain">#3C5C76</color>
-    <color name="clear_day">#edba3a</color>
+    <color name="clear_day">#ffcf57</color>
     <color name="clear_night">#292929</color>
     <color name="snow">#bfbfbf</color>
     <color name="sleet">#9f9f9f</color>
