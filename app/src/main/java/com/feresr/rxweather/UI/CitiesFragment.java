@@ -2,12 +2,13 @@ package com.feresr.rxweather.UI;
 
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,7 +37,7 @@ public class CitiesFragment extends BaseFragment implements CitiesView {
 
     private RecyclerView citiesRecyclerView;
     private CitiesAdapter adapter;
-    private RecyclerView.LayoutManager layoutManager;
+    private StaggeredGridLayoutManager layoutManager;
     private FloatingActionButton addCityFab;
     private GoogleApiClientProvider googleApiClientProvider;
     private LinearLayout emptyView;
@@ -60,7 +61,11 @@ public class CitiesFragment extends BaseFragment implements CitiesView {
         View view = inflater.inflate(R.layout.fragment_cities, container, false);
         citiesRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerview);
         adapter = new CitiesAdapter(getActivity());
-        layoutManager = new LinearLayoutManager(getActivity());
+
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        int columns = sharedPref.getBoolean(SettingsActivity.GRIDVIEW, false)? 2 : 1;
+
+        layoutManager = new StaggeredGridLayoutManager(columns, StaggeredGridLayoutManager.VERTICAL);
         citiesRecyclerView.setLayoutManager(layoutManager);
         citiesRecyclerView.setAdapter(adapter);
 
@@ -129,6 +134,16 @@ public class CitiesFragment extends BaseFragment implements CitiesView {
     @Override
     public void showTemperatureInFahrenheit() {
         adapter.showTemperaturesInFahrenheit();
+    }
+
+    @Override
+    public void setSetColumns(int columns) {
+        if (columns >= 2) {
+            adapter.setCompactView(true);
+        } else {
+            adapter.setCompactView(false);
+        }
+        layoutManager.setSpanCount(columns);
     }
 
     @Override

@@ -21,6 +21,7 @@ import java.util.ArrayList;
  */
     public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.ViewHolder> {
 
+    boolean compact = false;
     private ArrayList<City> cities;
     private LayoutInflater inflater;
     private Context context;
@@ -40,6 +41,8 @@ import java.util.ArrayList;
         } else {
             showTemperaturesInFahrenheit();
         }
+
+        compact = sharedPref.getBoolean(SettingsActivity.GRIDVIEW, false);
     }
 
     public ArrayList<City> getCities() {
@@ -72,7 +75,12 @@ import java.util.ArrayList;
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = inflater.inflate(R.layout.city_view, parent, false);
+        View view = null;
+        if (compact) {
+            view = inflater.inflate(R.layout.city_view_compact, parent, false);
+        } else {
+            view = inflater.inflate(R.layout.city_view, parent, false);
+        }
         return new ViewHolder(view);
     }
 
@@ -107,6 +115,11 @@ import java.util.ArrayList;
     }
 
     @Override
+    public int getItemViewType(int position) {
+        return compact? 1 : 0;
+    }
+
+    @Override
     public int getItemCount() {
         return cities.size();
     }
@@ -131,5 +144,9 @@ import java.util.ArrayList;
             summary = (TextView) itemView.findViewById(R.id.summary);
             progressBar = (ProgressBar) itemView.findViewById(R.id.progress_bar);
         }
+    }
+
+    public void setCompactView(boolean compact) {
+        this.compact = compact;
     }
 }

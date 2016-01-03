@@ -282,10 +282,21 @@ public class CitiesPresenter implements Presenter, NetworkListener, android.view
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
 
-        if (key.equals(SettingsActivity.PREF_UNIT   ) && sharedPreferences.getString(key, "celsius").equals("celsius")) {
-            citiesView.showTemperatureInCelsius();
-        } else {
-            citiesView.showTemperatureInFahrenheit();
+        switch (key) {
+            case SettingsActivity.PREF_UNIT:
+                if (sharedPreferences.getString(key, "celsius").equals("celsius")) {
+                    citiesView.showTemperatureInCelsius();
+                } else {
+                    citiesView.showTemperatureInFahrenheit();
+                }
+
+            case SettingsActivity.GRIDVIEW:
+                if (sharedPreferences.getBoolean(key, false)) {
+                    citiesView.setSetColumns(2);
+                } else {
+                    citiesView.setSetColumns(1);
+                }
+                break;
         }
     }
 }
