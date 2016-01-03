@@ -81,6 +81,14 @@ public class ForecastFragment extends BaseFragment implements ForecastView {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        recyclerView.scrollToPosition(0);
+        listener.onScrolled(0);
+
+    }
+
+    @Override
     public void onStop() {
         super.onStop();
         presenter.onStop();
