@@ -289,14 +289,14 @@ public class CitiesPresenter implements Presenter, NetworkListener, android.view
                 } else {
                     citiesView.showTemperatureInFahrenheit();
                 }
-
+            break;
             case SettingsActivity.GRIDVIEW:
                 if (sharedPreferences.getBoolean(key, false)) {
                     citiesView.setSetColumns(2);
                 } else {
                     citiesView.setSetColumns(1);
                 }
-                break;
+            break;
         }
     }
 }
