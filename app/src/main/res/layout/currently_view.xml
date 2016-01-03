@@ -49,7 +49,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:layout_weight="1"
+                    android:layout_weight="2"
                     android:textStyle="bold"
                     android:text="LIGHT SNOW"
                     android:textColor="#fff"
@@ -88,7 +88,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             app:ic="&#xf07a;"
-            app:sub="Humid." />
+            app:sub="@string/humid" />
 
         <com.feresr.rxweather.UI.views.InfoDisplay
             android:id="@+id/tempMax"
@@ -104,7 +104,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             app:ic="&#xf079;"
-            app:sub="Press." />
+            app:sub="@string/pressure" />
     </LinearLayout>
 
     <LinearLayout
@@ -122,7 +122,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             app:ic="&#xf013;"
-            app:sub="Cluds" />
+            app:sub="@string/clouds" />
 
         <com.feresr.rxweather.UI.views.InfoDisplay
             android:id="@+id/precipitation"
@@ -138,7 +138,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             app:ic="&#xf055;"
-            app:sub="Feels like " />
+            app:sub="@string/feelsLike" />
     </LinearLayout>
 
 </LinearLayout>

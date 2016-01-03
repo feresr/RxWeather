@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:textStyle="bold"
             android:textColor="@color/normal_text"
-            android:text="Next 48 Hours" />
+            android:text="@string/next48hours" />
 
         <TextView
             android:id="@+id/description"

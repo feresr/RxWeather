@@ -7,7 +7,7 @@
         android:textStyle="bold"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Next 7 Days"
+        android:text="@string/next7days"
         android:textColor="@color/text_white"
         android:textSize="14sp"
         />

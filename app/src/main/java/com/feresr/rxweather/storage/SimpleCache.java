@@ -27,7 +27,7 @@ import rx.Subscriber;
 @Singleton
 public class SimpleCache implements DataCache {
 
-    private static final long EXPIRATION_TIME = 20 * 1000;//20 * 60 * 1000;
+    private static final long EXPIRATION_TIME = 20 * 60 * 1000;
     private Context context;
 
     @Inject

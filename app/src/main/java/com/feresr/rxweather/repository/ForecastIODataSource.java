@@ -6,6 +6,7 @@ import com.feresr.rxweather.models.CityWeather;
 import com.feresr.rxweather.storage.DataCache;
 
 import java.util.List;
+import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -32,7 +33,7 @@ public class ForecastIODataSource implements DataSource {
     @Override
     public Observable<City> getForecast(final City city) {
         String latlong = String.format("%s,%s", city.getLat(), city.getLon());
-        return endpoints.getForecast(latlong, API_KEY, "ca").onErrorReturn(new Func1<Throwable, CityWeather>() {
+        return endpoints.getForecast(latlong, API_KEY, "ca", Locale.getDefault().getLanguage()).onErrorReturn(new Func1<Throwable, CityWeather>() {
             @Override
             public CityWeather call(Throwable throwable) {
                 return null;

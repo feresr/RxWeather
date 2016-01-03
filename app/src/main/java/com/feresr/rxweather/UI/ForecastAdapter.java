@@ -193,7 +193,8 @@ public class ForecastAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 break;
             case UPDATED_AT:
                 UpdatedAtViewHolder updatedAtViewHolder = (UpdatedAtViewHolder) viewHolder;
-                updatedAtViewHolder.updatedAt.setText("Updated at " + new SimpleDateFormat("hh:mm", Locale.getDefault()).format(new Date(fetchTime)).toUpperCase());
+
+                updatedAtViewHolder.updatedAt.setText(context.getString(R.string.updated_at) + " " + new SimpleDateFormat("hh:mm", Locale.getDefault()).format(new Date(fetchTime)).toUpperCase());
                 break;
             case DAY:
                 Day day = (Day) weatherInfo.get(position);
@@ -222,25 +223,21 @@ public class ForecastAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 //First
                 if (day.isToday()) {
                     LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                    holder.dayName.setText("TODAY");
+                    holder.dayName.setText(context.getString(R.string.today));
 
                     holder.view.setLayoutParams(params);
                 } else if (day.isLastDayOfWeek()) {
-                    holder.dayName.setText(new SimpleDateFormat("EEEE", new Locale("EN")).format(new Date(day.getTime() * 1000L)).toUpperCase());
+                    holder.dayName.setText(new SimpleDateFormat("EEEE", Locale.getDefault()).format(new Date(day.getTime() * 1000L)).toUpperCase());
                     LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                     holder.view.setLayoutParams(params);
                 } else {
                     if (day.isTomorrow()) {
-                        holder.dayName.setText("TOMORROW");
+                        holder.dayName.setText(context.getString(R.string.tomorrow));
                     } else {
-                        holder.dayName.setText(new SimpleDateFormat("EEEE", new Locale("EN")).format(new Date(day.getTime() * 1000L)).toUpperCase());
+                        holder.dayName.setText(new SimpleDateFormat("EEEE", Locale.getDefault()).format(new Date(day.getTime() * 1000L)).toUpperCase());
                     }
                     LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                     holder.view.setLayoutParams(params);
-
-                    if (position % 3 == 0) {
-                        //holder.view.setBackgroundColor(ContextCompat.getColor(context, android.R.color.holo_blue_bright));
-                    }
                 }
         }
     }
