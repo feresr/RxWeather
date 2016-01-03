@@ -19,6 +19,9 @@
         android:positiveButtonText="@null"
         android:title="@string/Units" />
     <Preference
+        android:key="feedback"
+        android:title="Send feedback"/>
+    <Preference
         android:title="App Version"
         android:summary="1.0.0"/>
 </PreferenceScreen>

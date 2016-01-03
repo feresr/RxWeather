@@ -6,6 +6,7 @@ import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.ListPreference;
@@ -155,6 +156,22 @@ public class SettingsActivity extends PreferenceActivity {
             // updated to reflect the new value, per the Android Design
             // guidelines.
             bindPreferenceSummaryToValue(findPreference(PREF_UNIT));
+            findPreference("feedback").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+
+                    String uriText =
+                            "mailto:fernandoraviola@gmail.com" +
+                                    "?subject=" + Uri.encode("RxWeather feedback");
+
+                    Uri uri = Uri.parse(uriText);
+
+                    Intent intent = new Intent(Intent.ACTION_SENDTO);
+                    intent.setData(uri);
+                    startActivity(Intent.createChooser(intent, "Send feedback"));
+                    return true;
+                }
+            });
         }
 
         @Override
