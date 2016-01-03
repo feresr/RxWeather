@@ -65,7 +65,7 @@
                     android:gravity="center"
                     android:text="12°"
                     android:textColor="#fff"
-                    android:textSize="42dp"
+                    android:textSize="36dp"
                     android:textStyle="bold" />
             </LinearLayout>
         </LinearLayout>

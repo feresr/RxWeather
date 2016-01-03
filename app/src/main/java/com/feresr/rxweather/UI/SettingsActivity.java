@@ -3,6 +3,7 @@ package com.feresr.rxweather.UI;
 
 import android.annotation.TargetApi;
 import android.app.ActionBar;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -169,6 +170,34 @@ public class SettingsActivity extends PreferenceActivity {
                     Intent intent = new Intent(Intent.ACTION_SENDTO);
                     intent.setData(uri);
                     startActivity(Intent.createChooser(intent, "Send feedback"));
+                    return true;
+                }
+            });
+
+            findPreference("rate").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    Uri uri = Uri.parse("market://details?id=" + getActivity().getPackageName());
+                    Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
+                    // To count with Play market backstack, After pressing back button,
+                    // to taken back to our application, we need to add following flags to intent.
+
+                    if (android.os.Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP) {
+                        goToMarket.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY |
+                                Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET |
+                                Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+                    } else {
+                        goToMarket.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY |
+                                Intent.FLAG_ACTIVITY_NEW_DOCUMENT |
+                                Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+                    }
+
+                    try {
+                        startActivity(goToMarket);
+                    } catch (ActivityNotFoundException e) {
+                        startActivity(new Intent(Intent.ACTION_VIEW,
+                                Uri.parse("http://play.google.com/store/apps/details?id=" + getActivity().getPackageName())));
+                    }
                     return true;
                 }
             });

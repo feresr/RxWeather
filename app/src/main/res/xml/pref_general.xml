@@ -22,6 +22,9 @@
         android:key="feedback"
         android:title="Send feedback"/>
     <Preference
+        android:key="rate"
+        android:title="Rate this App"/>
+    <Preference
         android:title="App Version"
         android:summary="1.0.0"/>
 </PreferenceScreen>
