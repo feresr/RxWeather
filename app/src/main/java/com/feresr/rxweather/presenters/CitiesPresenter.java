@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 
 import com.feresr.rxweather.NetworkListener;
@@ -41,7 +42,7 @@ import rx.subscriptions.CompositeSubscription;
 /**
  * Created by Fernando on 6/11/2015.
  */
-public class CitiesPresenter implements Presenter, NetworkListener, android.view.View.OnClickListener, RecyclerItemClickListener.OnItemClickListener, SharedPreferences.OnSharedPreferenceChangeListener {
+public class CitiesPresenter implements Presenter, NetworkListener, android.view.View.OnClickListener, RecyclerItemClickListener.OnItemClickListener, SharedPreferences.OnSharedPreferenceChangeListener, SwipeRefreshLayout.OnRefreshListener {
 
     private CitiesAdapter citiesAdapter;
     private GetCityForecastUseCase getCityWeatherUseCase;
@@ -153,7 +154,6 @@ public class CitiesPresenter implements Presenter, NetworkListener, android.view
     }
 
     public void addNewCity(final City city) {
-        //TODO check internet connection (cannot add city to db without lat and lon)
         if (city.getLat() == null || city.getLon() == null) {
             if (googleApiClient.isConnected()) {
 
@@ -298,5 +298,33 @@ public class CitiesPresenter implements Presenter, NetworkListener, android.view
                 }
             break;
         }
+    }
+
+    @Override
+    public void onRefresh() {
+        subscriptions.add(Observable.from(citiesAdapter.getCities()).flatMap(new Func1<City, Observable<City>>() {
+            @Override
+            public Observable<City> call(City city) {
+                getCityWeatherUseCase.setCity(city);
+                return getCityWeatherUseCase.execute();
+            }
+        }).subscribe(new Subscriber<City>() {
+            @Override
+            public void onCompleted() {
+                subscriptions.remove(this);
+                this.unsubscribe();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.e(this.getClass().getSimpleName(), e.toString());
+            }
+
+            @Override
+            public void onNext(City city) {
+                city.setState(City.STATE_DONE);
+                citiesView.updateCity(city);
+            }
+        }));
     }
 }

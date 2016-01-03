@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -41,6 +42,7 @@ public class CitiesFragment extends BaseFragment implements CitiesView {
     private FloatingActionButton addCityFab;
     private GoogleApiClientProvider googleApiClientProvider;
     private LinearLayout emptyView;
+    private SwipeRefreshLayout swipeRefresh;
 
     private FragmentInteractionsListener fragmentInteractionListener;
 
@@ -90,7 +92,7 @@ public class CitiesFragment extends BaseFragment implements CitiesView {
         itemTouchHelper.attachToRecyclerView(citiesRecyclerView);
         addCityFab = (FloatingActionButton) view.findViewById(R.id.add_city_fab);
         emptyView = (LinearLayout) view.findViewById(R.id.empty_view);
-
+        swipeRefresh = (SwipeRefreshLayout) view.findViewById(R.id.swiperefresh);
         return view;
     }
 
@@ -123,6 +125,7 @@ public class CitiesFragment extends BaseFragment implements CitiesView {
 
     @Override
     public void updateCity(City city) {
+        swipeRefresh.setRefreshing(false);
         adapter.updateCity(city);
     }
 
@@ -164,6 +167,7 @@ public class CitiesFragment extends BaseFragment implements CitiesView {
         citiesRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), presenter));
         presenter.setGoogleApiClient(googleApiClientProvider.getApiClient());
         presenter.onCreate();
+        swipeRefresh.setOnRefreshListener(presenter);
     }
 
     @Override
