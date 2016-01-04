@@ -8,12 +8,14 @@ import android.preference.PreferenceActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 
+import com.feresr.rxweather.BuildConfig;
 import com.feresr.rxweather.R;
 import com.feresr.rxweather.RxWeatherApplication;
 import com.feresr.rxweather.injector.DaggerWeatherApiComponent;
@@ -27,13 +29,12 @@ import com.google.android.gms.location.places.Places;
 
 public class MainActivity extends AppCompatActivity implements HasComponent<WeatherApiComponent>, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, GoogleApiClientProvider, FragmentInteractionsListener {
 
-    private final boolean DEVELOPER_MODE = true;
     private WeatherApiComponent weatherComponent;
     private GoogleApiClient googleApiClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if (DEVELOPER_MODE) {
+        if (BuildConfig.DEBUG) {
             StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
                     .detectDiskReads()
                     .detectDiskWrites()
@@ -120,7 +121,9 @@ public class MainActivity extends AppCompatActivity implements HasComponent<Weat
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
-
+        if (connectionResult != null) {
+            Log.e(MainActivity.this.getClass().getSimpleName(), connectionResult.getErrorMessage());
+        }
     }
 
     @Override

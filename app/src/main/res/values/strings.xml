@@ -1,47 +1,47 @@
 <resources>
     <string name="app_name">RxWeather</string>
     <string name="action_settings">Settings</string>
-    <string name="today_weather_main_icon">&#xf00d;</string>
-    <string name="thunderstorms">&#xf01e;</string>
-    <string name="lighting">&#xf016;</string>
-    <string name="sprinkle">&#xf01c;</string>
-    <string name="rain_mix">&#xf017;</string>
-    <string name="rain">&#xf019;</string>
-    <string name="showers">&#xf01a;</string>
-    <string name="storm_showers">&#xf01d;</string>
-    <string name="snow">&#xf01b;</string>
-    <string name="sleet">&#xf0b5;</string>
-    <string name="smoke">&#xf062;</string>
-    <string name="day_haze">&#xf0b6;</string>
-    <string name="dust">&#xf063;</string>
-    <string name="fog">&#xf014;</string>
-    <string name="tornado">&#xf056;</string>
-    <string name="default_icon">&#xf00d;</string>
-    <string name="day_sunny">&#xf00d;</string>
-    <string name="day_cloudy_gusts">&#xf000;</string>
-    <string name="cloudy_gusts">&#xf011;</string>
-    <string name="day_sunny_overcast">&#xf00c;</string>
-    <string name="cloudy">&#xf013;</string>
-    <string name="hurricane">&#xf073;</string>
-    <string name="snowflake_cold">&#xf076;</string>
-    <string name="hot">&#xf072;</string>
-    <string name="night_cloudy">&#xf031;</string>
-    <string name="clear_night">&#xf02e;</string>
-    <string name="day_cloudy">&#xf002;</string>
-    <string name="day_hail">&#xf015;</string>
-    <string name="strong_wind">&#xf050;</string>
-    <string name="city_country_name">%1$s %2$s</string>
+    <string name="today_weather_main_icon" translatable="false">&#xf00d;</string>
+    <string name="thunderstorms" translatable="false">&#xf01e;</string>
+    <string name="lighting" translatable="false">&#xf016;</string>
+    <string name="sprinkle" translatable="false">&#xf01c;</string>
+    <string name="rain_mix" translatable="false">&#xf017;</string>
+    <string name="rain" translatable="false">&#xf019;</string>
+    <string name="showers" translatable="false">&#xf01a;</string>
+    <string name="storm_showers" translatable="false">&#xf01d;</string>
+    <string name="snow" translatable="false">&#xf01b;</string>
+    <string name="sleet" translatable="false">&#xf0b5;</string>
+    <string name="smoke" translatable="false">&#xf062;</string>
+    <string name="day_haze" translatable="false">&#xf0b6;</string>
+    <string name="dust" translatable="false">&#xf063;</string>
+    <string name="fog" translatable="false">&#xf014;</string>
+    <string name="tornado" translatable="false">&#xf056;</string>
+    <string name="default_icon" translatable="false">&#xf00d;</string>
+    <string name="day_sunny" translatable="false">&#xf00d;</string>
+    <string name="day_cloudy_gusts" translatable="false">&#xf000;</string>
+    <string name="cloudy_gusts" translatable="false">&#xf011;</string>
+    <string name="day_sunny_overcast" translatable="false">&#xf00c;</string>
+    <string name="cloudy" translatable="false">&#xf013;</string>
+    <string name="hurricane" translatable="false">&#xf073;</string>
+    <string name="snowflake_cold" translatable="false">&#xf076;</string>
+    <string name="hot" translatable="false">&#xf072;</string>
+    <string name="night_cloudy" translatable="false">&#xf031;</string>
+    <string name="clear_night" translatable="false">&#xf02e;</string>
+    <string name="day_cloudy" translatable="false">&#xf002;</string>
+    <string name="day_hail" translatable="false">&#xf015;</string>
+    <string name="strong_wind" translatable="false">&#xf050;</string>
+    <string name="city_country_name" translatable="false">%1$s %2$s</string>
 
     <string name="search_hint">Search cities</string>
     <string name="search_city_hint">Search city, state or province</string>
-    <string name="degree">%1$d°</string>
-    <string name="km_h">%1$d km/h</string>
-    <string name="hPa">%1$d hPa</string>
+    <string name="degree" translatable="false">%1$d°</string>
+    <string name="km_h" translatable="false">%1$d km/h</string>
+    <string name="hPa" translatable="false">%1$d hPa</string>
     <string name="no_internet_title">No internet</string>
     <string name="no_internet_description">Check your connection</string>
-    <string name="cities_empty_message">I\'m a bit confused about your whereabouts…\nPlease add your city manually.</string>
-    <string name="powered_by">Powered by Forecast.Io</string>
-    <string name="title_activity_settings">Settings</string>
+    <string name="cities_empty_message">Add cities using the (+) button below</string>
+    <string name="powered_by" translatable="false">Powered by Forecast.Io</string>
+    <string name="title_activity_settings" translatable="false">Settings</string>
 
     <!-- Strings related to Settings -->
     <string name="pref_description_units">Temperature units</string>

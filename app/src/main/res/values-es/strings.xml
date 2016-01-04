@@ -4,11 +4,9 @@
     <string name="Units">Unidad</string>
     <string name="action_settings">Opciones</string>
     <string name="cities_empty_message">No tengo idea donde estas :/</string>
-    <string name="city_country_name"></string>
-    <string name="clear_night"></string>
     <string name="clouds">Nubes</string>
     <string name="no_internet_description">Sin internet</string>
-    <string name="next7days">Siguientes 7 Dias</string>
+    <string name="next7days">Siguientes 7 Días</string>
     <string name="next48hours">Siguentes 48 Horas</string>
     <string name="humid">Humedad</string>
     <string name="feelsLike">S. Térmica</string>
@@ -20,4 +18,12 @@
     <string name="tomorrow">MAÑANA</string>
     <string name="updated_at">Actualizado a las</string>
     <string name="no_internet_title">Sin internet</string>
+    <string-array name="pref_list_units">
+        <item>Celsius</item>
+        <item>Fahrenheit</item>
+    </string-array>
+    <string-array name="pref_list_units_values">
+        <item>celsius</item>
+        <item>fahrenheit</item>
+    </string-array>
 </resources>
