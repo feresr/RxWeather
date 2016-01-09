@@ -1,4 +1,4 @@
-package com.feresr.rxweather.injector;
+package com.feresr.weather.injector;
 
 import java.lang.annotation.Retention;
 

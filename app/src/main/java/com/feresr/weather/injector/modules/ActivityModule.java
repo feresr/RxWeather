@@ -1,9 +1,9 @@
-package com.feresr.rxweather.injector.modules;
+package com.feresr.weather.injector.modules;
 
 import android.content.Context;
 
-import com.feresr.rxweather.repository.DataSource;
-import com.feresr.rxweather.repository.ForecastIODataSource;
+import com.feresr.weather.repository.DataSource;
+import com.feresr.weather.repository.ForecastIODataSource;
 
 import dagger.Module;
 import dagger.Provides;
