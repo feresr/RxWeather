@@ -3,7 +3,7 @@
     <string name="app_name">RxWeather</string>
     <string name="Units">Unidad</string>
     <string name="action_settings">Opciones</string>
-    <string name="cities_empty_message">No tengo idea donde estas :/</string>
+    <string name="cities_empty_message">No hay ciudades</string>
     <string name="clouds">Nubes</string>
     <string name="no_internet_description">Sin internet</string>
     <string name="next7days">Siguientes 7 Días</string>

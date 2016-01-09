@@ -121,7 +121,7 @@ public class MainActivity extends AppCompatActivity implements HasComponent<Weat
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
-        if (connectionResult != null) {
+        if (connectionResult != null && connectionResult.getErrorMessage() != null) {
             Log.e(MainActivity.this.getClass().getSimpleName(), connectionResult.getErrorMessage());
         }
     }
