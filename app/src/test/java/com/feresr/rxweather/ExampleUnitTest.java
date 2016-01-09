@@ -1,4 +1,4 @@
-package com.feresr.rxweather;
+package com.feresr.weather;
 
 import org.junit.Test;
 

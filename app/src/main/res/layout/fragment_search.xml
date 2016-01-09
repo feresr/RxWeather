@@ -9,7 +9,7 @@
     android:paddingTop="10dp"
     android:paddingRight="30dp"
     android:paddingLeft="30dp"
-    tools:context="com.feresr.rxweather.UI.SearchFragment">
+    tools:context="com.feresr.weather.UI.SearchFragment">
 
     <android.support.v7.widget.CardView
         android:id="@+id/search_view"

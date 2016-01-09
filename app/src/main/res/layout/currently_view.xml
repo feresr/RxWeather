@@ -82,7 +82,7 @@
         android:paddingBottom="15dp">
 
 
-        <com.feresr.rxweather.UI.views.InfoDisplay
+        <com.feresr.weather.UI.views.InfoDisplay
             android:id="@+id/humidity"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -90,7 +90,7 @@
             app:ic="&#xf07a;"
             app:sub="@string/humid" />
 
-        <com.feresr.rxweather.UI.views.InfoDisplay
+        <com.feresr.weather.UI.views.InfoDisplay
             android:id="@+id/tempMax"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -98,7 +98,7 @@
             app:ic="&#xf050;"
             app:sub="East" />
 
-        <com.feresr.rxweather.UI.views.InfoDisplay
+        <com.feresr.weather.UI.views.InfoDisplay
             android:id="@+id/tempMin"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -116,7 +116,7 @@
         android:paddingTop="15dp"
         android:paddingBottom="25dp">
 
-        <com.feresr.rxweather.UI.views.InfoDisplay
+        <com.feresr.weather.UI.views.InfoDisplay
             android:id="@+id/clouds"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -124,7 +124,7 @@
             app:ic="&#xf013;"
             app:sub="@string/clouds" />
 
-        <com.feresr.rxweather.UI.views.InfoDisplay
+        <com.feresr.weather.UI.views.InfoDisplay
             android:id="@+id/precipitation"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -132,7 +132,7 @@
             app:ic="&#xf084;"
             app:sub="0.29 mm" />
 
-        <com.feresr.rxweather.UI.views.InfoDisplay
+        <com.feresr.weather.UI.views.InfoDisplay
             android:id="@+id/feels_like"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
