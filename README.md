@@ -10,8 +10,11 @@ Personal pet project aimed to illustrate the use of the following android specif
 The architecture for this applciation is based on the following repository:
 https://github.com/android10/Android-CleanArchitecture/
 
-<img src="https://lh3.googleusercontent.com/jC-E62Ejhh_EIXfm48K3X_sPJKPEdF6URAMxmEMZfWD1PHFExksB85lUxARwrN4AljA=h900-rw" width="400">
-<img src="https://lh3.googleusercontent.com/b-_GbMh6FRNUJbutow7XNgTPrWVVTZrvKbf-dVY0083QLbTIPZu-3zO0U80dPq5Be3Im=h900-rw" width="400">
+<img src="https://lh3.googleusercontent.com/b-_GbMh6FRNUJbutow7XNgTPrWVVTZrvKbf-dVY0083QLbTIPZu-3zO0U80dPq5Be3Im=h900-rw" width="210">
+<img src="https://lh3.googleusercontent.com/jC-E62Ejhh_EIXfm48K3X_sPJKPEdF6URAMxmEMZfWD1PHFExksB85lUxARwrN4AljA=h900-rw" width="210">
+<img src="https://lh3.googleusercontent.com/bplb5f8dVpI8PL9gdap4qcJpFRIFTPc0mT0xaRHbLJyTHDJwlz1k2YrVKZ-66SbcYNOE=h900-rw" width="210">
+<img src="https://lh3.googleusercontent.com/6pAW1ubZbdOtTx424z8X1vzAXe4wIrxSdOZ09leJgNEezLs6JTFNpOt97J4VPJ0q6QZV=h900-rw" width="210">
+
 
 * I've originally intended to use Realm.io as the persistence mechanism for this project.
 I've changed my mind and used SQLite insted due to several issues I've had trying to use Realm.
