@@ -1,17 +1,17 @@
 # RxWeather
 
-![alt tag](https://lh3.googleusercontent.com/b-_GbMh6FRNUJbutow7XNgTPrWVVTZrvKbf-dVY0083QLbTIPZu-3zO0U80dPq5Be3Im=h900-rw)
-![alt tag](https://lh3.googleusercontent.com/jC-E62Ejhh_EIXfm48K3X_sPJKPEdF6URAMxmEMZfWD1PHFExksB85lUxARwrN4AljA=h900-rw)
-
 Personal pet project aimed to illustrate the use of the following android specific frameworks/libraries/tools: 
 
-[x] AndroidRx / JavaRx (Reactive programming)
-[x] Dagger2 (Dependency Injection)
-[x] Retrofit 2
-[x] Realm io / SQLite
+- [x] AndroidRx / JavaRx (Reactive programming)
+- [x] Dagger2 (Dependency Injection)
+- [x] Retrofit 2
+- [x] Realm io / SQLite
 
 The architecture for this applciation is based on the following repository:
 https://github.com/android10/Android-CleanArchitecture/
+
+<img src="https://lh3.googleusercontent.com/jC-E62Ejhh_EIXfm48K3X_sPJKPEdF6URAMxmEMZfWD1PHFExksB85lUxARwrN4AljA=h900-rw" width="400">
+<img src="https://lh3.googleusercontent.com/b-_GbMh6FRNUJbutow7XNgTPrWVVTZrvKbf-dVY0083QLbTIPZu-3zO0U80dPq5Be3Im=h900-rw" width="400">
 
 * I've originally intended to use Realm.io as the persistence mechanism for this project.
 I've changed my mind and used SQLite insted due to several issues I've had trying to use Realm.
