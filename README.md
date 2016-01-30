@@ -1,6 +1,6 @@
 # RxWeather
 
-Personal pet project aimed to illustrate the use of the following android specific frameworks/libraries/tools: 
+Personal pet project aimed to learn how to use and integrate the following android specific frameworks/libraries/tools: 
 
 - [x] AndroidRx / JavaRx (Reactive programming)
 - [x] Dagger2 (Dependency Injection)
