@@ -2,24 +2,36 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.neenbedankt.android-apt'
 
 android {
+    signingConfigs {
+        release {
+            keyAlias 'feresr'
+            keyPassword '359579fer'
+            storeFile file('D:/release.keystore')
+            storePassword '359579fer'
+        }
+    }
     compileSdkVersion 23
     buildToolsVersion "23.0.2"
-
     defaultConfig {
-        applicationId "com.feresr.rxweather"
+        applicationId "com.feresr.weather"
         minSdkVersion 15
         targetSdkVersion 23
-        versionCode 2
-        versionName "1.0.1"
+        versionCode 6
+        versionName "1.0.5"
     }
     buildTypes {
         release {
             minifyEnabled false
-            resValue "string", "google_maps_api_key", "AIzaSyCXwYlN32oeqMiWDUQUUwAAJOp-aoURtgU"
+            resValue "string", "google_maps_api_key", "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+            resValue "string", "forecastio_api_key", "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+            lintOptions { disable 'MissingTranslation' }
         }
         debug {
-            resValue "string", "google_maps_api_key", "AIzaSyBi6migqAVncDWr9o4gYmB9_8gFF9s5nGw"
+            debuggable true
+            resValue "string", "google_maps_api_key", "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+            resValue "string", "forecastio_api_key", "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
         }
     }
 }
@@ -32,8 +44,6 @@ dependencies {
     provided 'org.glassfish:javax.annotation:10.0-b28'
     //RxAndroid
     //Retrofit
-
-
     compile 'com.android.support:design:23.1.1'
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'com.android.support:design:23.1.1'
@@ -42,10 +52,12 @@ dependencies {
     compile 'io.reactivex:rxjava:1.1.0'
     compile 'com.google.dagger:dagger:2.0.1'
     compile 'io.reactivex:rxandroid:1.1.0'
+    compile 'io.reactivex:rxandroid:1.1.0'
+    compile 'io.reactivex:rxandroid:1.1.0'
     compile 'io.reactivex:rxjava:1.1.0'
-    compile 'com.squareup.retrofit:retrofit:2.0.0-beta2'
-    compile 'com.squareup.retrofit:adapter-rxjava:2.0.0-beta2'
-    compile 'com.squareup.retrofit:converter-gson:2.0.0-beta2'
+    compile 'com.squareup.retrofit2:retrofit:2.0.0-beta3'
+    compile 'com.squareup.retrofit2:adapter-rxjava:2.0.0-beta3'
+    compile 'com.squareup.retrofit2:converter-gson:2.0.0-beta3'
     compile 'com.android.support:recyclerview-v7:23.1.1'
     compile 'com.android.support:cardview-v7:23.1.1'
     compile 'com.android.support:gridlayout-v7:23.1.1'

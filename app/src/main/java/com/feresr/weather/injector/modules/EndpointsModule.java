@@ -3,13 +3,13 @@ package com.feresr.weather.injector.modules;
 import com.feresr.weather.ForecastIOEndpoints;
 import com.feresr.weather.repository.Repository;
 import com.feresr.weather.repository.RepositoryImp;
-import com.squareup.okhttp.OkHttpClient;
 
 import dagger.Module;
 import dagger.Provides;
-import retrofit.GsonConverterFactory;
-import retrofit.Retrofit;
-import retrofit.RxJavaCallAdapterFactory;
+import okhttp3.OkHttpClient;
+import retrofit2.GsonConverterFactory;
+import retrofit2.Retrofit;
+import retrofit2.RxJavaCallAdapterFactory;
 
 /**
  * Created by Fernando on 13/10/2015.

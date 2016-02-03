@@ -132,7 +132,9 @@ public class CitiesPresenter implements Presenter, NetworkListener, android.view
             @Override
             public void onError(Throwable e) {
                 //Could not fetch weather
-                Log.e(this.getClass().getSimpleName(), e.toString());
+                if (e != null) {
+                    Log.e(this.getClass().getSimpleName(), e.toString());
+                }
             }
 
             @Override
@@ -185,7 +187,9 @@ public class CitiesPresenter implements Presenter, NetworkListener, android.view
 
                                 @Override
                                 public void onError(Throwable e) {
-                                    Log.e(this.getClass().getSimpleName(), e.toString());
+                                    if (e != null) {
+                                        Log.e(this.getClass().getSimpleName(), e.toString());
+                                    }
                                 }
 
                                 @Override
@@ -218,7 +222,9 @@ public class CitiesPresenter implements Presenter, NetworkListener, android.view
 
             @Override
             public void onError(Throwable e) {
-                Log.e("error", e.toString());
+                if (e != null) {
+                    Log.e("error", e.toString());
+                }
             }
 
             @Override
@@ -267,7 +273,9 @@ public class CitiesPresenter implements Presenter, NetworkListener, android.view
 
                 @Override
                 public void onError(Throwable e) {
-                    Log.e(this.getClass().getSimpleName(), e.toString());
+                    if (e != null) {
+                        Log.e(this.getClass().getSimpleName(), e.toString());
+                    }
                 }
 
                 @Override
@@ -317,7 +325,9 @@ public class CitiesPresenter implements Presenter, NetworkListener, android.view
 
             @Override
             public void onError(Throwable e) {
-                Log.e(this.getClass().getSimpleName(), e.toString());
+                if (e != null) {
+                    Log.e(this.getClass().getSimpleName(), e.toString());
+                }
             }
 
             @Override

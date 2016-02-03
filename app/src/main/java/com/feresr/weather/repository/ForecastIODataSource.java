@@ -1,6 +1,9 @@
 package com.feresr.weather.repository;
 
+import android.content.Context;
+
 import com.feresr.weather.ForecastIOEndpoints;
+import com.feresr.weather.R;
 import com.feresr.weather.models.City;
 import com.feresr.weather.models.CityWeather;
 import com.feresr.weather.storage.DataCache;
@@ -18,21 +21,22 @@ import rx.functions.Func1;
  */
 public class ForecastIODataSource implements DataSource {
 
-    static final String API_KEY = "3021a64fa44fe78d95b05991be3fecc4";
     private ForecastIOEndpoints endpoints;
     private DataCache cache;
+    private Context context;
 
     @Inject
-    public ForecastIODataSource(ForecastIOEndpoints endpoints, DataCache cache) {
+    public ForecastIODataSource(Context context, ForecastIOEndpoints endpoints, DataCache cache) {
         this.endpoints = endpoints;
         this.cache = cache;
+        this.context = context;
     }
 
 
     @Override
     public Observable<City> getForecast(final City city) {
         String latlong = String.format("%s,%s", city.getLat(), city.getLon());
-        return endpoints.getForecast(latlong, API_KEY, "ca", Locale.getDefault().getLanguage()).onErrorReturn(new Func1<Throwable, CityWeather>() {
+        return endpoints.getForecast(latlong, context.getResources().getString(R.string.forecastio_api_key), "ca", Locale.getDefault().getLanguage()).onErrorReturn(new Func1<Throwable, CityWeather>() {
             @Override
             public CityWeather call(Throwable throwable) {
                 return null;
