@@ -2,7 +2,7 @@
 
 Personal pet project aimed to learn how to use and integrate the following android specific frameworks/libraries/tools: 
 
-- [x] AndroidRx / JavaRx (Reactive programming)
+- [x] RxAndroid / RxJava (Reactive programming)
 - [x] Dagger2 (Dependency Injection)
 - [x] Retrofit 2
 - [x] Realm io / SQLite
