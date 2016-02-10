@@ -6,6 +6,7 @@ Personal pet project aimed to learn how to use and integrate the following andro
 - [x] Dagger2 (Dependency Injection)
 - [x] Retrofit 2
 - [x] Realm io / SQLite
+- [ ] Junit with Mockito... in progress
 
 The architecture for this applciation is based on the following repository:
 https://github.com/android10/Android-CleanArchitecture/
