@@ -27,7 +27,7 @@ import rx.Subscriber;
 @Singleton
 public class SimpleCache implements DataCache {
 
-    private static final long EXPIRATION_TIME = 20 * 60 * 1000;
+    public static final long EXPIRATION_TIME = 20 * 60 * 1000;
     private Context context;
 
     @Inject
@@ -37,7 +37,7 @@ public class SimpleCache implements DataCache {
 
     @Override
     public boolean isExpired(City city) {
-        if (city.getCityWeather() == null) {
+        if (city == null || city.getCityWeather() == null) {
             return true;
         }
 
