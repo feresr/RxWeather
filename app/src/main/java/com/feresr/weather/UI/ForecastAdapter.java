@@ -2,7 +2,6 @@ package com.feresr.weather.UI;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-|import android.content.res.AssetManager;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.preference.PreferenceManager;
@@ -50,13 +49,14 @@ public class ForecastAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private Context context;
     private DayForecastAdapter dayForecastAdapter;
     private boolean celsius = true;
-
+    private Typeface font;
     private long fetchTime;
 
     public ForecastAdapter(Context context) {
         super();
         this.context = context;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        font = Typeface.createFromAsset(context.getAssets(), "weathericons-regular-webfont.ttf");
         dayForecastAdapter = new DayForecastAdapter(context);
         this.weatherInfo = new ArrayList<>();
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
@@ -95,7 +95,7 @@ public class ForecastAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         switch (viewType) {
             case CURRENTLY:
                 view = this.inflater.inflate(R.layout.currently_view, parent, false);
-                return new CurrentlyViewHolder(view, context.getAssets());
+                return new CurrentlyViewHolder(view, font);
             case HOURLY:
                 view = this.inflater.inflate(R.layout.hourly_view, parent, false);
                 return new HourlyViewHolder(view, new LinearLayoutManager(context));
@@ -104,7 +104,7 @@ public class ForecastAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 return new DailyViewHolder(view);
             case DAY:
                 view = this.inflater.inflate(R.layout.day_view, parent, false);
-                return new DayViewHolder(view, context.getAssets());
+                return new DayViewHolder(view, font);
             case WARNING:
                 view = this.inflater.inflate(R.layout.warning_view, parent, false);
                 return new WarningViewHolder(view);
@@ -271,7 +271,7 @@ public class ForecastAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         TextView tempMin;
         LinearLayout view;
 
-        public DayViewHolder(View itemView, AssetManager am) {
+        public DayViewHolder(View itemView, Typeface font) {
             super(itemView);
             view = (LinearLayout) itemView;
             dayName = (TextView) itemView.findViewById(R.id.day);
@@ -279,7 +279,6 @@ public class ForecastAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             temp = (TextView) itemView.findViewById(R.id.temp);
             tempMax = (TextView) itemView.findViewById(R.id.tempMax);
             tempMin = (TextView) itemView.findViewById(R.id.tempMin);
-            Typeface font = Typeface.createFromAsset(am, "weathericons-regular-webfont.ttf");
             icon = (TextView) itemView.findViewById(R.id.icon);
             icon.setTypeface(font);
 
@@ -344,7 +343,7 @@ public class ForecastAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         InfoDisplay feelsLike;
         TextView icon;
 
-        public CurrentlyViewHolder(View itemView, AssetManager am) {
+        public CurrentlyViewHolder(View itemView, Typeface font) {
             super(itemView);
             main = (FrameLayout) itemView.findViewById(R.id.main_info);
             temp = (TextView) itemView.findViewById(R.id.temp);
@@ -356,7 +355,6 @@ public class ForecastAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             precipitation = (InfoDisplay) itemView.findViewById(R.id.precipitation);
             feelsLike = (InfoDisplay) itemView.findViewById(R.id.feels_like);
 
-            Typeface font = Typeface.createFromAsset(am, "weathericons-regular-webfont.ttf");
             icon = (TextView) itemView.findViewById(R.id.main_icon);
             icon.setTypeface(font);
 

@@ -52,7 +52,8 @@ public class DayForecastAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = inflater.inflate(R.layout.hourly_forecast_view, parent, false);
-        return new HourlyForecastViewHolder(view, context.getAssets());
+        Typeface font = Typeface.createFromAsset(context.getAssets(), "weathericons-regular-webfont.ttf");
+        return new HourlyForecastViewHolder(view, font);
     }
 
     @Override
@@ -111,11 +112,10 @@ public class DayForecastAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         TextView temp;
         View view;
 
-        public HourlyForecastViewHolder(View itemView, AssetManager am) {
+        public HourlyForecastViewHolder(View itemView, Typeface font) {
             super(itemView);
             this.view = itemView;
             hour = (TextView) itemView.findViewById(R.id.hour);
-            Typeface font = Typeface.createFromAsset(am, "weathericons-regular-webfont.ttf");
             icon = (TextView) itemView.findViewById(R.id.icon);
             icon.setTypeface(font);
             temp = (TextView) itemView.findViewById(R.id.temp);
