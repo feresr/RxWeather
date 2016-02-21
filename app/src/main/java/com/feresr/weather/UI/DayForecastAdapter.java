@@ -2,6 +2,7 @@ package com.feresr.weather.UI;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.AssetManager;
 import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.preference.PreferenceManager;
@@ -51,7 +52,7 @@ public class DayForecastAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = inflater.inflate(R.layout.hourly_forecast_view, parent, false);
-        return new HourlyForecastViewHolder(view);
+        return new HourlyForecastViewHolder(view, context.getAssets());
     }
 
     @Override
@@ -103,18 +104,18 @@ public class DayForecastAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         notifyDataSetChanged();
     }
 
-    public class HourlyForecastViewHolder extends RecyclerView.ViewHolder {
+    public static class HourlyForecastViewHolder extends RecyclerView.ViewHolder {
 
         TextView hour;
         TextView icon;
         TextView temp;
         View view;
 
-        public HourlyForecastViewHolder(View itemView) {
+        public HourlyForecastViewHolder(View itemView, AssetManager am) {
             super(itemView);
             this.view = itemView;
             hour = (TextView) itemView.findViewById(R.id.hour);
-            Typeface font = Typeface.createFromAsset(context.getAssets(), "weathericons-regular-webfont.ttf");
+            Typeface font = Typeface.createFromAsset(am, "weathericons-regular-webfont.ttf");
             icon = (TextView) itemView.findViewById(R.id.icon);
             icon.setTypeface(font);
             temp = (TextView) itemView.findViewById(R.id.temp);
