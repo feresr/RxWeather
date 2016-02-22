@@ -49,6 +49,11 @@ public class DayForecastAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     }
 
+    public void setData(ArrayList<Hour> hours) {
+        this.hours = hours;
+        notifyDataSetChanged();
+    }
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = inflater.inflate(R.layout.hourly_forecast_view, parent, false);

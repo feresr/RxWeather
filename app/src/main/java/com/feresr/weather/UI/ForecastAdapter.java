@@ -21,6 +21,7 @@ import com.feresr.weather.models.Currently;
 import com.feresr.weather.models.Daily;
 import com.feresr.weather.models.Day;
 import com.feresr.weather.models.DisplayWeatherInfo;
+import com.feresr.weather.models.Hour;
 import com.feresr.weather.models.Hourly;
 import com.feresr.weather.models.Warning;
 import com.feresr.weather.utils.IconManager;
@@ -47,17 +48,16 @@ public class ForecastAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private LayoutInflater inflater;
     private List<DisplayWeatherInfo> weatherInfo;
     private Context context;
-    private DayForecastAdapter dayForecastAdapter;
     private boolean celsius = true;
     private Typeface font;
     private long fetchTime;
+    private ArrayList<Hour> hours;
 
     public ForecastAdapter(Context context) {
         super();
         this.context = context;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         font = Typeface.createFromAsset(context.getAssets(), "weathericons-regular-webfont.ttf");
-        dayForecastAdapter = new DayForecastAdapter(context);
         this.weatherInfo = new ArrayList<>();
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
         String syncConnPref = sharedPref.getString(SettingsActivity.PREF_UNIT, "celsius");
@@ -98,7 +98,7 @@ public class ForecastAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 return new CurrentlyViewHolder(view, font);
             case HOURLY:
                 view = this.inflater.inflate(R.layout.hourly_view, parent, false);
-                return new HourlyViewHolder(view, new LinearLayoutManager(context));
+                return new HourlyViewHolder(view, new LinearLayoutManager(context), context);
             case DAILY:
                 view = this.inflater.inflate(R.layout.daily_view, parent, false);
                 return new DailyViewHolder(view);
@@ -121,7 +121,8 @@ public class ForecastAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         weatherInfo.add(cityWeather.getCurrently());
         weatherInfo.add(cityWeather.getHourly());
 
-        dayForecastAdapter.addHourForecast(cityWeather.getHourly().getData());
+        this.hours = (ArrayList<Hour>) cityWeather.getHourly().getData();
+        //dayForecastAdapter.addHourForecast(cityWeather.getHourly().getData());
 
         fetchTime = cityWeather.getFetchTime();
 
@@ -154,7 +155,8 @@ public class ForecastAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 Hourly hourly = (Hourly) weatherInfo.get(position);
                 labelViewHolder.description.setText(hourly.getSummary());
                 labelViewHolder.view.setBackgroundColor(IconManager.getColorResource(hourly.getIcon(), context));
-                labelViewHolder.recyclerView.setAdapter(dayForecastAdapter);
+                ((DayForecastAdapter) labelViewHolder.recyclerView.getAdapter()).setData(hours);
+
                 break;
             case WARNING:
                 WarningViewHolder warningViewHolder = (WarningViewHolder) viewHolder;
@@ -321,13 +323,15 @@ public class ForecastAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         RecyclerView recyclerView;
         LinearLayout view;
 
-        public HourlyViewHolder(View itemView, LinearLayoutManager linearLayoutManager) {
+        public HourlyViewHolder(View itemView, LinearLayoutManager linearLayoutManager, Context context) {
             super(itemView);
             view = (LinearLayout) itemView;
             description = (TextView) itemView.findViewById(R.id.description);
             recyclerView = (RecyclerView) itemView.findViewById(R.id.nextHoursRecyclerview);
             linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+            DayForecastAdapter dayForecastAdapter = new DayForecastAdapter(context);
             recyclerView.setLayoutManager(linearLayoutManager);
+            recyclerView.setAdapter(dayForecastAdapter);
         }
     }
 
