@@ -12,24 +12,21 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewAnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 
 import com.feresr.weather.BuildConfig;
 import com.feresr.weather.R;
 import com.feresr.weather.RxWeatherApplication;
-import com.feresr.weather.injector.DaggerWeatherApiComponent;
+import com.feresr.weather.injector.AppComponent;
 import com.feresr.weather.injector.HasComponent;
-import com.feresr.weather.injector.WeatherApiComponent;
-import com.feresr.weather.injector.modules.ActivityModule;
 import com.feresr.weather.models.City;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.places.Places;
 
-public class MainActivity extends AppCompatActivity implements HasComponent<WeatherApiComponent>, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, GoogleApiClientProvider, FragmentInteractionsListener {
+public class MainActivity extends AppCompatActivity implements HasComponent<AppComponent>, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, GoogleApiClientProvider, FragmentInteractionsListener {
 
-    private WeatherApiComponent weatherComponent;
+    private AppComponent weatherComponent;
     private GoogleApiClient googleApiClient;
 
     @Override
@@ -71,9 +68,7 @@ public class MainActivity extends AppCompatActivity implements HasComponent<Weat
     }
 
     private void initializeDependencies() {
-        weatherComponent = DaggerWeatherApiComponent.builder().activityModule(new ActivityModule(this))
-                .appComponent(((RxWeatherApplication) getApplication()).getAppComponent())
-                .build();
+        weatherComponent = ((RxWeatherApplication) getApplication()).getAppComponent();
     }
 
     @Override
@@ -96,7 +91,7 @@ public class MainActivity extends AppCompatActivity implements HasComponent<Weat
     }
 
     @Override
-    public WeatherApiComponent getComponent() {
+    public AppComponent getComponent() {
         return weatherComponent;
     }
 

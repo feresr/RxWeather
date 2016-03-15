@@ -14,7 +14,6 @@ import rx.schedulers.Schedulers;
  */
 public class SaveCityUseCase implements UseCase<City> {
 
-
     Repository repository;
         private City city;
 

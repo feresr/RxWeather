@@ -1,9 +1,9 @@
 package com.feresr.weather.injector.modules;
 
-import android.content.Context;
-
 import com.feresr.weather.repository.DataSource;
 import com.feresr.weather.repository.ForecastIODataSource;
+
+import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
@@ -12,15 +12,13 @@ import dagger.Provides;
  * Created by Fernando on 14/10/2015.
  */
 @Module
-public class ActivityModule {
+public class DataModule {
 
-    private final Context mContext;
+    public DataModule() {
 
-    public ActivityModule(Context context) {
-        this.mContext = context;
     }
 
-    @Provides
+    @Provides @Singleton
     DataSource providesDataSource(ForecastIODataSource dataSource) {
         return dataSource;
     }
