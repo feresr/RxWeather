@@ -4,6 +4,8 @@ import com.feresr.weather.ForecastIOEndpoints;
 import com.feresr.weather.repository.Repository;
 import com.feresr.weather.repository.RepositoryImp;
 
+import javax.inject.Singleton;
+
 import dagger.Module;
 import dagger.Provides;
 import okhttp3.OkHttpClient;
@@ -15,9 +17,9 @@ import retrofit2.RxJavaCallAdapterFactory;
  * Created by Fernando on 13/10/2015.
  */
 @Module
-public class EndpointsModule {
+public class NetworkingModule {
 
-    @Provides
+    @Provides @Singleton
     ForecastIOEndpoints provideEndpoints() {
         Retrofit retrofit = new Retrofit.Builder()
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
@@ -28,7 +30,7 @@ public class EndpointsModule {
         return retrofit.create(ForecastIOEndpoints.class);
     }
 
-    @Provides
+    @Provides @Singleton
     Repository provideDataRepository(RepositoryImp repositoryImp) {
         return repositoryImp;
     }

@@ -17,7 +17,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.feresr.weather.R;
-import com.feresr.weather.injector.WeatherApiComponent;
+import com.feresr.weather.injector.AppComponent;
 import com.feresr.weather.models.City;
 import com.feresr.weather.presenters.CitiesPresenter;
 import com.feresr.weather.presenters.CitiesView;
@@ -156,7 +156,7 @@ public class CitiesFragment extends BaseFragment implements CitiesView {
     }
 
     private void initialize() {
-        this.getComponent(WeatherApiComponent.class).inject(this);
+        this.getComponent(AppComponent.class).inject(this);
         presenter.attachView(this);
         if (getArguments() != null) {
             presenter.attachIncomingArg(getArguments());

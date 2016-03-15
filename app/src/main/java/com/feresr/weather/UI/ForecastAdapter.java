@@ -10,21 +10,26 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.feresr.weather.R;
-import com.feresr.weather.UI.views.InfoDisplay;
+import com.feresr.weather.UI.viewholders.CurrentlyViewHolder;
+import com.feresr.weather.UI.viewholders.DailyViewHolder;
+import com.feresr.weather.UI.viewholders.DayViewHolder;
+import com.feresr.weather.UI.viewholders.HourlyViewHolder;
+import com.feresr.weather.UI.viewholders.UpdatedAtViewHolder;
+import com.feresr.weather.UI.viewholders.WarningViewHolder;
 import com.feresr.weather.models.CityWeather;
 import com.feresr.weather.models.Currently;
 import com.feresr.weather.models.Daily;
 import com.feresr.weather.models.Day;
 import com.feresr.weather.models.DisplayWeatherInfo;
+import com.feresr.weather.models.Hour;
 import com.feresr.weather.models.Hourly;
 import com.feresr.weather.models.Warning;
 import com.feresr.weather.utils.IconManager;
 
+import java.lang.ref.WeakReference;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -46,17 +51,17 @@ public class ForecastAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     private LayoutInflater inflater;
     private List<DisplayWeatherInfo> weatherInfo;
-    private Context context;
-    private DayForecastAdapter dayForecastAdapter;
+    private WeakReference<Context> context;
     private boolean celsius = true;
-
+    private Typeface font;
     private long fetchTime;
+    private ArrayList<Hour> hours;
 
     public ForecastAdapter(Context context) {
         super();
-        this.context = context;
+        this.context = new WeakReference<Context>(context);
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        dayForecastAdapter = new DayForecastAdapter(context);
+        font = Typeface.createFromAsset(context.getAssets(), "weathericons-regular-webfont.ttf");
         this.weatherInfo = new ArrayList<>();
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
         String syncConnPref = sharedPref.getString(SettingsActivity.PREF_UNIT, "celsius");
@@ -94,16 +99,16 @@ public class ForecastAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         switch (viewType) {
             case CURRENTLY:
                 view = this.inflater.inflate(R.layout.currently_view, parent, false);
-                return new CurrentlyViewHolder(view);
+                return new CurrentlyViewHolder(view, font);
             case HOURLY:
                 view = this.inflater.inflate(R.layout.hourly_view, parent, false);
-                return new HourlyViewHolder(view);
+                return new HourlyViewHolder(view, new LinearLayoutManager(context.get()), context.get());
             case DAILY:
                 view = this.inflater.inflate(R.layout.daily_view, parent, false);
                 return new DailyViewHolder(view);
             case DAY:
                 view = this.inflater.inflate(R.layout.day_view, parent, false);
-                return new DayViewHolder(view);
+                return new DayViewHolder(view, font);
             case WARNING:
                 view = this.inflater.inflate(R.layout.warning_view, parent, false);
                 return new WarningViewHolder(view);
@@ -120,7 +125,8 @@ public class ForecastAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         weatherInfo.add(cityWeather.getCurrently());
         weatherInfo.add(cityWeather.getHourly());
 
-        dayForecastAdapter.addHourForecast(cityWeather.getHourly().getData());
+        this.hours = (ArrayList<Hour>) cityWeather.getHourly().getData();
+        //dayForecastAdapter.addHourForecast(cityWeather.getHourly().getData());
 
         fetchTime = cityWeather.getFetchTime();
 
@@ -152,7 +158,9 @@ public class ForecastAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 HourlyViewHolder labelViewHolder = (HourlyViewHolder) viewHolder;
                 Hourly hourly = (Hourly) weatherInfo.get(position);
                 labelViewHolder.description.setText(hourly.getSummary());
-                labelViewHolder.view.setBackgroundColor(IconManager.getColorResource(hourly.getIcon(), context));
+                labelViewHolder.view.setBackgroundColor(IconManager.getColorResource(hourly.getIcon(), context.get()));
+                ((DayForecastAdapter) labelViewHolder.recyclerView.getAdapter()).setData(hours);
+
                 break;
             case WARNING:
                 WarningViewHolder warningViewHolder = (WarningViewHolder) viewHolder;
@@ -165,25 +173,25 @@ public class ForecastAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 CurrentlyViewHolder currentlyViewHolder = (CurrentlyViewHolder) viewHolder;
                 Currently currently = (Currently) weatherInfo.get(position);
 
-                currentlyViewHolder.main.setBackgroundColor(currently.getColor(context));
+                currentlyViewHolder.main.setBackgroundColor(currently.getColor(context.get()));
                 currentlyViewHolder.description.setText(currently.getSummary().toUpperCase());
                 if (celsius) {
-                    currentlyViewHolder.feelsLike.setValue(context.getString(R.string.degree, Math.round(currently.getApparentTemperature())));
-                    currentlyViewHolder.temp.setText(context.getString(R.string.degree, Math.round(currently.getTemperature())));
+                    currentlyViewHolder.feelsLike.setValue(context.get().getString(R.string.degree, Math.round(currently.getApparentTemperature())));
+                    currentlyViewHolder.temp.setText(context.get().getString(R.string.degree, Math.round(currently.getTemperature())));
                 } else {
-                    currentlyViewHolder.feelsLike.setValue(context.getString(R.string.degree, Math.round(currently.getApparentTemperature() * 1.8 + 32)));
-                    currentlyViewHolder.temp.setText(context.getString(R.string.degree, Math.round(currently.getTemperature() * 1.8 + 32)));
+                    currentlyViewHolder.feelsLike.setValue(context.get().getString(R.string.degree, Math.round(currently.getApparentTemperature() * 1.8 + 32)));
+                    currentlyViewHolder.temp.setText(context.get().getString(R.string.degree, Math.round(currently.getTemperature() * 1.8 + 32)));
                 }
                 currentlyViewHolder.humidity.setValue(Math.round(currently.getHumidity() * 100) + "%");
-                currentlyViewHolder.wind.setValue(context.getString(R.string.km_h, Math.round(currently.getWindSpeed())));
+                currentlyViewHolder.wind.setValue(context.get().getString(R.string.km_h, Math.round(currently.getWindSpeed())));
                 currentlyViewHolder.wind.setSubValue(currently.getWindBearingString());
 
-                currentlyViewHolder.pressure.setValue(context.getString(R.string.hPa, Math.round(currently.getPressure())));
+                currentlyViewHolder.pressure.setValue(context.get().getString(R.string.hPa, Math.round(currently.getPressure())));
                 currentlyViewHolder.clouds.setValue(Math.round(currently.getCloudCover() * 100) + "%");
                 currentlyViewHolder.precipitation.setValue(Math.round(currently.getPrecipProbability() * 100) + "%");
                 currentlyViewHolder.precipitation.setSubValue(new DecimalFormat("#.##").format(currently.getPrecipIntensity() * 100) + "cm");
 
-                currentlyViewHolder.icon.setText(IconManager.getIconResource(currently.getIcon(), context));
+                currentlyViewHolder.icon.setText(IconManager.getIconResource(currently.getIcon(), context.get()));
 
                 break;
             case DAILY:
@@ -194,7 +202,7 @@ public class ForecastAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             case UPDATED_AT:
                 UpdatedAtViewHolder updatedAtViewHolder = (UpdatedAtViewHolder) viewHolder;
 
-                updatedAtViewHolder.updatedAt.setText(context.getString(R.string.updated_at) + " " + new SimpleDateFormat("hh:mm a", Locale.getDefault()).format(new Date(fetchTime)).toUpperCase());
+                updatedAtViewHolder.updatedAt.setText(context.get().getString(R.string.updated_at) + " " + new SimpleDateFormat("hh:mm a", Locale.getDefault()).format(new Date(fetchTime)).toUpperCase());
                 break;
             case DAY:
                 Day day = (Day) weatherInfo.get(position);
@@ -207,23 +215,23 @@ public class ForecastAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     holder.tempMax.setText((Math.round(day.getTemperatureMax() * 1.8 + 32) * 100.0) / 100.0 + "°");
                     holder.tempMin.setText((Math.round(day.getTemperatureMin() * 1.8 + 32) * 100.0) / 100.0 + "°");
                 }
-                holder.icon.setText(IconManager.getIconResource(day.getIcon(), context));
+                holder.icon.setText(IconManager.getIconResource(day.getIcon(), context.get()));
 
 
                 if (position % 2 == 0) {
                     float[] hsv = new float[3];
-                    Color.colorToHSV(day.getColor(context), hsv);
+                    Color.colorToHSV(day.getColor(context.get()), hsv);
                     hsv[2] *= 0.94f; // value component
                     holder.view.setBackgroundColor(Color.HSVToColor(hsv));
                 } else {
-                    holder.view.setBackgroundColor(day.getColor(context));
+                    holder.view.setBackgroundColor(day.getColor(context.get()));
                 }
 
 
                 //First
                 if (day.isToday()) {
                     LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                    holder.dayName.setText(context.getString(R.string.today));
+                    holder.dayName.setText(context.get().getString(R.string.today));
 
                     holder.view.setLayoutParams(params);
                 } else if (day.isLastDayOfWeek()) {
@@ -232,7 +240,7 @@ public class ForecastAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     holder.view.setLayoutParams(params);
                 } else {
                     if (day.isTomorrow()) {
-                        holder.dayName.setText(context.getString(R.string.tomorrow));
+                        holder.dayName.setText(context.get().getString(R.string.tomorrow));
                     } else {
                         holder.dayName.setText(new SimpleDateFormat("EEEE", Locale.getDefault()).format(new Date(day.getTime() * 1000L)).toUpperCase());
                     }
@@ -248,7 +256,7 @@ public class ForecastAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     public void showNoInternetWarning() {
-        Warning warning = new Warning(context.getString(R.string.no_internet_title), context.getString(R.string.no_internet_description));
+        Warning warning = new Warning(context.get().getString(R.string.no_internet_title), context.get().getString(R.string.no_internet_description));
         weatherInfo.add(0, warning);
         notifyItemInserted(0);
     }
@@ -257,111 +265,6 @@ public class ForecastAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         if (weatherInfo.get(0) instanceof Warning) {
             weatherInfo.remove(0);
             notifyItemRemoved(0);
-        }
-    }
-
-    public class DayViewHolder extends RecyclerView.ViewHolder {
-        TextView dayName;
-        TextView main;
-        TextView temp;
-        TextView tempMax;
-        TextView icon;
-        TextView tempMin;
-        LinearLayout view;
-
-        public DayViewHolder(View itemView) {
-            super(itemView);
-            view = (LinearLayout) itemView;
-            dayName = (TextView) itemView.findViewById(R.id.day);
-            main = (TextView) itemView.findViewById(R.id.main);
-            temp = (TextView) itemView.findViewById(R.id.temp);
-            tempMax = (TextView) itemView.findViewById(R.id.tempMax);
-            tempMin = (TextView) itemView.findViewById(R.id.tempMin);
-            Typeface font = Typeface.createFromAsset(context.getAssets(), "weathericons-regular-webfont.ttf");
-            icon = (TextView) itemView.findViewById(R.id.icon);
-            icon.setTypeface(font);
-
-            icon.setText(R.string.today_weather_main_icon);
-        }
-    }
-
-    public class WarningViewHolder extends RecyclerView.ViewHolder {
-
-        TextView title;
-        TextView explanation;
-
-        public WarningViewHolder(View itemView) {
-            super(itemView);
-            title = (TextView) itemView.findViewById(R.id.title);
-            explanation = (TextView) itemView.findViewById(R.id.explanation);
-        }
-    }
-
-    public class DailyViewHolder extends RecyclerView.ViewHolder {
-        TextView description;
-
-        public DailyViewHolder(View itemView) {
-            super(itemView);
-            description = (TextView) itemView.findViewById(R.id.description);
-        }
-    }
-
-    public class UpdatedAtViewHolder extends RecyclerView.ViewHolder {
-        TextView updatedAt;
-
-        public UpdatedAtViewHolder(View itemView) {
-            super(itemView);
-            updatedAt = (TextView) itemView.findViewById(R.id.updated_at);
-        }
-    }
-
-    public class HourlyViewHolder extends RecyclerView.ViewHolder {
-        TextView description;
-        RecyclerView recyclerView;
-        LinearLayout view;
-
-        public HourlyViewHolder(View itemView) {
-            super(itemView);
-            view = (LinearLayout) itemView;
-            description = (TextView) itemView.findViewById(R.id.description);
-            recyclerView = (RecyclerView) itemView.findViewById(R.id.nextHoursRecyclerview);
-
-            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
-            linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-            recyclerView.setLayoutManager(linearLayoutManager);
-            recyclerView.setAdapter(dayForecastAdapter);
-        }
-    }
-
-    public class CurrentlyViewHolder extends RecyclerView.ViewHolder {
-        FrameLayout main;
-        TextView temp;
-        TextView description;
-        InfoDisplay humidity;
-        InfoDisplay wind;
-        InfoDisplay pressure;
-        InfoDisplay clouds;
-        InfoDisplay precipitation;
-        InfoDisplay feelsLike;
-        TextView icon;
-
-        public CurrentlyViewHolder(View itemView) {
-            super(itemView);
-            main = (FrameLayout) itemView.findViewById(R.id.main_info);
-            temp = (TextView) itemView.findViewById(R.id.temp);
-            description = (TextView) itemView.findViewById(R.id.description);
-            humidity = (InfoDisplay) itemView.findViewById(R.id.humidity);
-            wind = (InfoDisplay) itemView.findViewById(R.id.tempMax);
-            pressure = (InfoDisplay) itemView.findViewById(R.id.tempMin);
-            clouds = (InfoDisplay) itemView.findViewById(R.id.clouds);
-            precipitation = (InfoDisplay) itemView.findViewById(R.id.precipitation);
-            feelsLike = (InfoDisplay) itemView.findViewById(R.id.feels_like);
-
-            Typeface font = Typeface.createFromAsset(context.getAssets(), "weathericons-regular-webfont.ttf");
-            icon = (TextView) itemView.findViewById(R.id.main_icon);
-            icon.setTypeface(font);
-
-            icon.setText(R.string.today_weather_main_icon);
         }
     }
 }

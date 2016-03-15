@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.feresr.weather.R;
-import com.feresr.weather.injector.WeatherApiComponent;
+import com.feresr.weather.injector.AppComponent;
 import com.feresr.weather.models.CityWeather;
 import com.feresr.weather.presenters.ForecastPresenter;
 import com.feresr.weather.presenters.views.ForecastView;
@@ -39,7 +39,7 @@ public class ForecastFragment extends BaseFragment implements ForecastView {
     }
 
     private void initialize() {
-        this.getComponent(WeatherApiComponent.class).inject(this);
+        this.getComponent(AppComponent.class).inject(this);
         presenter.attachView(this);
         if (getArguments() != null) {
             presenter.attachIncomingArg(getArguments());
@@ -67,7 +67,7 @@ public class ForecastFragment extends BaseFragment implements ForecastView {
         });
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
-        adapter = new ForecastAdapter(getActivity());
+        adapter = new ForecastAdapter(getActivity().getApplicationContext());
         recyclerView.setAdapter(adapter);
         recyclerView.getLayoutManager().scrollToPosition(0);
         //adapter.showNoInternetWarning();

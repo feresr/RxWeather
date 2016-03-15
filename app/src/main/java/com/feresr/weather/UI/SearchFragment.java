@@ -19,7 +19,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.feresr.weather.R;
-import com.feresr.weather.injector.WeatherApiComponent;
+import com.feresr.weather.injector.AppComponent;
 import com.feresr.weather.models.City;
 import com.feresr.weather.presenters.SearchPresenter;
 import com.feresr.weather.presenters.views.SearchView;
@@ -98,7 +98,7 @@ public class SearchFragment extends BaseFragment implements SearchView {
     }
 
     private void initialize() {
-        this.getComponent(WeatherApiComponent.class).inject(this);
+        this.getComponent(AppComponent.class).inject(this);
         presenter.attachView(this);
         if (getArguments() != null) {
             presenter.attachIncomingArg(getArguments());

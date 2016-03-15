@@ -12,7 +12,6 @@ import com.feresr.weather.injector.modules.AppModule;
 public class RxWeatherApplication extends Application {
 
     private AppComponent mAppComponent;
-
     @Override
     public void onCreate() {
         super.onCreate();

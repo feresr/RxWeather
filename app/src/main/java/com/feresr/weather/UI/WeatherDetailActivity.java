@@ -9,16 +9,14 @@ import android.support.v7.widget.Toolbar;
 
 import com.feresr.weather.R;
 import com.feresr.weather.RxWeatherApplication;
-import com.feresr.weather.injector.DaggerWeatherApiComponent;
+import com.feresr.weather.injector.AppComponent;
 import com.feresr.weather.injector.HasComponent;
-import com.feresr.weather.injector.WeatherApiComponent;
-import com.feresr.weather.injector.modules.ActivityModule;
 import com.feresr.weather.models.City;
 
-public class WeatherDetailActivity extends AppCompatActivity implements HasComponent<WeatherApiComponent>, ForecastFragment.RecyclerViewScrollListener {
+public class WeatherDetailActivity extends AppCompatActivity implements HasComponent<AppComponent>, ForecastFragment.RecyclerViewScrollListener {
 
     public static final String ARG_CITY = "city";
-    private WeatherApiComponent weatherApiComponent;
+    private AppComponent weatherApiComponent;
     private Toolbar toolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +28,6 @@ public class WeatherDetailActivity extends AppCompatActivity implements HasCompo
         if (savedInstanceState == null) {
             FragmentTransaction ft = this.getSupportFragmentManager().beginTransaction();
             ForecastFragment fragment = new ForecastFragment();
-
             Bundle bundle = new Bundle();
             bundle.putSerializable(ForecastFragment.ARG_CITY, city);
             fragment.setArguments(bundle);
@@ -49,13 +46,11 @@ public class WeatherDetailActivity extends AppCompatActivity implements HasCompo
     }
 
     private void initializeDependencies() {
-        weatherApiComponent = DaggerWeatherApiComponent.builder()
-                .activityModule(new ActivityModule(this))
-                .appComponent(((RxWeatherApplication) getApplication()).getAppComponent()).build();
+        weatherApiComponent = ((RxWeatherApplication) getApplication()).getAppComponent();
     }
 
     @Override
-    public WeatherApiComponent getComponent() {
+    public AppComponent getComponent() {
         return weatherApiComponent;
     }
 
