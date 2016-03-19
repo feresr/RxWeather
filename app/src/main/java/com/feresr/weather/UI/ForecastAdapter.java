@@ -202,7 +202,7 @@ public class ForecastAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             case UPDATED_AT:
                 UpdatedAtViewHolder updatedAtViewHolder = (UpdatedAtViewHolder) viewHolder;
 
-                updatedAtViewHolder.updatedAt.setText(context.get().getString(R.string.updated_at) + " " + new SimpleDateFormat("hh:mm a", Locale.getDefault()).format(new Date(fetchTime)).toUpperCase());
+                updatedAtViewHolder.updatedAt.setText(context.get().getString(R.string.updated_at) + " " + new SimpleDateFormat("kk:mm a", Locale.getDefault()).format(new Date(fetchTime)).toUpperCase());
                 break;
             case DAY:
                 Day day = (Day) weatherInfo.get(position);

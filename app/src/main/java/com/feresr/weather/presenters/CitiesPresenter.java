@@ -2,6 +2,7 @@ package com.feresr.weather.presenters;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -59,6 +60,7 @@ public class CitiesPresenter implements Presenter, NetworkListener, android.view
     private FragmentInteractionsListener fragmentInteractionListener;
     private NetworkReceiver networkReceiver;
     private Context context;
+    private UpdatesReceiver updatesReceiver;
 
 
     @Inject
@@ -74,6 +76,10 @@ public class CitiesPresenter implements Presenter, NetworkListener, android.view
         networkReceiver.setListener(this);
         context.registerReceiver(networkReceiver, intentFilter);
         this.context = context;
+
+        updatesReceiver =  new UpdatesReceiver();
+        IntentFilter updatesIntentFilter = new IntentFilter("com.feresr.weather.UPDATE_WEATHER_DATA");
+        context.registerReceiver(updatesReceiver, updatesIntentFilter);
         PreferenceManager.getDefaultSharedPreferences(context).registerOnSharedPreferenceChangeListener(this);
     }
 
@@ -170,6 +176,7 @@ public class CitiesPresenter implements Presenter, NetworkListener, android.view
         networkReceiver.setListener(null);
         PreferenceManager.getDefaultSharedPreferences(context).unregisterOnSharedPreferenceChangeListener(this);
         context.unregisterReceiver(networkReceiver);
+        context.unregisterReceiver(updatesReceiver);
         subscriptions.unsubscribe();
     }
 
@@ -356,5 +363,13 @@ public class CitiesPresenter implements Presenter, NetworkListener, android.view
                 citiesView.updateCity(city);
             }
         }));
+    }
+
+    public class UpdatesReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            reloadCities();
+        }
     }
 }

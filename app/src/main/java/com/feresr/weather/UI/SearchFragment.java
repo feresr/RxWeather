@@ -85,15 +85,18 @@ public class SearchFragment extends BaseFragment implements SearchView {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        InputMethodManager mgr = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        mgr.showSoftInput(searchEditText, InputMethodManager.SHOW_IMPLICIT);
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             if (searchView.isAttachedToWindow()) {
                 //float radius = Math.max(searchView.getWidth(), searchView.getHeight()) * 2.0f;
                 DisplayMetrics metrics = new DisplayMetrics();
                 getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
-                ViewAnimationUtils.createCircularReveal(searchView, 0, 0, 5, metrics.widthPixels).start();
+                ViewAnimationUtils.createCircularReveal(searchView, 0, 0, 5, metrics.widthPixels).setDuration(500).start();
+                InputMethodManager mgr = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                mgr.showSoftInput(searchEditText, InputMethodManager.SHOW_IMPLICIT);
             }
+        } else {
+            InputMethodManager mgr = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            mgr.showSoftInput(searchEditText, InputMethodManager.SHOW_IMPLICIT);
         }
     }
 

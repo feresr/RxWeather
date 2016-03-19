@@ -168,6 +168,7 @@ public class MainActivity extends AppCompatActivity implements HasComponent<AppC
     @Override
     public void onAddCityButtonSelected() {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
         SearchFragment fragment = new SearchFragment();
         ft.add(R.id.fragment, fragment, null);
         ft.addToBackStack(null);

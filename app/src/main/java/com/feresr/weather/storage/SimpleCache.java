@@ -28,9 +28,11 @@ import rx.Subscriber;
 @Singleton
 public class SimpleCache implements DataCache {
 
+    //In case of user refreshing manually, REFRESH_TIME will pull from the server those cities
+    //that are expired, preventing in this way useless http calls.
     public static final long EXPIRATION_TIME = 20 * 60 * 1000;
-    private Context context;
     public static final long REFRESH_TIME = AlarmManager.INTERVAL_HOUR;
+    private Context context;
 
     @Inject
     public SimpleCache(Context context) {
