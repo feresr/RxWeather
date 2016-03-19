@@ -5,6 +5,8 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
 
     <application
         android:name="com.feresr.weather.RxWeatherApplication"
@@ -49,6 +51,13 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.feresr.weather.UI.MainActivity" />
         </activity>
+        
+        <receiver android:name=".AlarmReceiver">
+            <intent-filter>
+                <action android:name="com.feresr.weather.UPDATE_WEATHER_DATA"/>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

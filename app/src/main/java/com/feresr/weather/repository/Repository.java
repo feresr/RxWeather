@@ -10,7 +10,7 @@ import rx.Observable;
  * Created by Fernando on 14/10/2015.
  */
 public interface Repository {
-    Observable<City> getForecast(City city);
+    Observable<City> getForecast(City city, boolean fetchIfExpired);
     Observable<List<City>> getCities();
     Observable<City> saveCity(City city);
 

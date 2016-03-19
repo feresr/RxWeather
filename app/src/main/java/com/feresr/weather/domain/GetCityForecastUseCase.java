@@ -15,6 +15,7 @@ import rx.schedulers.Schedulers;
 public class GetCityForecastUseCase implements UseCase<City> {
 
     private final Repository repository;
+    private boolean fetchIfExpired = false;
 
     private City city;
 
@@ -23,13 +24,19 @@ public class GetCityForecastUseCase implements UseCase<City> {
         this.repository = repository;
     }
 
-    public void setCity(City city) {
+    public GetCityForecastUseCase setCity(City city) {
         this.city = city;
+        return this;
+    }
+
+    public GetCityForecastUseCase setFetchIfExpired(boolean fetchIfExpired) {
+        this.fetchIfExpired = fetchIfExpired;
+        return this;
     }
 
     @Override
     public Observable<City> execute() {
-        return repository.getForecast(city)//("-31.4286", "-61.9143")
+        return repository.getForecast(city, fetchIfExpired)//("-31.4286", "-61.9143")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }

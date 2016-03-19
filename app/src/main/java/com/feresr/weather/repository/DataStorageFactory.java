@@ -21,9 +21,9 @@ public class DataStorageFactory {
         this.cache = cache;
     }
 
-    public DataSource create(City city) {
+    public DataSource create(City city, boolean fetchIfExpired) {
         DataSource dataSource;
-        if (this.cache.isExpired(city)) {
+        if (this.cache.isExpired(city) && fetchIfExpired) {
             dataSource = lazyDataSource.get();
         } else {
             dataSource = new DiskDataSource(this.cache);

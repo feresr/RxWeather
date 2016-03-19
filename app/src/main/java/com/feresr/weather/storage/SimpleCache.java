@@ -1,5 +1,6 @@
 package com.feresr.weather.storage;
 
+import android.app.AlarmManager;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -29,6 +30,7 @@ public class SimpleCache implements DataCache {
 
     public static final long EXPIRATION_TIME = 20 * 60 * 1000;
     private Context context;
+    public static final long REFRESH_TIME = AlarmManager.INTERVAL_HOUR;
 
     @Inject
     public SimpleCache(Context context) {

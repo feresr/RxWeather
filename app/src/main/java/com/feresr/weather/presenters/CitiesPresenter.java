@@ -1,6 +1,9 @@
 package com.feresr.weather.presenters;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
@@ -21,6 +24,7 @@ import com.feresr.weather.domain.RemoveCityUseCase;
 import com.feresr.weather.domain.SaveCityUseCase;
 import com.feresr.weather.models.City;
 import com.feresr.weather.presenters.views.View;
+import com.feresr.weather.storage.SimpleCache;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.data.DataBufferUtils;
@@ -75,6 +79,20 @@ public class CitiesPresenter implements Presenter, NetworkListener, android.view
 
     @Override
     public void onStart() {
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+
+        boolean alarmUp = (PendingIntent.getBroadcast(context, 0,
+                new Intent("com.feresr.weather.UPDATE_WEATHER_DATA"),
+                PendingIntent.FLAG_NO_CREATE) != null);
+
+        if (!alarmUp) {
+            Intent intent = new Intent("com.feresr.weather.UPDATE_WEATHER_DATA");
+            PendingIntent pi = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+            alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                    SimpleCache.REFRESH_TIME,
+                    SimpleCache.REFRESH_TIME, pi);
+        }
     }
 
     @Override
@@ -176,6 +194,7 @@ public class CitiesPresenter implements Presenter, NetworkListener, android.view
                                 public Observable<City> call(City city) {
                                     citiesView.addCity(city);
                                     getCityWeatherUseCase.setCity(city);
+                                    getCityWeatherUseCase.setFetchIfExpired(true);
                                     return getCityWeatherUseCase.execute();
                                 }
                             }).subscribe(new Subscriber<City>() {
@@ -314,6 +333,7 @@ public class CitiesPresenter implements Presenter, NetworkListener, android.view
             @Override
             public Observable<City> call(City city) {
                 getCityWeatherUseCase.setCity(city);
+                getCityWeatherUseCase.setFetchIfExpired(true);
                 return getCityWeatherUseCase.execute();
             }
         }).subscribe(new Subscriber<City>() {
