@@ -26,5 +26,5 @@
         android:title="Rate this App"/>
     <Preference
         android:title="App Version"
-        android:summary="1.0.5"/>
+        android:summary="1.0.6"/>
 </PreferenceScreen>
