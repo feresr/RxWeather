@@ -7,6 +7,10 @@
     android:paddingBottom="22dp"
     android:paddingLeft="10dp"
     android:background="#222"
+    android:layout_marginLeft="50px"
+    android:layout_marginRight="50px"
+    android:layout_marginTop="10px"
+    android:layout_marginBottom="10px"
     android:paddingRight="10dp"
     android:paddingTop="22dp">
 

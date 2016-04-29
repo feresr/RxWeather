@@ -1,5 +1,6 @@
 package com.feresr.weather.UI;
 
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -10,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.BounceInterpolator;
 import android.widget.LinearLayout;
 
 import com.feresr.weather.R;
@@ -208,6 +210,17 @@ public class ForecastAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 Day day = (Day) weatherInfo.get(position);
                 DayViewHolder holder = (DayViewHolder) viewHolder;
                 holder.main.setText(day.getSummary());
+
+                ViewGroup target = holder.view;
+
+                target.setRotationY(0);
+                int i = 3;
+                if (position % 2 == 0) {
+                    i = -3;
+                }
+
+                target.setRotationY(i);
+
                 if (celsius) {
                     holder.tempMax.setText(day.getTemperatureMax() + "°");
                     holder.tempMin.setText(day.getTemperatureMin() + "°");
@@ -227,25 +240,29 @@ public class ForecastAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     holder.view.setBackgroundColor(day.getColor(context.get()));
                 }
 
+                int marginSides = 50;
+                int margin = 10;
 
                 //First
                 if (day.isToday()) {
-                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    //LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                     holder.dayName.setText(context.get().getString(R.string.today));
-
-                    holder.view.setLayoutParams(params);
+                    //params.setMargins(marginSides,margin,marginSides,margin);
+                    //holder.view.setLayoutParams(params);
                 } else if (day.isLastDayOfWeek()) {
                     holder.dayName.setText(new SimpleDateFormat("EEEE", Locale.getDefault()).format(new Date(day.getTime() * 1000L)).toUpperCase());
-                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                    holder.view.setLayoutParams(params);
+                    //LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    //params.setMargins(marginSides,margin,marginSides,margin);
+                    //holder.view.setLayoutParams(params);
                 } else {
                     if (day.isTomorrow()) {
                         holder.dayName.setText(context.get().getString(R.string.tomorrow));
                     } else {
                         holder.dayName.setText(new SimpleDateFormat("EEEE", Locale.getDefault()).format(new Date(day.getTime() * 1000L)).toUpperCase());
                     }
-                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                    holder.view.setLayoutParams(params);
+                    //LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    //params.setMargins(marginSides,margin,marginSides,margin);
+                    //holder.view.setLayoutParams(params);
                 }
         }
     }
