@@ -1,10 +1,11 @@
-package com.feresr.weather.UI;
+package com.feresr.weather.UI.fragment;
 
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -16,56 +17,60 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.feresr.weather.DI.component.ActivityComponent;
 import com.feresr.weather.R;
-import com.feresr.weather.injector.AppComponent;
+import com.feresr.weather.UI.CitiesAdapter;
+import com.feresr.weather.UI.FragmentInteractionsListener;
+import com.feresr.weather.UI.GoogleApiClientProvider;
+import com.feresr.weather.UI.RecyclerItemClickListener;
+import com.feresr.weather.UI.SettingsActivity;
+import com.feresr.weather.common.BaseFragment;
+import com.feresr.weather.DI.component.ApplicationComponent;
 import com.feresr.weather.models.City;
 import com.feresr.weather.presenters.CitiesPresenter;
-import com.feresr.weather.presenters.CitiesView;
+import com.feresr.weather.presenters.views.CitiesView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
+
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CitiesFragment extends BaseFragment implements CitiesView {
+public class CitiesFragment extends BaseFragment<CitiesPresenter> implements CitiesView {
+
+    @BindView(R.id.recyclerview)
+    RecyclerView citiesRecyclerView;
 
     @Inject
-    CitiesPresenter presenter;
+    CitiesAdapter adapter;
 
-    private RecyclerView citiesRecyclerView;
-    private CitiesAdapter adapter;
+    @Inject
+    SharedPreferences sharedPreferences;
+
     private StaggeredGridLayoutManager layoutManager;
-    private FloatingActionButton addCityFab;
+
+    @BindView(R.id.add_city_fab)
+    FloatingActionButton addCityFab;
+
     private GoogleApiClientProvider googleApiClientProvider;
-    private LinearLayout emptyView;
-    private SwipeRefreshLayout swipeRefresh;
+
+    @BindView(R.id.empty_view)
+    LinearLayout emptyView;
+
+    @BindView(R.id.swiperefresh)
+    SwipeRefreshLayout swipeRefresh;
 
     private FragmentInteractionsListener fragmentInteractionListener;
 
-    public CitiesFragment() {
-        // Required empty public constructor
-    }
-
     @Override
-    public void onStart() {
-        super.onStart();
-        presenter.onStart();
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_cities, container, false);
-        citiesRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerview);
-        adapter = new CitiesAdapter(getActivity());
-
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        int columns = sharedPref.getBoolean(SettingsActivity.GRIDVIEW, false)? 2 : 1;
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        int columns = sharedPreferences.getBoolean(SettingsActivity.GRIDVIEW, false)? 2 : 1;
 
         layoutManager = new StaggeredGridLayoutManager(columns, StaggeredGridLayoutManager.VERTICAL);
         citiesRecyclerView.setLayoutManager(layoutManager);
@@ -90,10 +95,27 @@ public class CitiesFragment extends BaseFragment implements CitiesView {
 
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
         itemTouchHelper.attachToRecyclerView(citiesRecyclerView);
-        addCityFab = (FloatingActionButton) view.findViewById(R.id.add_city_fab);
-        emptyView = (LinearLayout) view.findViewById(R.id.empty_view);
-        swipeRefresh = (SwipeRefreshLayout) view.findViewById(R.id.swiperefresh);
-        return view;
+
+        presenter.setFragmentInteractionListener(fragmentInteractionListener);
+        addCityFab.setOnClickListener(presenter);
+        citiesRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), presenter));
+        presenter.setGoogleApiClient(googleApiClientProvider.getApiClient());
+        swipeRefresh.setOnRefreshListener(presenter);
+    }
+
+    @Override
+    protected void injectDependencies(ActivityComponent activityComponent) {
+        activityComponent.inject(this);
+    }
+
+    @Override
+    protected void bindPresenterToView() {
+        presenter.setView(this);
+    }
+
+    @Override
+    protected int getFragmentLayout() {
+        return R.layout.fragment_cities;
     }
 
     @Override
@@ -147,44 +169,5 @@ public class CitiesFragment extends BaseFragment implements CitiesView {
             adapter.setCompactView(false);
         }
         layoutManager.setSpanCount(columns);
-    }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        initialize();
-    }
-
-    private void initialize() {
-        this.getComponent(AppComponent.class).inject(this);
-        presenter.attachView(this);
-        if (getArguments() != null) {
-            presenter.attachIncomingArg(getArguments());
-        }
-        presenter.setAdapter(adapter);
-        presenter.setFragmentInteractionListener(fragmentInteractionListener);
-        addCityFab.setOnClickListener(presenter);
-        citiesRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), presenter));
-        presenter.setGoogleApiClient(googleApiClientProvider.getApiClient());
-        presenter.onCreate();
-        swipeRefresh.setOnRefreshListener(presenter);
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        presenter.onPause();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        presenter.onStop();
-    }
-
-    @Override
-    public void onDestroy() {
-        presenter.onDestroy();
-        super.onDestroy();
     }
 }

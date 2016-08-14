@@ -55,6 +55,7 @@
     <string name="pressure">Press.</string>
     <string name="clouds">Clouds</string>
     <string name="feelsLike">Feels like</string>
+    <string name="preference_file_key">com.feresr.weather.SHARED_PREFERENCES</string>
     <string-array name="pref_list_units">
         <item>Celsius</item>
         <item>Fahrenheit</item>

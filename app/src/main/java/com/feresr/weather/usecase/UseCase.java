@@ -1,4 +1,4 @@
-package com.feresr.weather.domain;
+package com.feresr.weather.usecase;
 
 import rx.Observable;
 

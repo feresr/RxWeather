@@ -5,8 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.preference.PreferenceActivity;
+import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -15,19 +15,17 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 import com.feresr.weather.BuildConfig;
+import com.feresr.weather.DI.component.ActivityComponent;
 import com.feresr.weather.R;
-import com.feresr.weather.RxWeatherApplication;
-import com.feresr.weather.injector.AppComponent;
-import com.feresr.weather.injector.HasComponent;
+import com.feresr.weather.UI.fragment.CitiesFragment;
+import com.feresr.weather.UI.fragment.SearchFragment;
+import com.feresr.weather.common.BaseActivity;
+import com.feresr.weather.common.BasePresenter;
 import com.feresr.weather.models.City;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.places.Places;
 
-public class MainActivity extends AppCompatActivity implements HasComponent<AppComponent>, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, GoogleApiClientProvider, FragmentInteractionsListener {
-
-    private AppComponent weatherComponent;
-    private GoogleApiClient googleApiClient;
+public class MainActivity extends BaseActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, GoogleApiClientProvider, FragmentInteractionsListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +44,6 @@ public class MainActivity extends AppCompatActivity implements HasComponent<AppC
                     .build());
         }
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -55,32 +52,22 @@ public class MainActivity extends AppCompatActivity implements HasComponent<AppC
             ft.add(R.id.fragment, new CitiesFragment(), null);
             ft.commit();
         }
-
-        googleApiClient = new GoogleApiClient
-                .Builder(this)
-                .addApi(Places.GEO_DATA_API)
-                .addApi(Places.PLACE_DETECTION_API)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .build();
-
-        initializeDependencies();
-    }
-
-    private void initializeDependencies() {
-        weatherComponent = ((RxWeatherApplication) getApplication()).getAppComponent();
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        googleApiClient.connect();
+    protected void injectDependencies(ActivityComponent activityComponent) {
+        //No dependencies
+    }
+
+    @Nullable
+    @Override
+    protected BasePresenter getPresenter() {
+        return null;
     }
 
     @Override
-    protected void onStop() {
-        googleApiClient.disconnect();
-        super.onStop();
+    protected int getLayout() {
+        return R.layout.activity_main;
     }
 
     @Override
@@ -88,11 +75,6 @@ public class MainActivity extends AppCompatActivity implements HasComponent<AppC
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
-    }
-
-    @Override
-    public AppComponent getComponent() {
-        return weatherComponent;
     }
 
     @Override
@@ -108,8 +90,8 @@ public class MainActivity extends AppCompatActivity implements HasComponent<AppC
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Intent i = new Intent(MainActivity.this, SettingsActivity.class);
-        i.putExtra( PreferenceActivity.EXTRA_SHOW_FRAGMENT, SettingsActivity.GeneralPreferenceFragment.class.getName() );
-        i.putExtra( PreferenceActivity.EXTRA_NO_HEADERS, true );
+        i.putExtra(PreferenceActivity.EXTRA_SHOW_FRAGMENT, SettingsActivity.GeneralPreferenceFragment.class.getName());
+        i.putExtra(PreferenceActivity.EXTRA_NO_HEADERS, true);
         startActivity(i);
         return true;
     }
@@ -119,11 +101,6 @@ public class MainActivity extends AppCompatActivity implements HasComponent<AppC
         if (connectionResult != null && connectionResult.getErrorMessage() != null) {
             Log.e(MainActivity.this.getClass().getSimpleName(), connectionResult.getErrorMessage());
         }
-    }
-
-    @Override
-    public GoogleApiClient getApiClient() {
-        return googleApiClient;
     }
 
     @Override
@@ -139,7 +116,7 @@ public class MainActivity extends AppCompatActivity implements HasComponent<AppC
         }
 
         getSupportFragmentManager().executePendingTransactions();
-        ((CitiesFragment) getSupportFragmentManager().findFragmentById(R.id.fragment)).presenter.addNewCity(city);
+        //((CitiesFragment) getSupportFragmentManager().findFragmentById(R.id.fragment)).presenter.addNewCity(city);
 
     }
 
@@ -173,5 +150,10 @@ public class MainActivity extends AppCompatActivity implements HasComponent<AppC
         ft.add(R.id.fragment, fragment, null);
         ft.addToBackStack(null);
         ft.commit();
+    }
+
+    @Override
+    public GoogleApiClient getApiClient() {
+        return null;
     }
 }

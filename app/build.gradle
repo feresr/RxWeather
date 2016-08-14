@@ -22,16 +22,16 @@ android {
     buildTypes {
         release {
             minifyEnabled false
-            resValue "string", "google_maps_api_key", "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-            resValue "string", "forecastio_api_key", "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+            resValue "string", "google_maps_api_key", "AIzaSyDOc7vK4bb92rcmvcDkYCcmEB3_f8iAJM4"
+            resValue "string", "forecastio_api_key", "3021a64fa44fe78d95b05991be3fecc4"
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
             lintOptions { disable 'MissingTranslation' }
         }
         debug {
             debuggable true
-            resValue "string", "google_maps_api_key", "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-            resValue "string", "forecastio_api_key", "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+            resValue "string", "google_maps_api_key", "AIzaSyC_H0BxgWTnDcwrixL-5wXt_YfxRq-bcXQ"
+            resValue "string", "forecastio_api_key", "3021a64fa44fe78d95b05991be3fecc4"
         }
     }
 }
@@ -59,4 +59,6 @@ dependencies {
     compile 'com.android.support:gridlayout-v7:24.1.1'
     compile 'com.google.android.gms:play-services-location:9.4.0'
     compile 'com.android.support:support-v4:24.1.1'
+    compile 'com.jakewharton:butterknife:8.2.1'
+    apt 'com.jakewharton:butterknife-compiler:8.2.1'
 }

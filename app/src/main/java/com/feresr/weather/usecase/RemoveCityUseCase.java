@@ -1,9 +1,7 @@
-package com.feresr.weather.domain;
+package com.feresr.weather.usecase;
 
 import com.feresr.weather.models.City;
 import com.feresr.weather.repository.Repository;
-
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -14,16 +12,24 @@ import rx.schedulers.Schedulers;
 /**
  * Created by Fernando on 7/11/2015.
  */
-public class GetCitiesUseCase implements UseCase<List<City>> {
+public class RemoveCityUseCase implements UseCase<City> {
+
+
     Repository repository;
+    private City city;
 
     @Inject
-    GetCitiesUseCase(Repository repository) {
+    RemoveCityUseCase(Repository repository) {
         this.repository = repository;
     }
+
+    public void setCity(City city) {
+        this.city = city;
+    }
+
     @Override
-    public Observable<List<City>> execute() {
-        return repository.getCities()
+    public Observable<City> execute() {
+        return repository.removeCity(city)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }

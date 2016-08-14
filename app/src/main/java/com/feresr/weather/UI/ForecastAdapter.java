@@ -39,6 +39,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import javax.inject.Inject;
+
 /**
  * Created by Fernando on 19/10/2015.
  */
@@ -59,6 +61,7 @@ public class ForecastAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private long fetchTime;
     private ArrayList<Hour> hours;
 
+    @Inject
     public ForecastAdapter(Context context) {
         super();
         this.context = new WeakReference<Context>(context);

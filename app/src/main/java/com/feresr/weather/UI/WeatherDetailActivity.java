@@ -9,14 +9,15 @@ import android.support.v7.widget.Toolbar;
 
 import com.feresr.weather.R;
 import com.feresr.weather.RxWeatherApplication;
-import com.feresr.weather.injector.AppComponent;
-import com.feresr.weather.injector.HasComponent;
+import com.feresr.weather.DI.component.ApplicationComponent;
+import com.feresr.weather.DI.HasComponent;
+import com.feresr.weather.UI.fragment.ForecastFragment;
 import com.feresr.weather.models.City;
 
-public class WeatherDetailActivity extends AppCompatActivity implements HasComponent<AppComponent>, ForecastFragment.RecyclerViewScrollListener {
+public class WeatherDetailActivity extends AppCompatActivity implements HasComponent<ApplicationComponent>, ForecastFragment.RecyclerViewScrollListener {
 
     public static final String ARG_CITY = "city";
-    private AppComponent weatherApiComponent;
+    private ApplicationComponent weatherApiComponent;
     private Toolbar toolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,11 +47,11 @@ public class WeatherDetailActivity extends AppCompatActivity implements HasCompo
     }
 
     private void initializeDependencies() {
-        weatherApiComponent = ((RxWeatherApplication) getApplication()).getAppComponent();
+        weatherApiComponent = ((RxWeatherApplication) getApplication()).getComponent();
     }
 
     @Override
-    public AppComponent getComponent() {
+    public ApplicationComponent getComponent() {
         return weatherApiComponent;
     }
 

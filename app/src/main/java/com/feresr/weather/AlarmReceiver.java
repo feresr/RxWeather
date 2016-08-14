@@ -6,8 +6,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import com.feresr.weather.domain.GetCitiesUseCase;
-import com.feresr.weather.domain.GetCityForecastUseCase;
+import com.feresr.weather.usecase.GetCitiesUseCase;
+import com.feresr.weather.usecase.GetCityForecastUseCase;
 import com.feresr.weather.models.City;
 import com.feresr.weather.storage.SimpleCache;
 
@@ -29,7 +29,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        ((RxWeatherApplication) context.getApplicationContext()).getAppComponent().inject(this);
+        ((RxWeatherApplication) context.getApplicationContext()).getComponent().inject(this);
         getCitiesUseCase.execute().flatMapIterable(new Func1<List<City>, Iterable<City>>() {
             @Override
             public Iterable<City> call(List<City> cities) {

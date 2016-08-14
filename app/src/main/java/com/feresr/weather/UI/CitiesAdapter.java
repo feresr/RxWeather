@@ -16,6 +16,8 @@ import com.feresr.weather.R;
 import com.feresr.weather.models.City;
 import java.util.ArrayList;
 
+import javax.inject.Inject;
+
 /**
  * Created by Fernando on 4/11/2015.
  */
@@ -28,6 +30,7 @@ import java.util.ArrayList;
     //Weather it should show temperature in celsius or not
     private boolean celsius = true;
 
+    @Inject
     public CitiesAdapter(Context context) {
         super();
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);

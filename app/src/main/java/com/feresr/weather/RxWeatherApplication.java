@@ -1,28 +1,34 @@
 package com.feresr.weather;
 
 import android.app.Application;
+import android.content.Context;
 
-import com.feresr.weather.injector.AppComponent;
-import com.feresr.weather.injector.DaggerAppComponent;
-import com.feresr.weather.injector.modules.AppModule;
+import com.feresr.weather.DI.component.ApplicationComponent;
+import com.feresr.weather.DI.component.DaggerApplicationComponent;
+import com.feresr.weather.DI.modules.AppModule;
 
 /**
  * Created by Fernando on 14/10/2015.
  */
 public class RxWeatherApplication extends Application {
 
-    private AppComponent mAppComponent;
+    private ApplicationComponent mApplicationComponent;
+
     @Override
     public void onCreate() {
         super.onCreate();
         initializeInjector();
     }
 
-    private void initializeInjector() {
-        mAppComponent = DaggerAppComponent.builder().appModule(new AppModule(this)).build();
+    public static RxWeatherApplication getApp(Context context) {
+        return (RxWeatherApplication) context.getApplicationContext();
     }
 
-    public AppComponent getAppComponent() {
-        return mAppComponent;
+    private void initializeInjector() {
+        mApplicationComponent = DaggerApplicationComponent.builder().appModule(new AppModule(this)).build();
+    }
+
+    public ApplicationComponent getComponent() {
+        return mApplicationComponent;
     }
 }

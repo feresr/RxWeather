@@ -12,6 +12,8 @@ import com.feresr.weather.models.City;
 
 import java.util.ArrayList;
 
+import javax.inject.Inject;
+
 /**
  * Created by Fernando on 4/11/2015.
  */
@@ -20,6 +22,7 @@ public class SuggestionAdapter extends RecyclerView.Adapter<SuggestionAdapter.Vi
     private ArrayList<City> cities;
     private LayoutInflater inflater;
 
+    @Inject
     public SuggestionAdapter(Context context) {
         super();
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);

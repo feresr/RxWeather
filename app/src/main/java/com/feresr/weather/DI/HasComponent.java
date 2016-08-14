@@ -1,4 +1,4 @@
-package com.feresr.weather.injector;
+package com.feresr.weather.DI;
 
 /**
  * Interface representing a contract for clients that contains a component for dependency injection.

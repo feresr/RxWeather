@@ -1,4 +1,4 @@
-package com.feresr.weather.injector.modules;
+package com.feresr.weather.DI.modules;
 
 import android.content.Context;
 

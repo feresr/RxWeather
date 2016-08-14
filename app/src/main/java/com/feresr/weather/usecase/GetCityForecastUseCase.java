@@ -1,4 +1,4 @@
-package com.feresr.weather.domain;
+package com.feresr.weather.usecase;
 
 import com.feresr.weather.models.City;
 import com.feresr.weather.repository.Repository;
