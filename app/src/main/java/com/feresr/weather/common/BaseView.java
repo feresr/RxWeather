@@ -11,4 +11,6 @@ public interface BaseView {
     Context getActivity();
 
     Bundle getArguments();
+
+    void showErrorMessage(String message);
 }

@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.feresr.weather.DI.component.ActivityComponent;
 import com.feresr.weather.R;
@@ -100,6 +101,11 @@ public class ForecastFragment extends BaseFragment<ForecastPresenter> implements
         } catch (ClassCastException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void showErrorMessage(String message) {
+        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
     }
 
     public interface RecyclerViewScrollListener {

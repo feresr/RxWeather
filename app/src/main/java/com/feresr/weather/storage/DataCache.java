@@ -7,12 +7,14 @@ import com.feresr.weather.models.CityWeather;
 
 import java.util.List;
 
+import dagger.Provides;
 import rx.Observable;
 
 /**
  * Created by Fernando on 16/10/2015.
  */
 public interface DataCache {
+
     /**
      * Checks if the cache is expired.
      *

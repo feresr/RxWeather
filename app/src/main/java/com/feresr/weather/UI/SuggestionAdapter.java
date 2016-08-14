@@ -21,6 +21,7 @@ public class SuggestionAdapter extends RecyclerView.Adapter<SuggestionAdapter.Vi
 
     private ArrayList<City> cities;
     private LayoutInflater inflater;
+    private CitySuggestionClickListener listener;
 
     @Inject
     public SuggestionAdapter(Context context) {
@@ -34,6 +35,10 @@ public class SuggestionAdapter extends RecyclerView.Adapter<SuggestionAdapter.Vi
         notifyDataSetChanged();
     }
 
+    public void setOnClickListener(CitySuggestionClickListener clickListener) {
+        this.listener = clickListener;
+    }
+
     public ArrayList<City> getCities() {
         return this.cities;
     }
@@ -45,8 +50,21 @@ public class SuggestionAdapter extends RecyclerView.Adapter<SuggestionAdapter.Vi
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, final int position) {
-        holder.cityName.setText(cities.get(position).getName());
+    public void onBindViewHolder(ViewHolder holder, int position) {
+        final City city = cities.get(position);
+        holder.cityName.setText(city.getName());
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (SuggestionAdapter.this.listener != null) {
+                    SuggestionAdapter.this.listener.OnCitySuggestionSelected(city);
+                }
+            }
+        });
+    }
+
+    public interface CitySuggestionClickListener {
+        void OnCitySuggestionSelected(City city);
     }
 
     @Override

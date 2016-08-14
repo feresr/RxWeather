@@ -6,6 +6,8 @@ import android.content.SharedPreferences;
 import com.feresr.weather.R;
 import com.feresr.weather.repository.DataSource;
 import com.feresr.weather.repository.ForecastIODataSource;
+import com.feresr.weather.storage.DataCache;
+import com.feresr.weather.storage.SimpleCache;
 
 import javax.inject.Singleton;
 

@@ -11,6 +11,7 @@ import com.feresr.weather.DI.modules.DataBaseModule;
 import com.feresr.weather.DI.modules.AppModule;
 import com.feresr.weather.DI.modules.NetworkModule;
 import com.feresr.weather.repository.Repository;
+import com.feresr.weather.storage.DataCache;
 
 import javax.inject.Singleton;
 
@@ -25,6 +26,7 @@ public interface ApplicationComponent {
 
     Repository getRepository();
     SharedPreferences getSharedPreferences();
+    DataCache getDataCache();
 
     void inject(AlarmReceiver alarmReceiver);
 }

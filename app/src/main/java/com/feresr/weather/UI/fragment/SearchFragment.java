@@ -4,9 +4,9 @@ package com.feresr.weather.UI.fragment;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.view.KeyEvent;
@@ -15,12 +15,11 @@ import android.view.ViewAnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.feresr.weather.DI.component.ActivityComponent;
 import com.feresr.weather.R;
 import com.feresr.weather.UI.FragmentInteractionsListener;
-import com.feresr.weather.UI.GoogleApiClientProvider;
-import com.feresr.weather.UI.RecyclerItemClickListener;
 import com.feresr.weather.UI.SuggestionAdapter;
 import com.feresr.weather.common.BaseFragment;
 import com.feresr.weather.models.City;
@@ -50,16 +49,21 @@ public class SearchFragment extends BaseFragment<SearchPresenter> implements Sea
     @Inject
     SuggestionAdapter suggestionAdapter;
 
-    private GoogleApiClientProvider googleApiClientProvider;
+    @Inject
+    RecyclerView.LayoutManager linearLayoutManager;
 
     private FragmentInteractionsListener listener;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         presenter.setFragmentInteractionListener(listener);
-        suggestionsRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), presenter));
         searchEditText.addTextChangedListener(presenter);
 
         searchEditText.requestFocus();
@@ -78,10 +82,10 @@ public class SearchFragment extends BaseFragment<SearchPresenter> implements Sea
                 return false;
             }
         });
-        suggestionAdapter = new SuggestionAdapter(getActivity());
-        suggestionsRecyclerView.setAdapter(suggestionAdapter);
-        suggestionsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
+        suggestionsRecyclerView.setAdapter(suggestionAdapter);
+        suggestionsRecyclerView.setLayoutManager(linearLayoutManager);
+        suggestionAdapter.setOnClickListener(presenter);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             if (searchView.isAttachedToWindow()) {
@@ -117,7 +121,6 @@ public class SearchFragment extends BaseFragment<SearchPresenter> implements Sea
     public void onAttach(Context context) {
         super.onAttach(context);
         try {
-            googleApiClientProvider = (GoogleApiClientProvider) context;
             listener = (FragmentInteractionsListener) context;
         } catch (ClassCastException e) {
             e.printStackTrace();
@@ -130,4 +133,8 @@ public class SearchFragment extends BaseFragment<SearchPresenter> implements Sea
         suggestionAdapter.setCities(cities);
     }
 
+    @Override
+    public void showErrorMessage(String message) {
+        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+    }
 }

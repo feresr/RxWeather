@@ -16,7 +16,6 @@ import com.feresr.weather.NetworkListener;
 import com.feresr.weather.NetworkReceiver;
 import com.feresr.weather.UI.CitiesAdapter;
 import com.feresr.weather.UI.FragmentInteractionsListener;
-import com.feresr.weather.UI.RecyclerItemClickListener;
 import com.feresr.weather.UI.SettingsActivity;
 import com.feresr.weather.common.BasePresenter;
 import com.feresr.weather.models.City;
@@ -42,15 +41,13 @@ import rx.subscriptions.CompositeSubscription;
 /**
  * Created by Fernando on 6/11/2015.
  */
-public class CitiesPresenter extends BasePresenter<CitiesView> implements NetworkListener, android.view.View.OnClickListener, RecyclerItemClickListener.OnItemClickListener, SharedPreferences.OnSharedPreferenceChangeListener, SwipeRefreshLayout.OnRefreshListener {
+public class CitiesPresenter extends BasePresenter<CitiesView> implements NetworkListener, android.view.View.OnClickListener, SharedPreferences.OnSharedPreferenceChangeListener, SwipeRefreshLayout.OnRefreshListener {
 
     private CitiesAdapter citiesAdapter;
     private GetCityForecastUseCase getCityWeatherUseCase;
     private RemoveCityUseCase removeCityUseCase;
     private CompositeSubscription subscriptions;
     private GetCitiesUseCase getCitiesUseCase;
-    private GoogleApiClient googleApiClient;
-    private SaveCityUseCase saveCityUseCase;
     private FragmentInteractionsListener fragmentInteractionListener;
     private NetworkReceiver networkReceiver;
     private Context context;
@@ -58,13 +55,17 @@ public class CitiesPresenter extends BasePresenter<CitiesView> implements Networ
 
 
     @Inject
-    public CitiesPresenter(Context context, GetCitiesUseCase getCitiesUseCase, GetCityForecastUseCase getCityForecastUseCase, RemoveCityUseCase removeCityUseCase, SaveCityUseCase saveCityUseCase) {
+    public CitiesPresenter(Context context,
+                           GetCitiesUseCase getCitiesUseCase,
+                           GetCityForecastUseCase getCityForecastUseCase,
+                           RemoveCityUseCase removeCityUseCase,
+                           CitiesAdapter citiesAdapter) {
         super();
         this.getCityWeatherUseCase = getCityForecastUseCase;
-        this.saveCityUseCase = saveCityUseCase;
         this.getCitiesUseCase = getCitiesUseCase;
         this.removeCityUseCase = removeCityUseCase;
         this.subscriptions = new CompositeSubscription();
+        this.citiesAdapter = citiesAdapter;
         networkReceiver = new NetworkReceiver();
         IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
         networkReceiver.setListener(this);
@@ -97,11 +98,6 @@ public class CitiesPresenter extends BasePresenter<CitiesView> implements Networ
 
     @Override
     public void onStop() {
-    }
-
-
-    public void setAdapter(CitiesAdapter adapter) {
-        this.citiesAdapter = adapter;
     }
 
     @Override
@@ -187,10 +183,6 @@ public class CitiesPresenter extends BasePresenter<CitiesView> implements Networ
         });
     }
 
-    public void setGoogleApiClient(GoogleApiClient googleApiClient) {
-        this.googleApiClient = googleApiClient;
-    }
-
     @Override
     public void onClick(android.view.View v) {
         fragmentInteractionListener.onAddCityButtonSelected();
@@ -200,10 +192,10 @@ public class CitiesPresenter extends BasePresenter<CitiesView> implements Networ
         this.fragmentInteractionListener = fragmentInteractionListener;
     }
 
-    @Override
+   /* @Override
     public void onItemClick(android.view.View view, int position) {
         fragmentInteractionListener.onCitySelected(citiesAdapter.getCities().get(position));
-    }
+    }*/
 
     @Override
     public void onNetworkStateChanged(boolean online) {

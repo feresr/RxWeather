@@ -33,7 +33,6 @@ public class ActivityModule {
     }
 
     @Provides
-    @ActivityScope
     RecyclerView.LayoutManager provideLinearLayoutManager(Context context) {
         return new LinearLayoutManager(context);
     }

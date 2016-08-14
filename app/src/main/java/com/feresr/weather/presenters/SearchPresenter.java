@@ -1,18 +1,17 @@
 package com.feresr.weather.presenters;
 
-import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 
+import com.feresr.weather.BuildConfig;
 import com.feresr.weather.UI.FragmentInteractionsListener;
-import com.feresr.weather.UI.RecyclerItemClickListener;
+import com.feresr.weather.UI.SuggestionAdapter;
 import com.feresr.weather.common.BasePresenter;
 import com.feresr.weather.models.City;
 import com.feresr.weather.presenters.views.SearchView;
-import com.google.android.gms.common.ConnectionResult;
+import com.feresr.weather.storage.DataCache;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
@@ -30,7 +29,7 @@ import javax.inject.Inject;
 /**
  * Created by Fernando on 7/11/2015.
  */
-public class SearchPresenter extends BasePresenter<SearchView> implements TextWatcher, RecyclerItemClickListener.OnItemClickListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+public class SearchPresenter extends BasePresenter<SearchView> implements TextWatcher, SuggestionAdapter.CitySuggestionClickListener {
 
     private ArrayList<City> cities;
     private AutocompleteFilter filter;
@@ -40,10 +39,13 @@ public class SearchPresenter extends BasePresenter<SearchView> implements TextWa
 
     private GoogleApiClient googleApiClient;
 
+    private DataCache storage;
+
     @Inject
-    public SearchPresenter(GoogleApiClient googleApiClient) {
+    public SearchPresenter(GoogleApiClient googleApiClient, DataCache storage) {
         super();
         this.googleApiClient = googleApiClient;
+        this.storage = storage;
     }
 
     @Override
@@ -68,28 +70,41 @@ public class SearchPresenter extends BasePresenter<SearchView> implements TextWa
     public void onTextChanged(CharSequence s, int start, int before, int count) {
         if (googleApiClient.isConnected()) {
             if (result != null) {
-                result.cancel();
+                result.cancel(); //cancel previous request
             }
+
             result = Places.GeoDataApi.getAutocompletePredictions(googleApiClient, s.toString(),
                     null, filter);
 
             result.setResultCallback(new ResultCallback<AutocompletePredictionBuffer>() {
                 @Override
                 public void onResult(@NonNull AutocompletePredictionBuffer autocompletePredictions) {
-                    cities.clear();
-                    for (AutocompletePrediction prediction : autocompletePredictions) {
-                        City city = new City();
-                        city.setName(prediction.getFullText(null).toString());
-                        city.setId(prediction.getPlaceId());
-                        cities.add(city);
-                    }
-                    view.setCities(cities);
 
-                    DataBufferUtils.freezeAndClose(autocompletePredictions);
+                    try {
+                        cities.clear();
+                        for (AutocompletePrediction prediction : autocompletePredictions) {
+                            City city = new City();
+                            city.setName(prediction.getFullText(null).toString());
+                            city.setId(prediction.getPlaceId());
+                            cities.add(city);
+                        }
+                        view.setCities(cities);
+
+                    } catch (Exception e) {
+                        Log.e(this.getClass().getSimpleName(), e.getMessage());
+                        if (BuildConfig.DEBUG) {
+                            view.showErrorMessage(e.getMessage());
+                        }
+                    } finally {
+                        DataBufferUtils.freezeAndClose(autocompletePredictions);
+                    }
                 }
             });
         } else {
             Log.d(this.getClass().getSimpleName(), "GoogleApiClient not connected");
+            if (BuildConfig.DEBUG) {
+                view.showErrorMessage("GoogleApiClient not connected");
+            }
         }
     }
 
@@ -98,33 +113,13 @@ public class SearchPresenter extends BasePresenter<SearchView> implements TextWa
 
     }
 
-    private void onCitySuggestionSelected(final City city) {
-        fragmentInteractionListener.onCitySuggestionSelected(city);
-    }
-
-    @Override
-    public void onItemClick(android.view.View view, int position) {
-        if (position == -1) {
-            return;
-        }
-        //onCitySuggestionSelected(suggestionAdapter.getCities().get(position));
-    }
-
     public void setFragmentInteractionListener(FragmentInteractionsListener listener) {
         this.fragmentInteractionListener = listener;
     }
 
     @Override
-    public void onConnected(@Nullable Bundle bundle) {
-    }
-
-    @Override
-    public void onConnectionSuspended(int i) {
-
-    }
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Log.e(this.getClass().getSimpleName(), connectionResult.getErrorMessage());
+    public void OnCitySuggestionSelected(City city) {
+        storage.putCity(city).subscribe();
+        fragmentInteractionListener.onCitySuggestionSelected(city);
     }
 }

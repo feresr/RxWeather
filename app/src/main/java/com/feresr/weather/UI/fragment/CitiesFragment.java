@@ -4,7 +4,6 @@ package com.feresr.weather.UI.fragment;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -12,20 +11,16 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.feresr.weather.DI.component.ActivityComponent;
 import com.feresr.weather.R;
 import com.feresr.weather.UI.CitiesAdapter;
 import com.feresr.weather.UI.FragmentInteractionsListener;
-import com.feresr.weather.UI.GoogleApiClientProvider;
-import com.feresr.weather.UI.RecyclerItemClickListener;
 import com.feresr.weather.UI.SettingsActivity;
 import com.feresr.weather.common.BaseFragment;
-import com.feresr.weather.DI.component.ApplicationComponent;
 import com.feresr.weather.models.City;
 import com.feresr.weather.presenters.CitiesPresenter;
 import com.feresr.weather.presenters.views.CitiesView;
@@ -57,8 +52,6 @@ public class CitiesFragment extends BaseFragment<CitiesPresenter> implements Cit
     @BindView(R.id.add_city_fab)
     FloatingActionButton addCityFab;
 
-    private GoogleApiClientProvider googleApiClientProvider;
-
     @BindView(R.id.empty_view)
     LinearLayout emptyView;
 
@@ -70,7 +63,7 @@ public class CitiesFragment extends BaseFragment<CitiesPresenter> implements Cit
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        int columns = sharedPreferences.getBoolean(SettingsActivity.GRIDVIEW, false)? 2 : 1;
+        int columns = sharedPreferences.getBoolean(SettingsActivity.GRIDVIEW, false) ? 2 : 1;
 
         layoutManager = new StaggeredGridLayoutManager(columns, StaggeredGridLayoutManager.VERTICAL);
         citiesRecyclerView.setLayoutManager(layoutManager);
@@ -98,8 +91,8 @@ public class CitiesFragment extends BaseFragment<CitiesPresenter> implements Cit
 
         presenter.setFragmentInteractionListener(fragmentInteractionListener);
         addCityFab.setOnClickListener(presenter);
-        citiesRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), presenter));
-        presenter.setGoogleApiClient(googleApiClientProvider.getApiClient());
+        //citiesRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), presenter));
+        //presenter.setGoogleApiClient(googleApiClientProvider.getApiClient());
         swipeRefresh.setOnRefreshListener(presenter);
     }
 
@@ -123,7 +116,6 @@ public class CitiesFragment extends BaseFragment<CitiesPresenter> implements Cit
         super.onAttach(context);
         try {
             fragmentInteractionListener = (FragmentInteractionsListener) context;
-            googleApiClientProvider = (GoogleApiClientProvider) context;
         } catch (ClassCastException e) {
             e.printStackTrace();
         }
@@ -140,8 +132,8 @@ public class CitiesFragment extends BaseFragment<CitiesPresenter> implements Cit
     public void addCities(List<City> cities) {
         adapter.setCities((ArrayList) cities);
         if (cities != null && !cities.isEmpty()) {
-        citiesRecyclerView.setVisibility(View.VISIBLE);
-        emptyView.setVisibility(View.GONE);
+            citiesRecyclerView.setVisibility(View.VISIBLE);
+            emptyView.setVisibility(View.GONE);
         }
     }
 
@@ -169,5 +161,10 @@ public class CitiesFragment extends BaseFragment<CitiesPresenter> implements Cit
             adapter.setCompactView(false);
         }
         layoutManager.setSpanCount(columns);
+    }
+
+    @Override
+    public void showErrorMessage(String message) {
+        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
     }
 }

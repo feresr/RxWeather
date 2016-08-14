@@ -27,7 +27,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 
 import javax.inject.Inject;
 
-public class MainActivity extends BaseActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, GoogleApiClientProvider, FragmentInteractionsListener {
+public class MainActivity extends BaseActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, FragmentInteractionsListener {
 
     @Inject
     GoogleApiClient googleApiClient;
@@ -125,8 +125,6 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
         }
 
         getSupportFragmentManager().executePendingTransactions();
-        //((CitiesFragment) getSupportFragmentManager().findFragmentById(R.id.fragment)).presenter.addNewCity(city);
-
     }
 
     @Override
@@ -159,11 +157,6 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
         ft.add(R.id.fragment, fragment, null);
         ft.addToBackStack(null);
         ft.commit();
-    }
-
-    @Override
-    public GoogleApiClient getApiClient() {
-        return null;
     }
 
     @Override
