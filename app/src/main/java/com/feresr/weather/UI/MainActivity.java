@@ -25,7 +25,12 @@ import com.feresr.weather.models.City;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 
+import javax.inject.Inject;
+
 public class MainActivity extends BaseActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, GoogleApiClientProvider, FragmentInteractionsListener {
+
+    @Inject
+    GoogleApiClient googleApiClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,11 +57,15 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
             ft.add(R.id.fragment, new CitiesFragment(), null);
             ft.commit();
         }
+
+        googleApiClient.registerConnectionCallbacks(this);
+        googleApiClient.registerConnectionFailedListener(this);
+        googleApiClient.connect();
     }
 
     @Override
     protected void injectDependencies(ActivityComponent activityComponent) {
-        //No dependencies
+        activityComponent.inject(this);
     }
 
     @Nullable
@@ -155,5 +164,12 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
     @Override
     public GoogleApiClient getApiClient() {
         return null;
+    }
+
+    @Override
+    protected void onDestroy() {
+        googleApiClient.unregisterConnectionCallbacks(this);
+        googleApiClient.unregisterConnectionFailedListener(this);
+        super.onDestroy();
     }
 }

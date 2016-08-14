@@ -1,11 +1,13 @@
 package com.feresr.weather.DI.modules;
 
-import android.app.Activity;
 import android.content.Context;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.feresr.weather.DI.ActivityScope;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.places.Places;
 
 import dagger.Module;
 import dagger.Provides;
@@ -15,9 +17,9 @@ import dagger.Provides;
  */
 @Module
 public class ActivityModule {
-    private final Activity activity;
+    private final FragmentActivity activity;
 
-    public ActivityModule(Activity activity) {
+    public ActivityModule(FragmentActivity activity) {
         this.activity = activity;
     }
 
@@ -26,13 +28,22 @@ public class ActivityModule {
      */
     @Provides
     @ActivityScope
-    Context provideActivity() {
-        return this.activity;
+    Context provideContext() {
+        return this.activity.getBaseContext();
     }
 
     @Provides
     @ActivityScope
     RecyclerView.LayoutManager provideLinearLayoutManager(Context context) {
         return new LinearLayoutManager(context);
+    }
+
+    @Provides
+    @ActivityScope
+    GoogleApiClient providesGoogleApiClient(Context context) {
+        return new GoogleApiClient.Builder(context)
+                .addApi(Places.GEO_DATA_API)
+                .addApi(Places.PLACE_DETECTION_API)
+                .build();
     }
 }

@@ -59,7 +59,6 @@ public class SearchFragment extends BaseFragment<SearchPresenter> implements Sea
         super.onViewCreated(view, savedInstanceState);
 
         presenter.setFragmentInteractionListener(listener);
-        presenter.setSuggestionAdapter(suggestionAdapter);
         suggestionsRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), presenter));
         searchEditText.addTextChangedListener(presenter);
 

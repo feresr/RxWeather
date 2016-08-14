@@ -1,6 +1,5 @@
 package com.feresr.weather.presenters;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -10,7 +9,6 @@ import android.util.Log;
 
 import com.feresr.weather.UI.FragmentInteractionsListener;
 import com.feresr.weather.UI.RecyclerItemClickListener;
-import com.feresr.weather.UI.SuggestionAdapter;
 import com.feresr.weather.common.BasePresenter;
 import com.feresr.weather.models.City;
 import com.feresr.weather.presenters.views.SearchView;
@@ -35,20 +33,17 @@ import javax.inject.Inject;
 public class SearchPresenter extends BasePresenter<SearchView> implements TextWatcher, RecyclerItemClickListener.OnItemClickListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     private ArrayList<City> cities;
-
-    private GoogleApiClient googleApiClient;
     private AutocompleteFilter filter;
     private FragmentInteractionsListener fragmentInteractionListener;
-    private SuggestionAdapter suggestionAdapter;
+
     private PendingResult<AutocompletePredictionBuffer> result;
 
-    @Inject
-    Context context;
+    private GoogleApiClient googleApiClient;
 
     @Inject
-    public SearchPresenter(Context context) {
+    public SearchPresenter(GoogleApiClient googleApiClient) {
         super();
-        this.context = context;
+        this.googleApiClient = googleApiClient;
     }
 
     @Override
@@ -57,11 +52,6 @@ public class SearchPresenter extends BasePresenter<SearchView> implements TextWa
                 .setTypeFilter(AutocompleteFilter.TYPE_FILTER_CITIES)
                 .build();
         cities = new ArrayList<>();
-        googleApiClient = new GoogleApiClient.Builder(context, this, this)
-                .addApi(Places.GEO_DATA_API)
-                .addApi(Places.PLACE_DETECTION_API)
-                .build();
-        googleApiClient.connect();
     }
 
     @Override
@@ -117,12 +107,7 @@ public class SearchPresenter extends BasePresenter<SearchView> implements TextWa
         if (position == -1) {
             return;
         }
-        onCitySuggestionSelected(suggestionAdapter.getCities().get(position));
-    }
-
-
-    public void setSuggestionAdapter(SuggestionAdapter adapter) {
-        this.suggestionAdapter = adapter;
+        //onCitySuggestionSelected(suggestionAdapter.getCities().get(position));
     }
 
     public void setFragmentInteractionListener(FragmentInteractionsListener listener) {
