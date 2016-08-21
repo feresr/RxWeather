@@ -5,16 +5,13 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.feresr.weather.DI.component.ActivityComponent;
 import com.feresr.weather.R;
 import com.feresr.weather.UI.ForecastAdapter;
 import com.feresr.weather.common.BaseFragment;
-import com.feresr.weather.DI.component.ApplicationComponent;
 import com.feresr.weather.models.CityWeather;
 import com.feresr.weather.presenters.ForecastPresenter;
 import com.feresr.weather.presenters.views.ForecastView;
@@ -28,19 +25,12 @@ import butterknife.BindView;
  */
 public class ForecastFragment extends BaseFragment<ForecastPresenter> implements ForecastView {
 
-    private int mScrolledY = 0;
-
     public static final String ARG_CITY = "city";
-
     @Inject
     ForecastAdapter adapter;
-
     @BindView(R.id.recyclerview)
     RecyclerView recyclerView;
-
-    @Inject
-    RecyclerView.LayoutManager layoutManager;
-
+    private int mScrolledY = 0;
     private RecyclerViewScrollListener listener;
 
     @Override
@@ -59,7 +49,7 @@ public class ForecastFragment extends BaseFragment<ForecastPresenter> implements
                 super.onScrollStateChanged(recyclerView, newState);
             }
         });
-        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(adapter);
         recyclerView.getLayoutManager().scrollToPosition(0);
         //adapter.showNoInternetWarning();

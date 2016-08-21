@@ -1,4 +1,3 @@
-
 package com.feresr.weather.models;
 
 import com.google.gson.annotations.SerializedName;
@@ -6,6 +5,7 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.annotation.Generated;
 
 @Generated("org.jsonschema2pojo")
@@ -17,54 +17,42 @@ public class Hourly extends DisplayWeatherInfo implements Serializable {
     private List<Hour> hours = new ArrayList<Hour>();
 
     /**
-     *
-     * @return
-     *     The summary
+     * @return The summary
      */
     public String getSummary() {
         return summary;
     }
 
     /**
-     *
-     * @param summary
-     *     The summary
+     * @param summary The summary
      */
     public void setSummary(String summary) {
         this.summary = summary;
     }
 
     /**
-     *
-     * @return
-     *     The icon
+     * @return The icon
      */
     public String getIcon() {
         return icon;
     }
 
     /**
-     *
-     * @param icon
-     *     The icon
+     * @param icon The icon
      */
     public void setIcon(String icon) {
         this.icon = icon;
     }
 
     /**
-     *
-     * @return
-     *     The data
+     * @return The data
      */
     public List<Hour> getData() {
         return hours;
     }
 
     /**
-     *
-     * @param data
-     *     The data
+     * @param data The data
      */
     public void setData(List<Hour> data) {
         this.hours = data;

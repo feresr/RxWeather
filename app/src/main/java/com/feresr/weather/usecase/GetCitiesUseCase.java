@@ -1,9 +1,7 @@
 package com.feresr.weather.usecase;
 
 import com.feresr.weather.models.City;
-import com.feresr.weather.repository.Repository;
-
-import java.util.List;
+import com.feresr.weather.storage.Storage;
 
 import javax.inject.Inject;
 
@@ -13,17 +11,20 @@ import rx.schedulers.Schedulers;
 
 /**
  * Created by Fernando on 7/11/2015.
+ * Retrieves the list of Cities as an observable from the injected local storage mechanism
  */
-public class GetCitiesUseCase implements UseCase<List<City>> {
-    Repository repository;
+public class GetCitiesUseCase extends UseCase<City> {
+
+    private Storage storage;
 
     @Inject
-    GetCitiesUseCase(Repository repository) {
-        this.repository = repository;
+    GetCitiesUseCase(Storage storage) {
+        this.storage = storage;
     }
+
     @Override
-    public Observable<List<City>> execute() {
-        return repository.getCities()
+    public Observable<City> execute() {
+        return storage.getCities()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }

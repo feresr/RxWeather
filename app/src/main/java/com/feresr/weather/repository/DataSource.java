@@ -2,8 +2,6 @@ package com.feresr.weather.repository;
 
 import com.feresr.weather.models.City;
 
-import java.util.List;
-
 import rx.Observable;
 
 /**
@@ -11,5 +9,6 @@ import rx.Observable;
  */
 public interface DataSource {
     Observable<City> getForecast(City city);
-    Observable<List<City>> getCities();
+
+    Observable<City> getCities();
 }

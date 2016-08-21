@@ -6,8 +6,6 @@ import android.content.SharedPreferences;
 import com.feresr.weather.R;
 import com.feresr.weather.repository.DataSource;
 import com.feresr.weather.repository.ForecastIODataSource;
-import com.feresr.weather.storage.DataCache;
-import com.feresr.weather.storage.SimpleCache;
 
 import javax.inject.Singleton;
 
@@ -24,12 +22,14 @@ public class DataBaseModule {
 
     }
 
-    @Provides @Singleton
+    @Provides
+    @Singleton
     DataSource providesDataSource(ForecastIODataSource dataSource) {
         return dataSource;
     }
 
-    @Provides @Singleton
+    @Provides
+    @Singleton
     SharedPreferences providesSharedPreferences(Context context) {
         return context.getSharedPreferences(context.getString(R.string.preference_file_key), Context.MODE_PRIVATE);
     }

@@ -30,17 +30,17 @@ public class SuggestionAdapter extends RecyclerView.Adapter<SuggestionAdapter.Vi
         cities = new ArrayList<>();
     }
 
-    public void setCities(ArrayList<City> cities) {
-        this.cities = cities;
-        notifyDataSetChanged();
-    }
-
     public void setOnClickListener(CitySuggestionClickListener clickListener) {
         this.listener = clickListener;
     }
 
     public ArrayList<City> getCities() {
         return this.cities;
+    }
+
+    public void setCities(ArrayList<City> cities) {
+        this.cities = cities;
+        notifyDataSetChanged();
     }
 
     @Override
@@ -57,19 +57,19 @@ public class SuggestionAdapter extends RecyclerView.Adapter<SuggestionAdapter.Vi
             @Override
             public void onClick(View view) {
                 if (SuggestionAdapter.this.listener != null) {
-                    SuggestionAdapter.this.listener.OnCitySuggestionSelected(city);
+                    SuggestionAdapter.this.listener.onCitySuggestionSelected(city);
                 }
             }
         });
     }
 
-    public interface CitySuggestionClickListener {
-        void OnCitySuggestionSelected(City city);
-    }
-
     @Override
     public int getItemCount() {
         return cities.size();
+    }
+
+    public interface CitySuggestionClickListener {
+        void onCitySuggestionSelected(City city);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

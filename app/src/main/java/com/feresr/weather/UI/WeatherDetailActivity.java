@@ -3,26 +3,29 @@ package com.feresr.weather.UI;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
+import com.feresr.weather.DI.component.ActivityComponent;
+import com.feresr.weather.DI.component.ApplicationComponent;
 import com.feresr.weather.R;
 import com.feresr.weather.RxWeatherApplication;
-import com.feresr.weather.DI.component.ApplicationComponent;
-import com.feresr.weather.DI.HasComponent;
 import com.feresr.weather.UI.fragment.ForecastFragment;
+import com.feresr.weather.common.BaseActivity;
+import com.feresr.weather.common.BasePresenter;
 import com.feresr.weather.models.City;
 
-public class WeatherDetailActivity extends AppCompatActivity implements HasComponent<ApplicationComponent>, ForecastFragment.RecyclerViewScrollListener {
+public class WeatherDetailActivity extends BaseActivity implements ForecastFragment.RecyclerViewScrollListener {
 
     public static final String ARG_CITY = "city";
     private ApplicationComponent weatherApiComponent;
     private Toolbar toolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_weather_detail);
+
         Intent intent = getIntent();
         City city = (City) intent.getExtras().getSerializable(ARG_CITY);
 
@@ -46,13 +49,24 @@ public class WeatherDetailActivity extends AppCompatActivity implements HasCompo
         initializeDependencies();
     }
 
-    private void initializeDependencies() {
-        weatherApiComponent = ((RxWeatherApplication) getApplication()).getComponent();
+    @Override
+    protected void injectDependencies(ActivityComponent activityComponent) {
+        //nothing to inject yet
+    }
+
+    @Nullable
+    @Override
+    protected BasePresenter getPresenter() {
+        return null;
     }
 
     @Override
-    public ApplicationComponent getComponent() {
-        return weatherApiComponent;
+    protected int getLayout() {
+        return R.layout.activity_weather_detail;
+    }
+
+    private void initializeDependencies() {
+        weatherApiComponent = ((RxWeatherApplication) getApplication()).getComponent();
     }
 
 
@@ -62,6 +76,6 @@ public class WeatherDetailActivity extends AppCompatActivity implements HasCompo
         if (scrolled > 255) {
             scrolled = 255;
         }
-        toolbar.setBackgroundColor(Color.argb(scrolled,5,5,5));
+        toolbar.setBackgroundColor(Color.argb(scrolled, 5, 5, 5));
     }
 }

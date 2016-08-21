@@ -22,6 +22,7 @@ public class CityWeather implements Serializable {
     public long getFetchTime() {
         return fetchTime;
     }
+
     public void setFetchTime(long fetchTime) {
         this.fetchTime = fetchTime;
     }

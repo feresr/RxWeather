@@ -11,11 +11,6 @@ public class WeatherDbHelper extends android.database.sqlite.SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "rxweather.db";
     private static final int DATABASE_VERSION = 1;
-
-    public WeatherDbHelper(Context context) {
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
-    }
-
     // Database creation sql statement
     private static final String CITY_TABLE_CREATE = "CREATE TABLE " +
             WeatherContract.CityEntry.TABLE_NAME + " (" +
@@ -23,7 +18,6 @@ public class WeatherDbHelper extends android.database.sqlite.SQLiteOpenHelper {
             WeatherContract.CityEntry.COLUMN_NAME_CITY_NAME + " TEXT NOT NULL, " +
             WeatherContract.CityEntry.COLUMN_NAME_LAT + " REAL, " +
             WeatherContract.CityEntry.COLUMN_NAME_LON + " REAL);";
-
     private static final String WEATHER_TABLE_CREATE = "CREATE TABLE " +
             WeatherContract.WeatherEntry.TABLE_NAME + " (" +
             WeatherContract.WeatherEntry._ID + " TEXT PRIMARY KEY REFERENCES " + WeatherContract.CityEntry.TABLE_NAME + "(" + WeatherContract.CityEntry._ID + "), " +
@@ -49,7 +43,6 @@ public class WeatherDbHelper extends android.database.sqlite.SQLiteOpenHelper {
             WeatherContract.WeatherEntry.COLUMN_DAILY_ICON + " TEXT, " +
             WeatherContract.WeatherEntry.COLUMN_HOURLY_SUMMARY + " TEXT, " +
             WeatherContract.WeatherEntry.COLUMN_HOURLY_ICON + " TEXT);";
-
     private static final String HOURLY_TABLE_CREATE = "CREATE TABLE " +
             WeatherContract.HourEntry.TABLE_NAME + " (" +
             WeatherContract.HourEntry._ID + " INTEGER PRIMARY KEY, " +
@@ -69,7 +62,6 @@ public class WeatherDbHelper extends android.database.sqlite.SQLiteOpenHelper {
             WeatherContract.HourEntry.COLUMN_PRESSURE + " REAL, " +
             WeatherContract.HourEntry.COLUMN_OZONE + " REAL, " +
             WeatherContract.HourEntry.CITY_ID + " TEXT REFERENCES " + WeatherContract.CityEntry.TABLE_NAME + " ( " + WeatherContract.CityEntry._ID + " ));";
-
     private static final String DAYLY_TABLE_CREATE = "CREATE TABLE " +
             WeatherContract.DayEntry.TABLE_NAME + " (" +
             WeatherContract.DayEntry._ID + " INTEGER PRIMARY KEY, " +
@@ -101,6 +93,9 @@ public class WeatherDbHelper extends android.database.sqlite.SQLiteOpenHelper {
             WeatherContract.DayEntry.COLUMN_OZONE + " REAL, " +
             WeatherContract.DayEntry.CITY_ID + " TEXT REFERENCES " + WeatherContract.CityEntry.TABLE_NAME + " ( " + WeatherContract.CityEntry._ID + " ));";
 
+    public WeatherDbHelper(Context context) {
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+    }
 
     @Override
     public void onCreate(SQLiteDatabase db) {

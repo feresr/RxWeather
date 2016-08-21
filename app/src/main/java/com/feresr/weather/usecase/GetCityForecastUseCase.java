@@ -12,7 +12,7 @@ import rx.schedulers.Schedulers;
 /**
  * Created by Fernando on 14/10/2015.
  */
-public class GetCityForecastUseCase implements UseCase<City> {
+public class GetCityForecastUseCase extends UseCase<City> {
 
     private final Repository repository;
     private boolean fetchIfExpired = false;

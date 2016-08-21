@@ -12,7 +12,7 @@ import rx.schedulers.Schedulers;
 /**
  * Created by Fernando on 7/11/2015.
  */
-public class RemoveCityUseCase implements UseCase<City> {
+public class RemoveCityUseCase extends UseCase<City> {
 
 
     Repository repository;

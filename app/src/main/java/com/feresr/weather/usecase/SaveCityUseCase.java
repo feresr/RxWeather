@@ -12,10 +12,10 @@ import rx.schedulers.Schedulers;
 /**
  * Created by Fernando on 7/11/2015.
  */
-public class SaveCityUseCase implements UseCase<City> {
+public class SaveCityUseCase extends UseCase<City> {
 
-    Repository repository;
-        private City city;
+    private Repository repository;
+    private City city;
 
     @Inject
     SaveCityUseCase(Repository repository) {

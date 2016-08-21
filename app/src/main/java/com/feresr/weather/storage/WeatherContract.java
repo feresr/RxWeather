@@ -17,11 +17,12 @@ public final class WeatherContract {
     public static final String PATH_HOUR = "hour";
     public static final String PATH_DAY = "day";
 
-    public WeatherContract() {}
+    public WeatherContract() {
+    }
 
 
     /* Inner class that defines the table contents */
-        public static abstract class CityEntry implements BaseColumns {
+    public static abstract class CityEntry implements BaseColumns {
 
         public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_CITY).build();
         public static final String CONTENT_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_CITY;
@@ -112,7 +113,7 @@ public final class WeatherContract {
         public static final String COLUMN_TEMPERATURE_MIN_TIME = "temperature_min_time";
         public static final String COLUMN_TEMPERATURE_MAX = "temperature_max";
         public static final String COLUMN_TEMPERATURE_MAX_TIME = "temperature_max_time";
-        public static final String COLUMN_APPARENT_TEMPERATURE_MIN= "apparent_temperature_min";
+        public static final String COLUMN_APPARENT_TEMPERATURE_MIN = "apparent_temperature_min";
         public static final String COLUMN_APPARENT_TEMPERATURE_MIN_TIME = "apparent_temperature_min_time";
         public static final String COLUMN_APPARENT_TEMPERATURE_MAX = "apparent_temperature_max";
         public static final String COLUMN_APPARENT_TEMPERATURE_MAX_TIME = "apparent_temperature_max_time";

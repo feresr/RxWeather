@@ -85,8 +85,8 @@ public abstract class BaseFragment<C extends BasePresenter> extends Fragment {
 
     @Override
     public void onStop() {
-        super.onStop();
         presenter.onStop();
+        super.onStop();
     }
 
     @Override

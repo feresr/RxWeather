@@ -7,6 +7,8 @@ import com.feresr.weather.models.City;
  */
 public interface FragmentInteractionsListener {
     void onCitySuggestionSelected(City city);
+
     void onCitySelected(City city);
+
     void onAddCityButtonSelected();
 }

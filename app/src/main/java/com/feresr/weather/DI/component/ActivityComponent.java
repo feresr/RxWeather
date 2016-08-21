@@ -3,6 +3,7 @@ package com.feresr.weather.DI.component;
 import com.feresr.weather.DI.ActivityScope;
 import com.feresr.weather.DI.modules.ActivityModule;
 import com.feresr.weather.UI.MainActivity;
+import com.feresr.weather.UI.SearchCityActivity;
 import com.feresr.weather.UI.fragment.CitiesFragment;
 import com.feresr.weather.UI.fragment.ForecastFragment;
 import com.feresr.weather.UI.fragment.SearchFragment;
@@ -25,4 +26,6 @@ public interface ActivityComponent {
     void inject(SearchFragment searchFragment);
 
     void inject(MainActivity mainActivity);
+
+    void inject(SearchCityActivity searchCityActivity);
 }

@@ -22,6 +22,14 @@ public abstract class BasePresenter<C extends BaseView> {
 
     /**
      * This method will be executed on
+     * {@link BaseActivity#onResume()} ()} in case presenter is attached to activity <br>
+     * {@link BaseFragment#onResume()} ()}  in case presenter is attached to fragment
+     */
+    public void onResume() {
+    }
+
+    /**
+     * This method will be executed on
      * {@link BaseActivity#onStart()} in case presenter is attached to activity <br>
      * {@link BaseFragment#onStart()}  in case presenter is attached to fragment
      */

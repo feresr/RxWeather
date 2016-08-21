@@ -6,9 +6,8 @@ import com.feresr.weather.ForecastIOEndpoints;
 import com.feresr.weather.R;
 import com.feresr.weather.models.City;
 import com.feresr.weather.models.CityWeather;
-import com.feresr.weather.storage.DataCache;
+import com.feresr.weather.storage.Storage;
 
-import java.util.List;
 import java.util.Locale;
 
 import javax.inject.Inject;
@@ -22,11 +21,11 @@ import rx.functions.Func1;
 public class ForecastIODataSource implements DataSource {
 
     private ForecastIOEndpoints endpoints;
-    private DataCache cache;
+    private Storage cache;
     private Context context;
 
     @Inject
-    public ForecastIODataSource(Context context, ForecastIOEndpoints endpoints, DataCache cache) {
+    public ForecastIODataSource(Context context, ForecastIOEndpoints endpoints, Storage cache) {
         this.endpoints = endpoints;
         this.cache = cache;
         this.context = context;
@@ -55,7 +54,7 @@ public class ForecastIODataSource implements DataSource {
     }
 
     @Override
-    public Observable<List<City>> getCities() {
+    public Observable<City> getCities() {
         //We do not get cities from ForecastIO
         return null;
     }

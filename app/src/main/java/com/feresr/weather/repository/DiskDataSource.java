@@ -2,9 +2,7 @@ package com.feresr.weather.repository;
 
 
 import com.feresr.weather.models.City;
-import com.feresr.weather.storage.DataCache;
-
-import java.util.List;
+import com.feresr.weather.storage.Storage;
 
 import rx.Observable;
 
@@ -13,9 +11,9 @@ import rx.Observable;
  * Created by Fernando on 16/10/2015.
  */
 public class DiskDataSource implements DataSource {
-    private DataCache cache;
+    private Storage cache;
 
-    public DiskDataSource(DataCache cache) {
+    public DiskDataSource(Storage cache) {
         this.cache = cache;
     }
 
@@ -25,7 +23,7 @@ public class DiskDataSource implements DataSource {
     }
 
     @Override
-    public Observable<List<City>> getCities() {
+    public Observable<City> getCities() {
         return cache.getCities();
     }
 

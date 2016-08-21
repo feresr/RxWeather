@@ -8,11 +8,16 @@ import java.util.List;
 /**
  * Created by Fernando on 6/11/2015.
  */
-public interface CitiesView extends BaseView{
+public interface CitiesView extends BaseView {
     void addCity(City city);
+
     void addCities(List<City> city);
+
     void updateCity(City city);
+
     void showTemperatureInCelsius();
+
     void showTemperatureInFahrenheit();
+
     void setSetColumns(int columns);
 }

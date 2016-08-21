@@ -6,7 +6,7 @@ import android.content.res.Resources;
 import com.feresr.weather.models.City;
 import com.feresr.weather.models.CityWeather;
 import com.feresr.weather.repository.DiskDataSource;
-import com.feresr.weather.storage.SimpleCache;
+import com.feresr.weather.storage.SQLiteStorage;
 import com.feresr.weather.utils.IconManager;
 
 import org.junit.Test;
@@ -50,7 +50,7 @@ public class ExampleUnitTest {
 
     @Test
     public void DiskDataSource_getForecast(){
-        SimpleCache cache = new SimpleCache(mockContext);
+        SQLiteStorage cache = new SQLiteStorage(mockContext);
         DiskDataSource dataSource = new DiskDataSource(cache);
         final City city = mock(City.class);
         TestSubscriber<City> testSubscriber = new TestSubscriber<>();
@@ -67,16 +67,16 @@ public class ExampleUnitTest {
 
     @Test
     public void SimpleCache_isDataExpired() {
-        SimpleCache cache = new SimpleCache(mockContext);
+        SQLiteStorage cache = new SQLiteStorage(mockContext);
         assertTrue(cache.isExpired(null));
         when(city.getCityWeather()).thenReturn(mockCityWeather);
         when(mockCityWeather.getFetchTime()).thenReturn(System.currentTimeMillis());
         assertFalse(cache.isExpired(city));
 
-        when(mockCityWeather.getFetchTime()).thenReturn(System.currentTimeMillis() - SimpleCache.EXPIRATION_TIME );
+        when(mockCityWeather.getFetchTime()).thenReturn(System.currentTimeMillis() - SQLiteStorage.EXPIRATION_TIME );
         assertFalse(cache.isExpired(city));
 
-        when(mockCityWeather.getFetchTime()).thenReturn(System.currentTimeMillis() - SimpleCache.EXPIRATION_TIME - 1);
+        when(mockCityWeather.getFetchTime()).thenReturn(System.currentTimeMillis() - SQLiteStorage.EXPIRATION_TIME - 1);
         assertTrue(cache.isExpired(city));
     }
 }

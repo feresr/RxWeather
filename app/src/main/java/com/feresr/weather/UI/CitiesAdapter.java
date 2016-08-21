@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.feresr.weather.R;
 import com.feresr.weather.models.City;
+
 import java.util.ArrayList;
 
 import javax.inject.Inject;
@@ -21,12 +22,13 @@ import javax.inject.Inject;
 /**
  * Created by Fernando on 4/11/2015.
  */
-    public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.ViewHolder> {
+public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.ViewHolder> {
 
     boolean compact = false;
     private ArrayList<City> cities;
     private LayoutInflater inflater;
     private Context context;
+    private OnCitySelectedListener listener;
     //Weather it should show temperature in celsius or not
     private boolean celsius = true;
 
@@ -46,6 +48,10 @@ import javax.inject.Inject;
         }
 
         compact = sharedPref.getBoolean(SettingsActivity.GRIDVIEW, false);
+    }
+
+    public void setListener(OnCitySelectedListener listener) {
+        this.listener = listener;
     }
 
     public ArrayList<City> getCities() {
@@ -91,7 +97,7 @@ import javax.inject.Inject;
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
-        City city = cities.get(position);
+        final City city = cities.get(position);
 
         holder.cityName.setText(city.getName());
         if (cities.get(position).getCityWeather() != null) {
@@ -117,11 +123,18 @@ import javax.inject.Inject;
         } else {
             holder.progressBar.setVisibility(View.GONE);
         }
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listener.onCitySelected(city);
+            }
+        });
     }
 
     @Override
     public int getItemViewType(int position) {
-        return compact? 1 : 0;
+        return compact ? 1 : 0;
     }
 
     @Override
@@ -132,6 +145,14 @@ import javax.inject.Inject;
     public void onItemDismiss(int adapterPosition) {
         cities.remove(adapterPosition);
         notifyItemRemoved(adapterPosition);
+    }
+
+    public void setCompactView(boolean compact) {
+        this.compact = compact;
+    }
+
+    public interface OnCitySelectedListener {
+        void onCitySelected(City city);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -149,9 +170,5 @@ import javax.inject.Inject;
             summary = (TextView) itemView.findViewById(R.id.summary);
             progressBar = (ProgressBar) itemView.findViewById(R.id.progress_bar);
         }
-    }
-
-    public void setCompactView(boolean compact) {
-        this.compact = compact;
     }
 }

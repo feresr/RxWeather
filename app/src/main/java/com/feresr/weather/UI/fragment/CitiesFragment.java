@@ -46,18 +46,13 @@ public class CitiesFragment extends BaseFragment<CitiesPresenter> implements Cit
 
     @Inject
     SharedPreferences sharedPreferences;
-
-    private StaggeredGridLayoutManager layoutManager;
-
     @BindView(R.id.add_city_fab)
     FloatingActionButton addCityFab;
-
     @BindView(R.id.empty_view)
     LinearLayout emptyView;
-
     @BindView(R.id.swiperefresh)
     SwipeRefreshLayout swipeRefresh;
-
+    private StaggeredGridLayoutManager layoutManager;
     private FragmentInteractionsListener fragmentInteractionListener;
 
     @Override
@@ -68,6 +63,8 @@ public class CitiesFragment extends BaseFragment<CitiesPresenter> implements Cit
         layoutManager = new StaggeredGridLayoutManager(columns, StaggeredGridLayoutManager.VERTICAL);
         citiesRecyclerView.setLayoutManager(layoutManager);
         citiesRecyclerView.setAdapter(adapter);
+        adapter.setListener(presenter);
+        citiesRecyclerView.setVisibility(View.VISIBLE);
 
         ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
@@ -89,7 +86,6 @@ public class CitiesFragment extends BaseFragment<CitiesPresenter> implements Cit
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
         itemTouchHelper.attachToRecyclerView(citiesRecyclerView);
 
-        presenter.setFragmentInteractionListener(fragmentInteractionListener);
         addCityFab.setOnClickListener(presenter);
         //citiesRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), presenter));
         //presenter.setGoogleApiClient(googleApiClientProvider.getApiClient());

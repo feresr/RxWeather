@@ -2,8 +2,6 @@ package com.feresr.weather.repository;
 
 import com.feresr.weather.models.City;
 
-import java.util.List;
-
 import javax.inject.Inject;
 
 import rx.Observable;
@@ -28,7 +26,7 @@ public class RepositoryImp implements Repository {
     }
 
     @Override
-    public Observable<List<City>> getCities() {
+    public Observable<City> getCities() {
         DiskDataSource diskDataSource = dataStorageFactory.getDiskDataSource();
         return diskDataSource.getCities();
     }

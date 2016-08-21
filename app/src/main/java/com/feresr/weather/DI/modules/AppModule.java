@@ -3,8 +3,8 @@ package com.feresr.weather.DI.modules;
 import android.content.Context;
 
 import com.feresr.weather.RxWeatherApplication;
-import com.feresr.weather.storage.DataCache;
-import com.feresr.weather.storage.SimpleCache;
+import com.feresr.weather.storage.SQLiteStorage;
+import com.feresr.weather.storage.Storage;
 
 import javax.inject.Singleton;
 
@@ -31,7 +31,7 @@ public class AppModule {
 
     @Provides
     @Singleton
-    DataCache providesDataCache(SimpleCache cache) {
+    Storage providesDataCache(SQLiteStorage cache) {
         return cache;
     }
 

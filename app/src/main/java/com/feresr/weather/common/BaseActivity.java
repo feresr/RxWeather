@@ -18,7 +18,7 @@ import butterknife.ButterKnife;
  * Created by feresr on 25/07/16.
  * The activity only will execute operations that affect the UI. These operations are defined
  * by a view model and are triggered by its presenter.
- * <p/>
+ * <p>
  * Perhaps the activity only will work as a fragment container, if that is the case only
  * return null on {@link BaseActivity#getPresenter()}
  */

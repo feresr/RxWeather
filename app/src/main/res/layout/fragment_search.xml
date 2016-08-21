@@ -11,6 +11,14 @@
     android:paddingLeft="30dp"
     tools:context=".UI.fragment.SearchFragment">
 
+
+    <ProgressBar
+        android:visibility="gone"
+        android:id="@id/progress_bar"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
     <android.support.v7.widget.CardView
         android:id="@+id/search_view"
         android:layout_width="match_parent"
@@ -33,5 +41,4 @@
         android:id="@+id/suggestions_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-
 </LinearLayout>

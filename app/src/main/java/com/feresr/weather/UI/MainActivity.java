@@ -1,6 +1,5 @@
 package com.feresr.weather.UI;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -11,23 +10,21 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 
 import com.feresr.weather.BuildConfig;
 import com.feresr.weather.DI.component.ActivityComponent;
 import com.feresr.weather.R;
 import com.feresr.weather.UI.fragment.CitiesFragment;
-import com.feresr.weather.UI.fragment.SearchFragment;
 import com.feresr.weather.common.BaseActivity;
 import com.feresr.weather.common.BasePresenter;
 import com.feresr.weather.models.City;
+import com.feresr.weather.presenters.CitiesPresenter;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 
 import javax.inject.Inject;
 
-public class MainActivity extends BaseActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, FragmentInteractionsListener {
+public class MainActivity extends BaseActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, CitiesPresenter.CitiesCallbackListener {
 
     @Inject
     GoogleApiClient googleApiClient;
@@ -113,21 +110,6 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
     }
 
     @Override
-    public void onCitySuggestionSelected(City city) {
-
-        getSupportFragmentManager().popBackStack();
-
-        //Hide soft keyboard
-        View view = this.getCurrentFocus();
-        if (view != null) {
-            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-        }
-
-        getSupportFragmentManager().executePendingTransactions();
-    }
-
-    @Override
     public void onCitySelected(City city) {
         //if PHONE
         if (city != null && city.getCityWeather() != null) {
@@ -151,12 +133,9 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
 
     @Override
     public void onAddCityButtonSelected() {
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out);
-        SearchFragment fragment = new SearchFragment();
-        ft.add(R.id.fragment, fragment, null);
-        ft.addToBackStack(null);
-        ft.commit();
+
+        Intent intent = new Intent(this, SearchCityActivity.class);
+        startActivity(intent);
     }
 
     @Override

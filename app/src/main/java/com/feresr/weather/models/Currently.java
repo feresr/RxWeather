@@ -62,15 +62,15 @@ public class Currently extends DisplayWeatherInfo implements Serializable {
         return icon;
     }
 
-    public int getColor(Context context) {
-        return IconManager.getColorResource(icon, context);
-    }
-
     /**
      * @param icon The icon
      */
     public void setIcon(String icon) {
         this.icon = icon;
+    }
+
+    public int getColor(Context context) {
+        return IconManager.getColorResource(icon, context);
     }
 
     /**

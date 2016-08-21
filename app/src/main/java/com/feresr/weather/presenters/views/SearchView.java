@@ -10,4 +10,8 @@ import java.util.ArrayList;
  */
 public interface SearchView extends BaseView {
     void setCities(ArrayList<City> cities);
+
+    void hideLoadingView();
+
+    void showLoadingView();
 }

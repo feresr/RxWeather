@@ -28,12 +28,12 @@ import java.util.List;
  */
 public class DayForecastAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
+    CardView.LayoutParams params;
     private LayoutInflater inflater;
     private ArrayList<Hour> hours;
     private WeakReference<Context> context;
     private boolean celsius = true;
     private int px;
-    CardView.LayoutParams params;
 
     public DayForecastAdapter(Context context) {
         super();

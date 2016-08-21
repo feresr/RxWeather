@@ -2,8 +2,6 @@ package com.feresr.weather.repository;
 
 import com.feresr.weather.models.City;
 
-import java.util.List;
-
 import rx.Observable;
 
 /**
@@ -11,7 +9,9 @@ import rx.Observable;
  */
 public interface Repository {
     Observable<City> getForecast(City city, boolean fetchIfExpired);
-    Observable<List<City>> getCities();
+
+    Observable<City> getCities();
+
     Observable<City> saveCity(City city);
 
     Observable<City> removeCity(City city);

@@ -4,11 +4,16 @@ import android.content.Context;
 import android.support.v4.content.ContextCompat;
 
 import com.feresr.weather.R;
+import com.feresr.weather.models.City;
 
 /**
  * Created by Fernando on 12/11/2015.
  */
 public class IconManager {
+    //In case of user refreshing manually, REFRESH_TIME will pull from the server those cities
+    //that are expired, preventing in this way useless http calls.
+    public static final long EXPIRATION_TIME = 20 * 60 * 1000;
+
     public static String getIconResource(String icon, Context context) {
         switch (icon) {
             case "rain":
@@ -73,5 +78,18 @@ public class IconManager {
             default:
                 return ContextCompat.getColor(context, R.color.clear_day);
         }
+    }
+
+    /**
+     * Checks if the cache is expired.
+     *
+     * @return true, the cache is expired, otherwise false.
+     */
+    public static boolean isWeatherExpired(City city) {
+        if (city == null || city.getCityWeather() == null) {
+            return true;
+        }
+
+        return (System.currentTimeMillis() - city.getCityWeather().getFetchTime() > EXPIRATION_TIME);
     }
 }

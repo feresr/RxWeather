@@ -14,14 +14,14 @@ public class RxWeatherApplication extends Application {
 
     private ApplicationComponent mApplicationComponent;
 
+    public static RxWeatherApplication getApp(Context context) {
+        return (RxWeatherApplication) context.getApplicationContext();
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
         initializeInjector();
-    }
-
-    public static RxWeatherApplication getApp(Context context) {
-        return (RxWeatherApplication) context.getApplicationContext();
     }
 
     private void initializeInjector() {

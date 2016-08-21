@@ -16,37 +16,33 @@ public class RoundedCardLayout extends LinearLayout {
 
     private int upperRadius = 0;
     private int lowerRadius = 0;
+    private Paint paint;
+    private RectF upperRect;
+    private RectF lowerRect;
+    private RectF wholeRect;
+
 
     public RoundedCardLayout(Context context) {
         super(context);
         init();
         setWillNotDraw(false);
     }
-
     public RoundedCardLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
         setWillNotDraw(false);
     }
-
     public RoundedCardLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
         setWillNotDraw(false);
     }
-
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public RoundedCardLayout(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         init();
         setWillNotDraw(false);
     }
-
-
-    private Paint paint;
-    private RectF upperRect;
-    private RectF lowerRect;
-    private RectF wholeRect;
 
     @Override
     public void setBackgroundColor(int color) {
@@ -65,8 +61,8 @@ public class RoundedCardLayout extends LinearLayout {
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
         wholeRect = new RectF(0, 0, w, h);
-        upperRect = new RectF(0, 0, w, h/2 + 10);
-        lowerRect = new RectF(0, h/2 - 10, w, h);
+        upperRect = new RectF(0, 0, w, h / 2 + 10);
+        lowerRect = new RectF(0, h / 2 - 10, w, h);
     }
 
     @Override
