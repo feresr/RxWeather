@@ -70,26 +70,6 @@ public class CitiesPresenter extends BasePresenter<CitiesView> implements Shared
     }
 
     private void loadCities() {
-        Subscriber<City> subscriber = new Subscriber<City>() {
-            @Override
-            public void onCompleted() {
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                //Could not fetch weather
-                if (e != null) {
-                    Log.e(this.getClass().getSimpleName(), e.toString());
-                }
-            }
-
-            @Override
-            public void onNext(City city) {
-                city.setState(City.STATE_DONE);
-                view.updateCity(city);
-            }
-        };
-
         Subscription subscription = getCitiesUseCase.execute().filter(new Func1<City, Boolean>() {
             @Override
             public Boolean call(City city) {
@@ -114,7 +94,7 @@ public class CitiesPresenter extends BasePresenter<CitiesView> implements Shared
                 getCityWeatherUseCase.setFetchIfExpired(true);
                 return getCityWeatherUseCase.execute();
             }
-        }).subscribe(subscriber);
+        }).subscribe(new CityForecastSubscriber());
 
         subscriptions.add(subscription);
     }
@@ -188,5 +168,23 @@ public class CitiesPresenter extends BasePresenter<CitiesView> implements Shared
         void onCitySelected(City city);
 
         void onAddCityButtonSelected();
+    }
+
+    public final class CityForecastSubscriber extends Subscriber<City> {
+        @Override
+        public void onCompleted() {
+        }
+
+        @Override
+        public void onError(Throwable e) {
+            Log.e(this.getClass().getSimpleName(), e.toString());
+            view.showErrorMessage(e.getMessage());
+        }
+
+        @Override
+        public void onNext(City city) {
+            city.setState(City.STATE_DONE);
+            view.updateCity(city);
+        }
     }
 }
