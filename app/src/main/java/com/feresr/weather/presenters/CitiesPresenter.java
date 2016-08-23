@@ -22,7 +22,6 @@ import javax.inject.Inject;
 
 import rx.Observable;
 import rx.Subscriber;
-import rx.Subscription;
 import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.subscriptions.CompositeSubscription;
@@ -32,10 +31,12 @@ import rx.subscriptions.CompositeSubscription;
  */
 public class CitiesPresenter extends BasePresenter<CitiesView> implements SharedPreferences.OnSharedPreferenceChangeListener, SwipeRefreshLayout.OnRefreshListener, View.OnClickListener, CitiesAdapter.OnCitySelectedListener {
 
+    private final static String TAG = CitiesPresenter.class.getSimpleName();
+
     private GetCityForecastUseCase getCityWeatherUseCase;
     private RemoveCityUseCase removeCityUseCase;
     private GetCitiesUseCase getCitiesUseCase;
-    private CitiesCallbackListener activity;
+    private CitiesCallbackListener citiesCallbackListener;
     private CompositeSubscription subscriptions;
     private Context context;
     private HashMap<String, City> cities = new HashMap<>();
@@ -60,32 +61,26 @@ public class CitiesPresenter extends BasePresenter<CitiesView> implements Shared
         super.onStart();
 
         if (view.getActivity() instanceof CitiesCallbackListener) {
-            activity = (CitiesCallbackListener) view.getActivity();
+            citiesCallbackListener = (CitiesCallbackListener) view.getActivity();
         } else {
             throw new RuntimeException(view.getActivity().toString()
                     + " must implement CitiesCallbackListener");
         }
 
-        loadCities();
-    }
-
-    private void loadCities() {
-        Subscription subscription = getCitiesUseCase.execute().filter(new Func1<City, Boolean>() {
+        //1 fetch cities from db
+        subscriptions.add(getCitiesUseCase.execute().filter(new Func1<City, Boolean>() {
             @Override
             public Boolean call(City city) {
                 return cities.get(city.getId()) == null;
             }
+            //2 show them
         }).doOnNext(new Action1<City>() {
             @Override
             public void call(City city) {
                 city.setState(City.STATE_FETCHING);
                 cities.put(city.getId(), city);
                 view.addCity(city);
-            }
-        }).filter(new Func1<City, Boolean>() {
-            @Override
-            public Boolean call(City city) {
-                return city.getCityWeather() == null;
+                //3 fetch weather data for each city
             }
         }).flatMap(new Func1<City, Observable<City>>() {
             @Override
@@ -94,33 +89,40 @@ public class CitiesPresenter extends BasePresenter<CitiesView> implements Shared
                 getCityWeatherUseCase.setFetchIfExpired(true);
                 return getCityWeatherUseCase.execute();
             }
-        }).subscribe(new CityForecastSubscriber());
-
-        subscriptions.add(subscription);
+        }).subscribe(new CityForecastSubscriber()));
     }
-
 
     public void onRemoveCity(City city) {
         removeCityUseCase.setCity(city);
+        subscriptions.add(removeCityUseCase.execute().subscribe(new RemoveCitySubscriber()));
+    }
 
-        subscriptions.add(removeCityUseCase.execute().subscribe(new Subscriber<City>() {
+    @Override
+    public void onRefresh() {
+        subscriptions.add(Observable.from(cities.values()).flatMap(new Func1<City, Observable<City>>() {
             @Override
-            public void onCompleted() {
+            public Observable<City> call(City city) {
+                getCityWeatherUseCase.setCity(city);
+                return getCityWeatherUseCase.execute();
             }
+        }).subscribe(new CityForecastSubscriber()));
+    }
 
-            @Override
-            public void onError(Throwable e) {
-                if (e != null) {
-                    Log.e("error", e.toString());
-                }
-            }
+    @Override
+    public void onCitySelected(City city) {
+        citiesCallbackListener.onCitySelected(city);
+    }
 
-            @Override
-            public void onNext(City city) {
-                cities.remove(city.getId());
-                Log.e("onRemoveCity", "city removed");
-            }
-        }));
+    @Override
+    public void onClick(View view) {
+        citiesCallbackListener.onAddCityButtonSelected();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        PreferenceManager.getDefaultSharedPreferences(context).unregisterOnSharedPreferenceChangeListener(this);
+        subscriptions.unsubscribe();
     }
 
     @Override
@@ -143,27 +145,6 @@ public class CitiesPresenter extends BasePresenter<CitiesView> implements Shared
         }
     }
 
-    @Override
-    public void onRefresh() {
-        loadCities();
-    }
-
-    @Override
-    public void onCitySelected(City city) {
-        activity.onCitySelected(city);
-    }
-
-    @Override
-    public void onClick(View view) {
-        activity.onAddCityButtonSelected();
-    }
-
-    @Override
-    public void onDestroy() {
-        PreferenceManager.getDefaultSharedPreferences(context).unregisterOnSharedPreferenceChangeListener(this);
-        subscriptions.unsubscribe();
-    }
-
     public interface CitiesCallbackListener {
         void onCitySelected(City city);
 
@@ -173,18 +154,35 @@ public class CitiesPresenter extends BasePresenter<CitiesView> implements Shared
     public final class CityForecastSubscriber extends Subscriber<City> {
         @Override
         public void onCompleted() {
+            view.hideLoadingIndicator();
         }
 
         @Override
         public void onError(Throwable e) {
-            Log.e(this.getClass().getSimpleName(), e.toString());
-            view.showErrorMessage(e.getMessage());
+            Log.e(TAG, e.toString());
         }
 
         @Override
         public void onNext(City city) {
             city.setState(City.STATE_DONE);
             view.updateCity(city);
+        }
+    }
+
+    public final class RemoveCitySubscriber extends Subscriber<City> {
+        @Override
+        public void onCompleted() {
+        }
+
+        @Override
+        public void onError(Throwable e) {
+            Log.e(TAG, e.toString());
+        }
+
+        @Override
+        public void onNext(City city) {
+            cities.remove(city.getId());
+            Log.d(TAG, "city removed: " + city.toString());
         }
     }
 }

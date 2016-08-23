@@ -135,7 +135,6 @@ public class CitiesFragment extends BaseFragment<CitiesPresenter> implements Cit
 
     @Override
     public void updateCity(City city) {
-        swipeRefresh.setRefreshing(false);
         adapter.updateCity(city);
     }
 
@@ -157,6 +156,11 @@ public class CitiesFragment extends BaseFragment<CitiesPresenter> implements Cit
             adapter.setCompactView(false);
         }
         layoutManager.setSpanCount(columns);
+    }
+
+    @Override
+    public void hideLoadingIndicator() {
+        swipeRefresh.setRefreshing(false);
     }
 
     @Override

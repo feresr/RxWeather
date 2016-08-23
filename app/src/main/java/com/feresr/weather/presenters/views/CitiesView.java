@@ -20,4 +20,6 @@ public interface CitiesView extends BaseView {
     void showTemperatureInFahrenheit();
 
     void setSetColumns(int columns);
+
+    void hideLoadingIndicator();
 }
