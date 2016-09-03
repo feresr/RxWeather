@@ -10,5 +10,6 @@
 
     <declare-styleable name="DayView">
         <attr name="main" />
+        <attr name="icon_size" format="dimension"/>
     </declare-styleable>
 </resources>

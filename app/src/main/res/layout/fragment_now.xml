@@ -75,14 +75,13 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
+                android:layout_height="wrap_content"
                 android:background="#F5F5F5"
                 android:orientation="horizontal"
-                android:paddingBottom="15dp"
                 android:paddingLeft="30dp"
-                android:paddingRight="30dp"
-                android:paddingTop="25dp">
+                android:paddingTop="25dp"
+                android:paddingBottom="15dp"
+                android:paddingRight="30dp">
 
 
                 <com.feresr.weather.UI.views.InfoDisplay
@@ -112,8 +111,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
+                android:layout_height="wrap_content"
                 android:background="#F5F5F5"
                 android:orientation="horizontal"
                 android:paddingBottom="25dp"

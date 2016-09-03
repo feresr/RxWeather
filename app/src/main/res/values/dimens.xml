@@ -5,6 +5,7 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="card_padding_leftright">30dp</dimen>
     <dimen name="card_padding_top">90dp</dimen>
+    <dimen name="card_padding_top_land">70dp</dimen>
     <dimen name="card_padding_bottom">90dp</dimen>
 
 </resources>

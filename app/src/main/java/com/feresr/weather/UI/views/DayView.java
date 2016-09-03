@@ -77,6 +77,7 @@ public class DayView extends LinearLayout {
             try {
                 TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.DayView, 0, 0);
                 main.setText(typedArray.getString(R.styleable.DayView_main));
+                icon.setTextSize(typedArray.getFloat(R.styleable.DayView_icon_size, 24));
                 typedArray.recycle();
             } catch (Exception ignored) {
 

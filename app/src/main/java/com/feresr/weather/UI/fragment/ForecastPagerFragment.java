@@ -24,7 +24,6 @@ import butterknife.BindView;
  */
 public class ForecastPagerFragment extends BaseFragment<ForecastPagerPresenter> implements ForecastPagerView {
 
-
     public static final String ARG_CITY = "CITY";
 
     @BindView(R.id.forecast_pager)
@@ -49,7 +48,6 @@ public class ForecastPagerFragment extends BaseFragment<ForecastPagerPresenter> 
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         forecastAdapter = new ForecastAdapter(getActivity().getSupportFragmentManager());
-        forecastPager.setOffscreenPageLimit(2);
         forecastPager.setAdapter(forecastAdapter);
         viewPagerIndicator.setViewPager(forecastPager);
 
