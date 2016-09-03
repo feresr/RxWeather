@@ -30,11 +30,13 @@ public class ViewPagerIndicator extends FrameLayout implements ViewPager.OnAdapt
     private LinearLayout linearLayout;
     private ViewPager viewPager;
     private ImageView movingIndicator;
+
     private DataSetObserver dataSetObserver = new DataSetObserver() {
         @Override
         public void onChanged() {
             super.onChanged();
             generateIndicators(viewPager.getAdapter().getCount());
+            onPageScrolled(viewPager.getCurrentItem(), 0, 0);
         }
 
         @Override
@@ -130,7 +132,7 @@ public class ViewPagerIndicator extends FrameLayout implements ViewPager.OnAdapt
 
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-        if (linearLayout.getChildCount() > 0) {
+        if (linearLayout.getChildCount() > 0 && viewPager.getWidth() > 0) {
             movingIndicator.setX((getMeasuredWidth() * position / linearLayout.getChildCount() + positionOffsetPixels * getMeasuredWidth() / viewPager.getWidth() / linearLayout.getChildCount()));
         }
     }
