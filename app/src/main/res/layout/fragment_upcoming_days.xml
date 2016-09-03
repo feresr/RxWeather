@@ -9,10 +9,10 @@
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="90dp"
-        android:layout_marginLeft="40dp"
-        android:layout_marginRight="40dp"
-        android:layout_marginTop="100dp"
+        android:layout_marginLeft="@dimen/card_padding_leftright"
+        android:layout_marginRight="@dimen/card_padding_leftright"
+        android:layout_marginTop="@dimen/card_padding_top"
+        android:layout_marginBottom="@dimen/card_padding_bottom"
         app:cardBackgroundColor="#fff">
 
 

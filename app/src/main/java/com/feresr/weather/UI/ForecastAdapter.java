@@ -4,8 +4,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.feresr.weather.UI.fragment.CurrentWeatherFragment;
-import com.feresr.weather.UI.fragment.DaysFragment;
+import com.feresr.weather.UI.fragment.NowWeatherFragment;
+import com.feresr.weather.UI.fragment.TwoDaysFragment;
 import com.feresr.weather.UI.fragment.NextHoursFragment;
 import com.feresr.weather.UI.fragment.UpcomingDaysFragment;
 import com.feresr.weather.UI.fragment.WeekFragment;
@@ -31,11 +31,11 @@ public class ForecastAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return CurrentWeatherFragment.newInstance(cityWeather.getCurrently());
+                return NowWeatherFragment.newInstance(cityWeather.getCurrently());
             case 1:
                 return NextHoursFragment.newInstance(cityWeather.getHourly());
             case 2:
-                return DaysFragment.newInstance(cityWeather.getDaily().getDays().get(0), cityWeather.getDaily().getDays().get(1));
+                return TwoDaysFragment.newInstance(cityWeather.getDaily().getDays().get(0), cityWeather.getDaily().getDays().get(1));
             case 3:
                 return WeekFragment.newInstance(cityWeather.getDaily());
             case 4:

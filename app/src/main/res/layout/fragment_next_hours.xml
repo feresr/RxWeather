@@ -8,16 +8,15 @@
 
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="40dp"
-        android:layout_marginRight="40dp"
-        android:layout_marginTop="110dp"
+        android:layout_marginBottom="@dimen/card_padding_bottom"
+        android:layout_marginLeft="@dimen/card_padding_leftright"
+        android:layout_marginRight="@dimen/card_padding_leftright"
+        android:layout_marginTop="@dimen/card_padding_top"
         android:orientation="vertical">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
             android:text="NEXT 48 HOURS"
             android:textColor="#eee"
             android:textSize="14sp"
@@ -25,17 +24,15 @@
 
         <TextView
             android:id="@+id/summary"
+            android:paddingBottom="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
             android:text="Description"
             android:textColor="#fff" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerview"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="20dp" />
+            android:layout_height="match_parent" />
     </LinearLayout>
 </FrameLayout>

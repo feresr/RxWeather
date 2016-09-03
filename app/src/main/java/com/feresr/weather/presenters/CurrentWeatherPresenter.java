@@ -1,6 +1,6 @@
 package com.feresr.weather.presenters;
 
-import com.feresr.weather.UI.fragment.CurrentWeatherFragment;
+import com.feresr.weather.UI.fragment.NowWeatherFragment;
 import com.feresr.weather.common.BasePresenter;
 import com.feresr.weather.models.Currently;
 import com.feresr.weather.presenters.views.CurrentWeatherView;
@@ -22,7 +22,7 @@ public class CurrentWeatherPresenter extends BasePresenter<CurrentWeatherView> {
     @Override
     public void onCreate() {
         super.onCreate();
-        currently = (Currently) view.getArguments().getSerializable(CurrentWeatherFragment.ARG_CURRENT_WEATHER);
+        currently = (Currently) view.getArguments().getSerializable(NowWeatherFragment.ARG_CURRENT_WEATHER);
     }
 
     @Override

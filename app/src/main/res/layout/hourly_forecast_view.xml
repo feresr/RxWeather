@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:padding="6dp">
+    android:paddingTop="6dp"
+    android:paddingBottom="6dp">
 
     <TextView
         android:id="@+id/hour"
@@ -29,7 +30,7 @@
         android:layout_marginBottom="4dp"
         android:layout_marginTop="4dp"
         android:layout_weight="2"
-        android:gravity="center"
+        android:gravity="right"
         android:text="IC"
         android:textColor="@color/light_text"
         android:textSize="22sp" />

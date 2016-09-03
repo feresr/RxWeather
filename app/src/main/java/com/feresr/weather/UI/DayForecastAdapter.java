@@ -43,17 +43,6 @@ public class DayForecastAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
         String syncConnPref = sharedPref.getString(SettingsActivity.PREF_UNIT, "celsius");
 
-        //Adjust margins according to their positions
-        Resources r = context.getResources();
-        px = (int) TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP,
-                10,
-                r.getDisplayMetrics()
-        );
-        params = new CardView.LayoutParams(
-                CardView.LayoutParams.WRAP_CONTENT,
-                CardView.LayoutParams.WRAP_CONTENT
-        );
 
         if (syncConnPref.equals("celsius")) {
             celsius = true;
@@ -88,16 +77,6 @@ public class DayForecastAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
         hourlyForecastViewHolder.icon.setText(IconManager.getIconResource(hours.get(position).getIcon(), context.get()));
 
-        //First
-        if (position == 0) {
-            params.setMargins(px, 0, 8, 0);
-        }
-        //Last
-        else if (position == hours.size() - 1) {
-            params.setMargins(8, 0, px, 0);
-        } else {
-            params.setMargins(8, 0, 8, 0);
-        }
 
         //hourlyForecastViewHolder.itemView.setLayoutParams(params);
     }

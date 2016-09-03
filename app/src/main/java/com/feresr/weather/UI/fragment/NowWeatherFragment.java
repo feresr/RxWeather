@@ -18,7 +18,7 @@ import butterknife.BindView;
 /**
  * Created by feresr on 24/08/16.
  */
-public class CurrentWeatherFragment extends BaseFragment<CurrentWeatherPresenter> implements CurrentWeatherView {
+public class NowWeatherFragment extends BaseFragment<CurrentWeatherPresenter> implements CurrentWeatherView {
 
     public static final String ARG_CURRENT_WEATHER = "CURRENT_WEATHER";
     @BindView(R.id.main_icon)
@@ -40,8 +40,8 @@ public class CurrentWeatherFragment extends BaseFragment<CurrentWeatherPresenter
     @BindView(R.id.wind)
     InfoDisplay wind;
 
-    public static CurrentWeatherFragment newInstance(Currently currentWeather) {
-        CurrentWeatherFragment fragment = new CurrentWeatherFragment();
+    public static NowWeatherFragment newInstance(Currently currentWeather) {
+        NowWeatherFragment fragment = new NowWeatherFragment();
         Bundle bundle = new Bundle();
         bundle.putSerializable(ARG_CURRENT_WEATHER, currentWeather);
         fragment.setArguments(bundle);
@@ -60,7 +60,7 @@ public class CurrentWeatherFragment extends BaseFragment<CurrentWeatherPresenter
 
     @Override
     protected int getFragmentLayout() {
-        return R.layout.current_weather_view;
+        return R.layout.fragment_now;
     }
 
     @Override

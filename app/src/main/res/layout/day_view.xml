@@ -8,10 +8,11 @@
 
         <TextView
             android:id="@+id/icon"
-            android:layout_width="90dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:gravity="center"
+            android:layout_gravity="left"
+            android:gravity="left"
             android:padding="15dp"
             android:text="IC"
             android:textColor="#666"

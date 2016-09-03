@@ -17,7 +17,7 @@ import butterknife.ButterKnife;
 /**
  * Created by feresr on 27/08/16.
  */
-public class DaysFragment extends Fragment {
+public class TwoDaysFragment extends Fragment {
 
     private final static String ARG_DAY1 = "ARG_DAY1";
     private final static String ARG_DAY2 = "ARG_DAY2";
@@ -28,12 +28,12 @@ public class DaysFragment extends Fragment {
     private Day day1;
     private Day day2;
 
-    public static DaysFragment newInstance(Day day1, Day day2) {
+    public static TwoDaysFragment newInstance(Day day1, Day day2) {
 
         Bundle args = new Bundle();
         args.putSerializable(ARG_DAY1, day1);
         args.putSerializable(ARG_DAY2, day2);
-        DaysFragment fragment = new DaysFragment();
+        TwoDaysFragment fragment = new TwoDaysFragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -48,7 +48,7 @@ public class DaysFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_day, container, false);
+        View view = inflater.inflate(R.layout.fragment_tow_days, container, false);
         ButterKnife.bind(this, view);
         return view;
     }
