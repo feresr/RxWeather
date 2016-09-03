@@ -20,6 +20,7 @@ import butterknife.BindView;
  */
 public class CurrentWeatherFragment extends BaseFragment<CurrentWeatherPresenter> implements CurrentWeatherView {
 
+    public static final String ARG_CURRENT_WEATHER = "CURRENT_WEATHER";
     @BindView(R.id.main_icon)
     TextView mainIcon;
     @BindView(R.id.temp)
@@ -38,8 +39,6 @@ public class CurrentWeatherFragment extends BaseFragment<CurrentWeatherPresenter
     InfoDisplay feelsLike;
     @BindView(R.id.wind)
     InfoDisplay wind;
-
-    public static final String ARG_CURRENT_WEATHER = "CURRENT_WEATHER";
 
     public static CurrentWeatherFragment newInstance(Currently currentWeather) {
         CurrentWeatherFragment fragment = new CurrentWeatherFragment();

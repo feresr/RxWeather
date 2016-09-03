@@ -15,9 +15,10 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.Collections;
+
 import rx.observers.TestSubscriber;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -31,6 +32,10 @@ public class ExampleUnitTest {
     Context mockContext;
     @Mock
     Resources mockResources;
+    @Mock
+    CityWeather mockCityWeather;
+    @Mock
+    City city;
 
     @Test
     public void iconManager_getIconResource() throws Exception {
@@ -41,7 +46,8 @@ public class ExampleUnitTest {
     }
 
     @Test
-    public void iconManager_getColorResource() {;
+    public void iconManager_getColorResource() {
+        ;
         when(mockContext.getResources()).thenReturn(mockResources);
         when(mockResources.getColor(R.color.rain)).thenReturn(2);
 
@@ -49,7 +55,7 @@ public class ExampleUnitTest {
     }
 
     @Test
-    public void DiskDataSource_getForecast(){
+    public void DiskDataSource_getForecast() {
         SQLiteStorage cache = new SQLiteStorage(mockContext);
         DiskDataSource dataSource = new DiskDataSource(cache);
         final City city = mock(City.class);
@@ -59,11 +65,6 @@ public class ExampleUnitTest {
         testSubscriber.assertNoErrors();
         testSubscriber.assertCompleted();
     }
-
-    @Mock
-    CityWeather mockCityWeather;
-    @Mock
-    City city;
 
     @Test
     public void SimpleCache_isDataExpired() {

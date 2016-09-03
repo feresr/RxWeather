@@ -1,19 +1,15 @@
 package com.feresr.weather.UI.fragment;
 
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.feresr.weather.R;
 import com.feresr.weather.UI.views.DayView;
-import com.feresr.weather.models.Daily;
 import com.feresr.weather.models.Day;
-import com.feresr.weather.utils.IconManager;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -25,15 +21,12 @@ public class DaysFragment extends Fragment {
 
     private final static String ARG_DAY1 = "ARG_DAY1";
     private final static String ARG_DAY2 = "ARG_DAY2";
-
-    private Day day1;
-    private Day day2;
-
     @BindView(R.id.day1)
     DayView dayView1;
     @BindView(R.id.day2)
     DayView dayView2;
-
+    private Day day1;
+    private Day day2;
 
     public static DaysFragment newInstance(Day day1, Day day2) {
 

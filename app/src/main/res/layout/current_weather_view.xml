@@ -22,8 +22,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="4"
                 android:layout_margin="20dp"
+                android:layout_weight="4"
                 android:orientation="vertical">
 
                 <TextView
@@ -36,24 +36,24 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:layout_gravity="center"
                     android:id="@+id/main_icon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="IC"
                     android:layout_centerInParent="true"
+                    android:layout_gravity="center"
                     android:layout_weight="3"
                     android:gravity="center"
+                    android:text="IC"
                     android:textColor="#666"
                     android:textSize="100dp" />
 
                 <TextView
                     android:id="@+id/temp"
-                    android:layout_gravity="center"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/main_icon"
                     android:layout_centerHorizontal="true"
+                    android:layout_gravity="center"
                     android:layout_weight="1"
                     android:text="24"
                     android:textColor="#666"
@@ -61,13 +61,13 @@
 
                 <TextView
                     android:id="@+id/description"
-                    android:layout_gravity="center"
-                    android:paddingBottom="12dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/temp"
                     android:layout_centerHorizontal="true"
+                    android:layout_gravity="center"
                     android:layout_weight="1"
+                    android:paddingBottom="12dp"
                     android:text="Sunny"
                     android:textColor="#999" />
             </LinearLayout>

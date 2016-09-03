@@ -8,6 +8,7 @@ import android.view.View;
 import com.feresr.weather.DI.component.ActivityComponent;
 import com.feresr.weather.R;
 import com.feresr.weather.UI.ForecastAdapter;
+import com.feresr.weather.UI.views.ViewPagerIndicator;
 import com.feresr.weather.common.BaseFragment;
 import com.feresr.weather.models.City;
 import com.feresr.weather.models.CityWeather;
@@ -29,6 +30,9 @@ public class ForecastPagerFragment extends BaseFragment<ForecastPagerPresenter> 
     @BindView(R.id.forecast_pager)
     ViewPager forecastPager;
 
+    @BindView(R.id.viewpager_indicator)
+    ViewPagerIndicator viewPagerIndicator;
+
     @Inject
     ForecastAdapter forecastAdapter;
 
@@ -47,7 +51,9 @@ public class ForecastPagerFragment extends BaseFragment<ForecastPagerPresenter> 
         forecastAdapter = new ForecastAdapter(getActivity().getSupportFragmentManager());
         forecastPager.setOffscreenPageLimit(2);
         forecastPager.setAdapter(forecastAdapter);
-        forecastPager.setPageMargin(-180);
+        viewPagerIndicator.setViewPager(forecastPager);
+
+        //forecastPager.setPageMargin(-180);
     }
 
     @Override

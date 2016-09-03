@@ -1,6 +1,5 @@
 package com.feresr.weather.presenters;
 
-import com.feresr.weather.UI.fragment.ForecastFragment;
 import com.feresr.weather.UI.fragment.ForecastPagerFragment;
 import com.feresr.weather.common.BasePresenter;
 import com.feresr.weather.models.City;

@@ -2,10 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginTop="10dp"
     android:background="@color/storm_background"
-    android:padding="20dp"
     android:elevation="5dp"
-    android:layout_marginTop="10dp">
+    android:padding="20dp">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
@@ -15,21 +15,21 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textStyle="bold"
+            android:text="@string/next48hours"
             android:textColor="@color/normal_text"
-            android:text="@string/next48hours" />
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/description"
-            android:text="Weather description"
-            android:textColor="@color/normal_text"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:text="Weather description"
+            android:textColor="@color/normal_text" />
 
         <android.support.v7.widget.RecyclerView
-            android:layout_marginTop="8dp"
             android:id="@+id/nextHoursRecyclerview"
             android:layout_width="match_parent"
-            android:layout_height="100dp" />
+            android:layout_height="100dp"
+            android:layout_marginTop="8dp" />
     </LinearLayout>
 </LinearLayout>

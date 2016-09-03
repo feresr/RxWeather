@@ -26,11 +26,9 @@ import butterknife.ButterKnife;
 public class UpcomingDaysFragment extends Fragment {
 
     private final static String ARG_DAYS = "ARG_DAYS";
-
-    private Daily daily;
-
     @BindView(R.id.container)
     LinearLayout container;
+    private Daily daily;
 
     public static UpcomingDaysFragment newInstance(Daily daily) {
         Bundle args = new Bundle();

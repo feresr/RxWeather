@@ -27,16 +27,19 @@ public class RoundedCardLayout extends LinearLayout {
         init();
         setWillNotDraw(false);
     }
+
     public RoundedCardLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
         setWillNotDraw(false);
     }
+
     public RoundedCardLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
         setWillNotDraw(false);
     }
+
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public RoundedCardLayout(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);

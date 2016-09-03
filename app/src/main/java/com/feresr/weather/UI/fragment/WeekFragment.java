@@ -1,7 +1,6 @@
 package com.feresr.weather.UI.fragment;
 
 import android.graphics.Typeface;
-import android.graphics.drawable.Icon;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;

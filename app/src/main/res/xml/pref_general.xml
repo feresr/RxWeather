@@ -1,30 +1,30 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <SwitchPreference
-        android:key="gridview"
         android:defaultValue="false"
+        android:key="gridview"
         android:summary="Show two cities per row"
-        android:title="Grid view"/>
+        android:title="Grid view" />
 
     <!-- NOTE: Hide buttons to simplify the UI. Users can touch outside the dialog to
          dismiss it. -->
     <!-- NOTE: ListPreference's summary should be set to its value by the activity code. -->
     <ListPreference
         android:defaultValue="celsius"
-        android:summary="Celsius"
         android:entries="@array/pref_list_units"
         android:entryValues="@array/pref_list_units_values"
         android:key="unit_list"
         android:negativeButtonText="@null"
         android:positiveButtonText="@null"
+        android:summary="Celsius"
         android:title="@string/Units" />
     <Preference
         android:key="feedback"
-        android:title="Send feedback"/>
+        android:title="Send feedback" />
     <Preference
         android:key="rate"
-        android:title="Rate this App"/>
+        android:title="Rate this App" />
     <Preference
-        android:title="App Version"
-        android:summary="1.0.6"/>
+        android:summary="1.0.6"
+        android:title="App Version" />
 </PreferenceScreen>

@@ -20,11 +20,11 @@
 
     <LinearLayout
         android:id="@+id/empty_view"
-        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="gone">
 
         <ImageView
             android:layout_width="130dp"

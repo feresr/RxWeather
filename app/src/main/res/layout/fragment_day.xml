@@ -18,33 +18,33 @@
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
             android:layout_marginBottom="5dp"
+            android:layout_weight="1"
             app:cardBackgroundColor="#fff">
 
             <com.feresr.weather.UI.views.DayView
                 android:id="@+id/day1"
                 android:layout_width="match_parent"
-                app:main="@string/today"
                 android:layout_height="wrap_content"
                 android:layout_margin="20dp"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                app:main="@string/today" />
         </android.support.v7.widget.CardView>
 
         <android.support.v7.widget.CardView
-            android:layout_marginTop="5dp"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_marginTop="5dp"
             android:layout_weight="1"
             app:cardBackgroundColor="#fff">
 
             <com.feresr.weather.UI.views.DayView
                 android:id="@+id/day2"
-                app:main="@string/tomorrow"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="20dp"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                app:main="@string/tomorrow" />
         </android.support.v7.widget.CardView>
     </LinearLayout>
 </FrameLayout>

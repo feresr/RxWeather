@@ -6,7 +6,6 @@ import android.support.v4.app.FragmentManager;
 
 import com.feresr.weather.DI.ActivityScope;
 import com.feresr.weather.UI.CitiesAdapter;
-import com.feresr.weather.UI.ForecastAdapter;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.places.Places;
 

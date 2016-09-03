@@ -26,8 +26,8 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/rounded_corners"
                 android:padding="10dp"
-                android:textColor="#fff"
                 android:text="SYDNEY"
+                android:textColor="#fff"
                 android:textSize="32sp" />
 
             <LinearLayout

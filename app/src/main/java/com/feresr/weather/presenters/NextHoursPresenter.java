@@ -15,7 +15,7 @@ public class NextHoursPresenter extends BasePresenter<NextHoursView> {
     private Hourly hourly;
 
     @Inject
-    public NextHoursPresenter(){
+    public NextHoursPresenter() {
     }
 
     @Override

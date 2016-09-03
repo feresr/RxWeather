@@ -6,23 +6,23 @@
     <TextView
         android:id="@+id/icon"
         android:layout_width="25dp"
-        android:gravity="center"
-        android:layout_centerVertical="true"
         android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
         android:layout_marginRight="12dp"
-        android:textSize="16sp"
+        android:gravity="center"
+        android:text="IC"
         android:textColor="@color/text_white"
-        android:text="IC" />
+        android:textSize="16sp" />
 
     <TextView
         android:id="@+id/main"
-        android:textStyle="bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/icon"
         android:text="17 km/H"
+        android:textColor="@color/text_white"
         android:textSize="10sp"
-        android:textColor="@color/text_white" />
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/sub"

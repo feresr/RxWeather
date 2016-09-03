@@ -39,7 +39,7 @@ public class ForecastAdapter extends FragmentStatePagerAdapter {
             case 3:
                 return WeekFragment.newInstance(cityWeather.getDaily());
             case 4:
-                    return UpcomingDaysFragment.newInstance(cityWeather.getDaily());
+                return UpcomingDaysFragment.newInstance(cityWeather.getDaily());
             case 5:
             default:
                 return null;

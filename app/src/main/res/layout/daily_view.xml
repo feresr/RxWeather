@@ -1,22 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:orientation="vertical"
     android:padding="20dp">
+
     <TextView
-        android:textStyle="bold"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:text="@string/next7days"
         android:textColor="@color/text_white"
         android:textSize="14sp"
-        />
+        android:textStyle="bold" />
+
     <TextView
         android:id="@+id/description"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:text="Light rain today through Tuesday, with temperatures rising to 33 on Monday."
         android:textColor="@color/light_text_white"
-        android:textSize="14sp"
-        />
+        android:textSize="14sp" />
 </LinearLayout>
