@@ -97,8 +97,8 @@ public class ViewPagerIndicator extends FrameLayout implements ViewPager.OnAdapt
     }
 
     private void generateIndicators(int count) {
+        linearLayout.removeAllViews();
         removeAllViews();
-
 
         for (int i = 0; i < count; i++) {
             ImageView imageView = new ImageView(context);
@@ -114,8 +114,6 @@ public class ViewPagerIndicator extends FrameLayout implements ViewPager.OnAdapt
         movingIndicator.setImageDrawable(ContextCompat.getDrawable(context, movingIndicatorId));
         movingIndicator.setPadding(indicatorPadding, indicatorPadding, indicatorPadding, indicatorPadding);
         addView(movingIndicator);
-
-        invalidate();
     }
 
     @Override
