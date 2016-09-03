@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <attr name="main" format="string" />
     <declare-styleable name="InfoDisplayWidget">
-        <attr name="main" format="string"/>
-        <attr name="sub" format="string"/>
-        <attr name="ic" format="string"/>
+        <attr name="main"/>
+        <attr name="sub" format="string" />
+        <attr name="ic" format="string" />
 
+    </declare-styleable>
+
+    <declare-styleable name="DayView">
+        <attr name="main"/>
     </declare-styleable>
 </resources>

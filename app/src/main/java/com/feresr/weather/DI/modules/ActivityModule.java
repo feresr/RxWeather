@@ -2,9 +2,11 @@ package com.feresr.weather.DI.modules;
 
 import android.content.Context;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 
 import com.feresr.weather.DI.ActivityScope;
 import com.feresr.weather.UI.CitiesAdapter;
+import com.feresr.weather.UI.ForecastAdapter;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.places.Places;
 
@@ -31,6 +33,15 @@ public class ActivityModule {
         return this.activity.getBaseContext();
     }
 
+    /**
+     * Expose the activity to dependents in the graph.
+     */
+    @Provides
+    @ActivityScope
+    FragmentActivity providesFragmentActivity() {
+        return this.activity;
+    }
+
     @Provides
     @ActivityScope
     GoogleApiClient providesGoogleApiClient(Context context) {
@@ -44,5 +55,11 @@ public class ActivityModule {
     @ActivityScope
     CitiesAdapter providesCityAdapter(Context context) {
         return new CitiesAdapter(context);
+    }
+
+    @Provides
+    @ActivityScope
+    FragmentManager getFragmentManager(FragmentActivity activity) {
+        return activity.getSupportFragmentManager();
     }
 }

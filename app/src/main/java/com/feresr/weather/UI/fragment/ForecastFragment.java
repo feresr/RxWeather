@@ -30,6 +30,7 @@ public class ForecastFragment extends BaseFragment<ForecastPresenter> implements
     ForecastAdapter adapter;
     @BindView(R.id.recyclerview)
     RecyclerView recyclerView;
+
     private int mScrolledY = 0;
     private RecyclerViewScrollListener listener;
 
@@ -49,8 +50,9 @@ public class ForecastFragment extends BaseFragment<ForecastPresenter> implements
                 super.onScrollStateChanged(recyclerView, newState);
             }
         });
+
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerView.setAdapter(adapter);
+        //recyclerView.setAdapter(adapter);
         recyclerView.getLayoutManager().scrollToPosition(0);
         //adapter.showNoInternetWarning();
     }
@@ -75,12 +77,11 @@ public class ForecastFragment extends BaseFragment<ForecastPresenter> implements
         super.onResume();
         recyclerView.scrollToPosition(0);
         listener.onScrolled(0);
-
     }
 
     @Override
     public void addForecast(CityWeather s) {
-        adapter.addForecast(s);
+        //adapter.addForecast(s);
     }
 
     @Override

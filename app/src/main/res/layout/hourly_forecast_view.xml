@@ -1,33 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="12dp">
+    android:orientation="horizontal"
+    android:padding="6dp">
 
     <TextView
         android:id="@+id/hour"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_weight="5"
         android:text="19:00"
-        android:textColor="@color/normal_text" />
+        android:textColor="@color/light_text" />
+
+    <TextView
+        android:id="@+id/temp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="3"
+        android:gravity="right"
+        android:text="25.00°"
+        android:textColor="@color/light_text" />
 
     <TextView
         android:id="@+id/icon"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="4dp"
         android:layout_marginTop="4dp"
+        android:layout_weight="2"
         android:gravity="center"
         android:text="IC"
         android:textColor="@color/light_text"
         android:textSize="22sp" />
-
-    <TextView
-        android:id="@+id/temp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="25.00°"
-        android:textColor="@color/light_text" />
 </LinearLayout>

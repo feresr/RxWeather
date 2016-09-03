@@ -23,9 +23,12 @@ public class CurrentlyViewHolder extends RecyclerView.ViewHolder {
     public InfoDisplay precipitation;
     public InfoDisplay feelsLike;
     public TextView icon;
+    public TextView cityName;
 
     public CurrentlyViewHolder(View itemView, Typeface font) {
         super(itemView);
+
+        cityName = (TextView) itemView.findViewById(R.id.city_name);
         main = (FrameLayout) itemView.findViewById(R.id.main_info);
         temp = (TextView) itemView.findViewById(R.id.temp);
         description = (TextView) itemView.findViewById(R.id.description);
@@ -38,7 +41,7 @@ public class CurrentlyViewHolder extends RecyclerView.ViewHolder {
 
         icon = (TextView) itemView.findViewById(R.id.main_icon);
         icon.setTypeface(font);
-
+        cityName.setTypeface(font);
         icon.setText(R.string.today_weather_main_icon);
     }
 }

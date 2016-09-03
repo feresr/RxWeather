@@ -67,16 +67,6 @@ public class ExampleUnitTest {
 
     @Test
     public void SimpleCache_isDataExpired() {
-        SQLiteStorage cache = new SQLiteStorage(mockContext);
-        assertTrue(cache.isExpired(null));
-        when(city.getCityWeather()).thenReturn(mockCityWeather);
-        when(mockCityWeather.getFetchTime()).thenReturn(System.currentTimeMillis());
-        assertFalse(cache.isExpired(city));
 
-        when(mockCityWeather.getFetchTime()).thenReturn(System.currentTimeMillis() - SQLiteStorage.EXPIRATION_TIME );
-        assertFalse(cache.isExpired(city));
-
-        when(mockCityWeather.getFetchTime()).thenReturn(System.currentTimeMillis() - SQLiteStorage.EXPIRATION_TIME - 1);
-        assertTrue(cache.isExpired(city));
     }
 }

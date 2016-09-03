@@ -30,6 +30,9 @@
     <string name="day_cloudy" translatable="false">&#xf002;</string>
     <string name="day_hail" translatable="false">&#xf015;</string>
     <string name="strong_wind" translatable="false">&#xf050;</string>
+    <string name="temp_max" translatable="false">&#xf055;</string>
+    <string name="temp_min" translatable="false">&#xf053;</string>
+    <string name="umbrella" translatable="false">&#xf084;</string>
     <string name="city_country_name" translatable="false">%1$s %2$s</string>
 
     <string name="search_hint">Search cities</string>

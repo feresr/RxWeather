@@ -23,7 +23,6 @@ public class DayViewHolder extends RecyclerView.ViewHolder {
     public DayViewHolder(View itemView, Typeface font) {
         super(itemView);
         view = (LinearLayout) itemView;
-        dayName = (TextView) itemView.findViewById(R.id.day);
         main = (TextView) itemView.findViewById(R.id.main);
         temp = (TextView) itemView.findViewById(R.id.temp);
         tempMax = (TextView) itemView.findViewById(R.id.tempMax);

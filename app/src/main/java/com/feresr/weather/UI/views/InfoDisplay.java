@@ -3,6 +3,7 @@ package com.feresr.weather.UI.views;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.util.AttributeSet;
@@ -66,9 +67,11 @@ public class InfoDisplay extends RelativeLayout {
         TextView sub = (TextView) findViewById(R.id.sub);
         main.setText(this.main);
         sub.setText(this.sub);
-
+        main.setTextColor(Color.GRAY);
+        sub.setTextColor(Color.GRAY);
         Typeface font = Typeface.createFromAsset(context.getAssets(), "weathericons-regular-webfont.ttf");
         TextView icon = (TextView) findViewById(R.id.icon);
+        icon.setTextColor(Color.GRAY);
         icon.setText(this.ic);
         icon.setTypeface(font);
     }

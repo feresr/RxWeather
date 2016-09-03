@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 
 import com.feresr.weather.DI.component.ActivityComponent;
@@ -12,9 +13,11 @@ import com.feresr.weather.DI.component.ApplicationComponent;
 import com.feresr.weather.R;
 import com.feresr.weather.RxWeatherApplication;
 import com.feresr.weather.UI.fragment.ForecastFragment;
+import com.feresr.weather.UI.fragment.ForecastPagerFragment;
 import com.feresr.weather.common.BaseActivity;
 import com.feresr.weather.common.BasePresenter;
 import com.feresr.weather.models.City;
+import com.feresr.weather.utils.IconManager;
 
 public class WeatherDetailActivity extends BaseActivity implements ForecastFragment.RecyclerViewScrollListener {
 
@@ -31,21 +34,20 @@ public class WeatherDetailActivity extends BaseActivity implements ForecastFragm
 
         if (savedInstanceState == null) {
             FragmentTransaction ft = this.getSupportFragmentManager().beginTransaction();
-            ForecastFragment fragment = new ForecastFragment();
-            Bundle bundle = new Bundle();
-            bundle.putSerializable(ForecastFragment.ARG_CITY, city);
-            fragment.setArguments(bundle);
-            ft.add(R.id.container, fragment, null);
+            ForecastPagerFragment fragment = ForecastPagerFragment.newInstance(city);
+            ft.replace(R.id.container, fragment, null);
             ft.commit();
         }
+
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setBackgroundColor(IconManager.getColorResource(city.getCityWeather().getCurrently().getIcon(), this));
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle(city.getName());
+            getSupportActionBar().setTitle(city.getName().split(",")[0]);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setElevation(0);
-
         }
+        findViewById(R.id.layout).setBackgroundColor(IconManager.getColorResource(city.getCityWeather().getCurrently().getIcon(), this));
         initializeDependencies();
     }
 

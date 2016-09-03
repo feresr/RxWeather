@@ -42,6 +42,12 @@ public class IconManager {
                 return context.getString(R.string.thunderstorms);
             case "tornado":
                 return context.getString(R.string.tornado);
+            case "temp_max":
+                return context.getString(R.string.temp_max);
+            case "temp_min":
+                return context.getString(R.string.temp_min);
+            case "umbrella":
+                return context.getString(R.string.umbrella);
             default:
                 return context.getString(R.string.day_sunny);
         }
