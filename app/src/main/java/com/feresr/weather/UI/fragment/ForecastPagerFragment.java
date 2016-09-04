@@ -25,6 +25,7 @@ import butterknife.BindView;
 public class ForecastPagerFragment extends BaseFragment<ForecastPagerPresenter> implements ForecastPagerView {
 
     public static final String ARG_CITY = "CITY";
+    public static final String STATE_VIEWPAGER_POSITION = "VIEWPAGER_POSITION";
 
     @BindView(R.id.forecast_pager)
     ViewPager forecastPager;
@@ -34,6 +35,8 @@ public class ForecastPagerFragment extends BaseFragment<ForecastPagerPresenter> 
 
     @Inject
     ForecastAdapter forecastAdapter;
+
+    private int currentItem = 0;
 
     public static ForecastPagerFragment newInstance(City city) {
 
@@ -50,8 +53,6 @@ public class ForecastPagerFragment extends BaseFragment<ForecastPagerPresenter> 
         forecastAdapter = new ForecastAdapter(getActivity().getSupportFragmentManager());
         forecastPager.setAdapter(forecastAdapter);
         viewPagerIndicator.setViewPager(forecastPager);
-
-        //forecastPager.setPageMargin(-180);
     }
 
     @Override
@@ -72,6 +73,26 @@ public class ForecastPagerFragment extends BaseFragment<ForecastPagerPresenter> 
     @Override
     public void showErrorMessage(String message) {
 
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(STATE_VIEWPAGER_POSITION, forecastPager.getCurrentItem());
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if (savedInstanceState != null) {
+            currentItem = savedInstanceState.getInt(STATE_VIEWPAGER_POSITION, 0);
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        forecastPager.setCurrentItem(currentItem);
     }
 
     @Override

@@ -83,7 +83,6 @@
                 android:paddingBottom="15dp"
                 android:paddingRight="30dp">
 
-
                 <com.feresr.weather.UI.views.InfoDisplay
                     android:id="@+id/humidity"
                     android:layout_width="0dp"
