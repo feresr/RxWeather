@@ -90,6 +90,12 @@ public class ForecastPagerFragment extends BaseFragment<ForecastPagerPresenter> 
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        currentItem = forecastPager.getCurrentItem();
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         forecastPager.setCurrentItem(currentItem);
