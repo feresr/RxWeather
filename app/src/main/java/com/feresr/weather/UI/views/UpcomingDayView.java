@@ -6,7 +6,6 @@ import android.content.res.TypedArray;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.util.AttributeSet;
-import android.util.TypedValue;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -20,7 +19,7 @@ import butterknife.ButterKnife;
 /**
  * Created by feresr on 28/08/16.
  */
-public class DayView extends LinearLayout {
+public class UpcomingDayView extends LinearLayout {
 
     @BindView(R.id.icon)
     TextView icon;
@@ -40,29 +39,29 @@ public class DayView extends LinearLayout {
     @BindView(R.id.rain)
     TextView rain;
 
-    public DayView(Context context) {
+    public UpcomingDayView(Context context) {
         super(context);
         initializeViews(context, null);
     }
 
-    public DayView(Context context, AttributeSet attrs) {
+    public UpcomingDayView(Context context, AttributeSet attrs) {
         super(context, attrs);
         initializeViews(context, attrs);
     }
 
-    public DayView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public UpcomingDayView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         initializeViews(context, attrs);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public DayView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public UpcomingDayView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         initializeViews(context, attrs);
     }
 
     private void initializeViews(Context context, AttributeSet attrs) {
-        View view = inflate(context, R.layout.day_view, this);
+        View view = inflate(context, R.layout.upcoming_day_view, this);
         ButterKnife.bind(this, view);
         Typeface font = Typeface.createFromAsset(context.getAssets(), "weathericons-regular-webfont.ttf");
         this.setOrientation(VERTICAL);
@@ -78,7 +77,7 @@ public class DayView extends LinearLayout {
             try {
                 TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.DayView, 0, 0);
                 main.setText(typedArray.getString(R.styleable.DayView_main));
-                icon.setTextSize(TypedValue.COMPLEX_UNIT_SP, typedArray.getFloat(R.styleable.DayView_icon_size, 42));
+                icon.setTextSize(typedArray.getFloat(R.styleable.DayView_icon_size, 24));
                 typedArray.recycle();
             } catch (Exception ignored) {
 

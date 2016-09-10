@@ -5,6 +5,7 @@ import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import android.widget.LinearLayout;
 
 import com.feresr.weather.R;
 import com.feresr.weather.UI.views.DayView;
+import com.feresr.weather.UI.views.UpcomingDayView;
 import com.feresr.weather.models.Daily;
 import com.feresr.weather.models.Day;
 
@@ -61,7 +63,7 @@ public class UpcomingDaysFragment extends Fragment {
             iconSize = 20f;
         }
         for (Day day : daily.getDays().subList(2, end)) {
-            DayView dayView = new DayView(getContext());
+            UpcomingDayView dayView = new UpcomingDayView(getContext());
             dayView.setIcon(day.getIcon());
             dayView.setMainText(getDayString(day));
             dayView.setSummary(day.getSummary());
