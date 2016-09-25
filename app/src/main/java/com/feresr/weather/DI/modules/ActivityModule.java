@@ -5,7 +5,6 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 
 import com.feresr.weather.DI.ActivityScope;
-import com.feresr.weather.UI.CitiesAdapter;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.places.Places;
 
@@ -48,12 +47,6 @@ public class ActivityModule {
                 .addApi(Places.GEO_DATA_API)
                 .addApi(Places.PLACE_DETECTION_API)
                 .build();
-    }
-
-    @Provides
-    @ActivityScope
-    CitiesAdapter providesCityAdapter(Context context) {
-        return new CitiesAdapter(context);
     }
 
     @Provides

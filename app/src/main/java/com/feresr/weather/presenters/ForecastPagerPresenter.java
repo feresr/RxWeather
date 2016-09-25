@@ -27,6 +27,6 @@ public class ForecastPagerPresenter extends BasePresenter<ForecastPagerView> {
     @Override
     public void onStart() {
         super.onStart();
-        view.setCityWeather(city.getCityWeather());
+        view.setCityWeather(city.getWeather());
     }
 }

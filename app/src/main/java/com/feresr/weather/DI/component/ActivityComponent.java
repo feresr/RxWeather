@@ -5,10 +5,9 @@ import com.feresr.weather.DI.modules.ActivityModule;
 import com.feresr.weather.UI.MainActivity;
 import com.feresr.weather.UI.SearchCityActivity;
 import com.feresr.weather.UI.fragment.CitiesFragment;
-import com.feresr.weather.UI.fragment.NowWeatherFragment;
-import com.feresr.weather.UI.fragment.ForecastFragment;
 import com.feresr.weather.UI.fragment.ForecastPagerFragment;
 import com.feresr.weather.UI.fragment.NextHoursFragment;
+import com.feresr.weather.UI.fragment.NowWeatherFragment;
 import com.feresr.weather.UI.fragment.SearchFragment;
 
 import dagger.Component;
@@ -23,8 +22,6 @@ import dagger.Component;
 )
 public interface ActivityComponent {
     void inject(CitiesFragment welcomeFragment);
-
-    void inject(ForecastFragment forecastFragment);
 
     void inject(SearchFragment searchFragment);
 

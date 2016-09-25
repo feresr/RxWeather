@@ -5,9 +5,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
-import android.view.View;
 
-import com.feresr.weather.UI.CitiesAdapter;
 import com.feresr.weather.UI.SettingsActivity;
 import com.feresr.weather.common.BasePresenter;
 import com.feresr.weather.models.City;
@@ -16,6 +14,7 @@ import com.feresr.weather.usecase.GetCitiesUseCase;
 import com.feresr.weather.usecase.GetCityForecastUseCase;
 import com.feresr.weather.usecase.RemoveCityUseCase;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.inject.Inject;
@@ -29,7 +28,7 @@ import rx.subscriptions.CompositeSubscription;
 /**
  * Created by Fernando on 6/11/2015.
  */
-public class CitiesPresenter extends BasePresenter<CitiesView> implements SharedPreferences.OnSharedPreferenceChangeListener, SwipeRefreshLayout.OnRefreshListener, View.OnClickListener, CitiesAdapter.OnCitySelectedListener {
+public class CitiesPresenter extends BasePresenter<CitiesView> implements SharedPreferences.OnSharedPreferenceChangeListener, SwipeRefreshLayout.OnRefreshListener {
 
     private final static String TAG = CitiesPresenter.class.getSimpleName();
 
@@ -108,14 +107,8 @@ public class CitiesPresenter extends BasePresenter<CitiesView> implements Shared
         }).subscribe(new CityForecastSubscriber()));
     }
 
-    @Override
     public void onCitySelected(City city) {
         citiesCallbackListener.onCitySelected(city);
-    }
-
-    @Override
-    public void onClick(View view) {
-        citiesCallbackListener.onAddCityButtonSelected();
     }
 
     @Override
@@ -135,14 +128,11 @@ public class CitiesPresenter extends BasePresenter<CitiesView> implements Shared
                     view.showTemperatureInFahrenheit();
                 }
                 break;
-            case SettingsActivity.GRIDVIEW:
-                if (sharedPreferences.getBoolean(key, false)) {
-                    view.setSetColumns(2);
-                } else {
-                    view.setSetColumns(1);
-                }
-                break;
         }
+    }
+
+    public void onAddCitySelected() {
+        citiesCallbackListener.onAddCityButtonSelected();
     }
 
     public interface CitiesCallbackListener {
@@ -155,6 +145,7 @@ public class CitiesPresenter extends BasePresenter<CitiesView> implements Shared
         @Override
         public void onCompleted() {
             view.hideLoadingIndicator();
+            view.completed(new ArrayList<>(cities.values()));
         }
 
         @Override

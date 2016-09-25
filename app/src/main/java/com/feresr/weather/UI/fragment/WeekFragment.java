@@ -30,7 +30,6 @@ public class WeekFragment extends Fragment {
     TextView description;
 
     public static WeekFragment newInstance(Daily daily) {
-
         Bundle args = new Bundle();
         args.putSerializable(ARG_DAILY, daily);
         WeekFragment fragment = new WeekFragment();

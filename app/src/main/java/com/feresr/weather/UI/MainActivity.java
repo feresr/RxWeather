@@ -112,7 +112,7 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
     @Override
     public void onCitySelected(City city) {
         //if PHONE
-        if (city != null && city.getCityWeather() != null) {
+        if (city != null && city.getWeather() != null) {
             Intent i = new Intent(this, WeatherDetailActivity.class);
             i.putExtra(WeatherDetailActivity.ARG_CITY, city);
             startActivity(i);
@@ -133,7 +133,6 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
 
     @Override
     public void onAddCityButtonSelected() {
-
         Intent intent = new Intent(this, SearchCityActivity.class);
         startActivity(intent);
     }

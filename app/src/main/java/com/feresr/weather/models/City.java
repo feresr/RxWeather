@@ -50,7 +50,7 @@ public class City implements Serializable {
         this.lon = lon;
     }
 
-    public CityWeather getCityWeather() {
+    public CityWeather getWeather() {
         return cityWeather;
     }
 

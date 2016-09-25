@@ -92,10 +92,10 @@ public class IconManager {
      * @return true, the cache is expired, otherwise false.
      */
     public static boolean isWeatherExpired(City city) {
-        if (city == null || city.getCityWeather() == null) {
+        if (city == null || city.getWeather() == null) {
             return true;
         }
 
-        return (System.currentTimeMillis() - city.getCityWeather().getFetchTime() > EXPIRATION_TIME);
+        return (System.currentTimeMillis() - city.getWeather().getFetchTime() > EXPIRATION_TIME);
     }
 }

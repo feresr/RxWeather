@@ -1,6 +1,7 @@
 package com.feresr.weather.UI;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
@@ -18,6 +19,8 @@ import javax.inject.Inject;
 
 
 public class SearchCityActivity extends BaseActivity implements SearchPresenter.CitySearchCallbackListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+
+    private static final String TAG = SearchCityActivity.class.getSimpleName();
 
     @Inject
     GoogleApiClient googleApiClient;
@@ -51,20 +54,21 @@ public class SearchCityActivity extends BaseActivity implements SearchPresenter.
     }
 
     @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
-        if (connectionResult != null && connectionResult.getErrorMessage() != null) {
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        if (connectionResult.getErrorMessage() != null) {
             Log.e(SearchCityActivity.this.getClass().getSimpleName(), connectionResult.getErrorMessage());
         }
+        Log.e(TAG, "googleApiClient onConnectionFailed");
     }
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-
+        Log.e(TAG, "googleApiClient connected");
     }
 
     @Override
     public void onConnectionSuspended(int i) {
-
+        Log.e(TAG, "googleApiClient onConnection suspended");
     }
 
     @Override

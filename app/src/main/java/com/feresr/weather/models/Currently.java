@@ -73,6 +73,10 @@ public class Currently extends DisplayWeatherInfo implements Serializable {
         return IconManager.getColorResource(icon, context);
     }
 
+    public int getColorR(Context context) {
+        return IconManager.getColorR(icon, context);
+    }
+
     /**
      * @return The precipIntensity
      */
